@@ -6,6 +6,7 @@ Random streams differ from PyTorch. Run with --device cpu for a CPU backend.
 """
 
 import argparse
+import hashlib
 from pathlib import Path
 
 import jax
@@ -159,6 +160,19 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
     loss_history = loss_history.reshape(-1)
     np.save(output_dir / "fb_fourrooms_jax_loss.npy", loss_history)
     learner.save(output_dir / "fb_fourrooms_jax.pkl")
+    # Preserve the reference measure separately without altering training/RNG.
+    reference_rng = np.random.default_rng(seed + 104729)
+    indices = reference_rng.integers(learner.buffer.size, size=100_000)
+    reference = jax.device_get(learner.buffer.obs[indices])
+    np.savez_compressed(
+        output_dir / "fb_fourrooms_jax_reference.npz", observations=reference,
+        source="sampled_final_replay", seed=seed, replay_size=learner.buffer.size,
+        training_updates=int(learner.state["optim"][0]),
+        size=env.size, movement_noise=env._noise,
+        actions=np.asarray([(a.x, a.y) for a in env.actions]),
+        checkpoint_sha256=hashlib.sha256((output_dir / "fb_fourrooms_jax.pkl").read_bytes()).hexdigest(),
+        wall_blocks=np.asarray([(b.xmin,b.ymin,b.xmax,b.ymax) for b in env.wall_blocks]),
+    )
     return learner, loss_history
 
 
