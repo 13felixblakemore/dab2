@@ -231,10 +231,16 @@ class FBLearner:
                  polyak_coef=0.95, batch_size=128, hidden_dim=128, num_layers=1,
                  buffer_size=1_000_000, device="cuda", buffer_device="cpu",
                  featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
-                 z_sampling="cauchy"):
+                 z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1):
         if z_sampling not in ("cauchy", "replay"):
             raise ValueError("z_sampling must be 'cauchy' or 'replay'")
         self.z_sampling = z_sampling
+        if not np.isfinite(goal_threshold) or goal_threshold <= 0:
+            raise ValueError("goal_threshold must be finite and positive")
+        if goal_terminated and z_sampling == "replay" and obs_dim != 2:
+            raise ValueError("Goal termination expects raw (x, y) observations")
+        self.goal_terminated = bool(goal_terminated)
+        self.goal_threshold = float(goal_threshold)
         self.device = _device(device)
         self.n_actions, self.batch_size, self.embed_dim = n_actions, batch_size, embed_dim
         self.discount_factor, self.reg_coef = discount_factor, reg_coef
@@ -246,7 +252,8 @@ class FBLearner:
                            reg_coef=reg_coef, temperature=temperature, polyak_coef=polyak_coef,
                            batch_size=batch_size, hidden_dim=hidden_dim, num_layers=num_layers,
                            buffer_size=buffer_size, max_grad_norm=max_grad_norm,
-                           zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling)
+                           zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling,
+                           goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold)
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -285,7 +292,24 @@ class FBLearner:
         # As in the original, terminal is deliberately unused.
         self.buffer.add(obs, action, next_obs, [a in next_actions for a in range(self.n_actions)])
 
-    def _loss(self, params, target, transitions, other, w, zero):
+    def _mask_goal_bootstrap(self, z_next, next_obs, goal_obs, zero):
+        """Mask entire rows on next-state entry; zero tasks remain continuing.
+
+        This uses raw Euclidean coordinates, before RBF featurisation. It is
+        only a pre-entry stopped-measure equation for starts outside the goal;
+        the unchanged immediate term does not implement a zero boundary at g.
+        """
+        if self.goal_terminated and self.z_sampling == "replay":
+            if goal_obs is None:
+                raise ValueError("Goal-terminated replay tasks require raw goal coordinates")
+            if goal_obs.shape != next_obs.shape or next_obs.shape[-1] != 2:
+                raise ValueError("Expected matching (batch, 2) next-state and goal coordinates")
+            goal_reached = (jnp.sum((next_obs - goal_obs)**2, axis=-1)
+                            <= self.goal_threshold**2) & (~zero)
+            return jnp.where(goal_reached[:, None], 0.0, z_next)
+        return z_next
+
+    def _loss(self, params, target, transitions, other, w, zero, goal_obs=None):
         obs = self.featuriser.transform(transitions["obs"])
         obs_next = self.featuriser.transform(transitions["obs_next"])
         obs_other = self.featuriser.transform(other["obs"])
@@ -298,12 +322,14 @@ class FBLearner:
         f_next = jnp.einsum("sda,sa->sd", f_next_all, pi)
         b_next = self.backward_network.apply(target["b"], obs_other)
         z_next = stop(jnp.matmul(f_next, b_next.T, precision=jax.lax.Precision.HIGHEST))
+        z_next = self._mask_goal_bootstrap(z_next, transitions["obs_next"], goal_obs, zero)
         f_all = self.forward_network.apply(params["f"], obs, w)
         f = jnp.take_along_axis(f_all, transitions["action"][:, None, None], axis=-1).squeeze(-1)
         b = self.backward_network.apply(params["b"], obs)
         b_other = self.backward_network.apply(params["b"], obs_other)
         z_diag = jnp.sum(f*b, axis=1)
         z = jnp.matmul(f, b_other.T, precision=jax.lax.Precision.HIGHEST)
+
         fb_loss = 0.5*jnp.mean((z-self.discount_factor*z_next)**2) - z_diag.mean()
         b_b_other = jnp.matmul(b, b_other.T, precision=jax.lax.Precision.HIGHEST)
         b_b_other_detach = jnp.matmul(b, stop(b_other).T, precision=jax.lax.Precision.HIGHEST)
@@ -324,7 +350,7 @@ class FBLearner:
         w = self._training_tasks(state["params"], wkey, goal_obs)
         zero = jax.random.uniform(zkey, (self.batch_size,)) > (1-self.zero_z_p)
         w = jnp.where(zero[:, None], 0.0, w)
-        loss, grads = jax.value_and_grad(self._loss)(state["params"], state["target"], transitions, other, w, zero)
+        loss, grads = jax.value_and_grad(self._loss)(state["params"], state["target"], transitions, other, w, zero, goal_obs)
         if self.max_grad_norm is not None:
             grads = {name: _clip(value, self.max_grad_norm) for name, value in grads.items()}
         params, optim = _adam(state["params"], grads, state["optim"], self.learning_rate)

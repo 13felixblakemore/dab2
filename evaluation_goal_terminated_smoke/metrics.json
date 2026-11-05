@@ -1,0 +1,68 @@
+{
+  "updates": 3000,
+  "seed": 42,
+  "rollouts": 128,
+  "horizon": 700,
+  "gamma": 0.99,
+  "goal_threshold": 0.1,
+  "temperature": 200.0,
+  "policy": "frozen target forward masked softmax, z=B_online(goal)",
+  "convention": "current state at t=0; force initial action; exclude goal entry; no resets; reject starts in goal",
+  "reference": "all 15360 raw observations in the fixed training replay",
+  "final_loss": -7.162949562072754,
+  "finite_losses": true,
+  "cases": [
+    {
+      "start": [
+        0.20000000298023224,
+        0.20000000298023224
+      ],
+      "goal": [
+        0.3499999940395355,
+        0.20000000298023224
+      ],
+      "initial_action": 1,
+      "mc_mass": 12.10957145690918,
+      "mc_mass_standard_error": 1.9477810319908244,
+      "fb_mass": 2.944623966546108,
+      "normalised_l1": 1.065902492238316,
+      "negative_fb_mass": 0.2593326593933549,
+      "goal_reached_fraction": 1.0
+    },
+    {
+      "start": [
+        0.20000000298023224,
+        0.699999988079071
+      ],
+      "goal": [
+        0.800000011920929,
+        0.20000000298023224
+      ],
+      "initial_action": 3,
+      "mc_mass": 98.71245574951172,
+      "mc_mass_standard_error": 0.4799941890070469,
+      "fb_mass": 3.3730330490652705,
+      "normalised_l1": 0.9677668664558572,
+      "negative_fb_mass": 0.17399476805585437,
+      "goal_reached_fraction": 0.1953125
+    },
+    {
+      "start": [
+        0.800000011920929,
+        0.800000011920929
+      ],
+      "goal": [
+        0.20000000298023224,
+        0.699999988079071
+      ],
+      "initial_action": 0,
+      "mc_mass": 95.2177734375,
+      "mc_mass_standard_error": 1.1243865439030811,
+      "fb_mass": 3.2755736478410356,
+      "normalised_l1": 0.9828571935587069,
+      "negative_fb_mass": 0.18163931058564534,
+      "goal_reached_fraction": 0.328125
+    }
+  ],
+  "limitation": "Small unvalidated model and only three tasks. This compares stopped estimates, not a convergence or accuracy proof."
+}

@@ -108,7 +108,8 @@ def make_epoch(env, learner, cycles=25, episodes=4, steps=30, updates=40):
 
 def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
            cycles=25, episodes=4, steps=30, updates=40, env=None, learner=None,
-           progress=True, z_sampling="cauchy"):
+           progress=True, z_sampling="cauchy", goal_terminated=False,
+           goal_threshold=None):
     """Train and save all per-update losses plus a reloadable JAX checkpoint.
 
     Optional schedule/environment/learner arguments allow small validation runs.
@@ -124,6 +125,8 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
             polyak_coef=0.95, batch_size=128, hidden_dim=256, num_layers=2,
             buffer_size=1_000_000, device=device, buffer_device=device,
             temperature=200.0, zero_z_p=0.25, seed=seed, z_sampling=z_sampling,
+            goal_terminated=goal_terminated,
+            goal_threshold=env.threshold_distance if goal_threshold is None else goal_threshold,
             featuriser=RadialBasisFunction2D(
                 x_bounds=(0.0, 1.0), y_bounds=(0.0, 1.0), dim=21,
                 sigma=0.05, device=device,
@@ -183,5 +186,9 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--output-dir", default=".")
     parser.add_argument("--z-sampling", choices=("cauchy", "replay"), default="cauchy")
+    parser.add_argument("--goal-terminated", action="store_true",
+                        help="Stop replay-goal bootstraps on goal entry; zero/Cauchy tasks continue")
+    parser.add_argument("--goal-threshold", type=float, default=None,
+                        help="Euclidean goal radius (default: environment threshold value)")
     args = parser.parse_args()
     run_fb(**vars(args))
