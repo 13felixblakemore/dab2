@@ -37,6 +37,11 @@ def _array(value, device, dtype=jnp.float32):
         return jax.device_put(jnp.asarray(value, dtype=dtype), device)
 
 
+def mask_action_scores(scores, action_mask):
+    """Apply a boolean availability mask before argmax or softmax sampling."""
+    return jnp.where(action_mask, scores, -jnp.inf)
+
+
 class RadialBasisFunction2D:
     def __init__(self, x_bounds, y_bounds, dim, sigma, device="cpu"):
         self.dim, self.sigma, self.device = dim, sigma, device
@@ -225,7 +230,11 @@ class FBLearner:
                  discount_factor=0.99, reg_coef=1.0, temperature=200.0,
                  polyak_coef=0.95, batch_size=128, hidden_dim=128, num_layers=1,
                  buffer_size=1_000_000, device="cuda", buffer_device="cpu",
-                 featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0):
+                 featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
+                 z_sampling="cauchy"):
+        if z_sampling not in ("cauchy", "replay"):
+            raise ValueError("z_sampling must be 'cauchy' or 'replay'")
+        self.z_sampling = z_sampling
         self.device = _device(device)
         self.n_actions, self.batch_size, self.embed_dim = n_actions, batch_size, embed_dim
         self.discount_factor, self.reg_coef = discount_factor, reg_coef
@@ -237,7 +246,7 @@ class FBLearner:
                            reg_coef=reg_coef, temperature=temperature, polyak_coef=polyak_coef,
                            batch_size=batch_size, hidden_dim=hidden_dim, num_layers=num_layers,
                            buffer_size=buffer_size, max_grad_norm=max_grad_norm,
-                           zero_z_p=zero_z_p, seed=seed)
+                           zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling)
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -264,8 +273,8 @@ class FBLearner:
         self._embed_b = jax.jit(lambda p, x: self.backward_network.apply(p, self.featuriser.transform(x)))
         self._embed_f = jax.jit(lambda p, x, w: self.forward_network.apply(p, self.featuriser.transform(x), w))
         self._draw_w = jax.jit(partial(_cauchy_ball, embed_dim=embed_dim), static_argnames=("n",))
-        self._act = jax.jit(lambda p, x, w: jnp.argmax(jnp.einsum(
-            "sda,sd->sa", self.forward_network.apply(p, self.featuriser.transform(x), w), w), axis=1))
+        self._act = jax.jit(lambda p, x, w, mask: jnp.argmax(mask_action_scores(jnp.einsum(
+            "sda,sd->sa", self.forward_network.apply(p, self.featuriser.transform(x), w), w), mask), axis=1))
         self._export = jax.jit(self._export_impl)
 
     def _sync_networks(self):
@@ -302,9 +311,17 @@ class FBLearner:
         reg_loss = jnp.mean(b_b_other_detach*stop(b_b_other)) - b_b_detach.mean()
         return fb_loss + self.reg_coef*reg_loss
 
-    def _train_impl(self, state, transitions, other):
+    def _training_tasks(self, params, key, goal_obs=None):
+        if self.z_sampling == "replay":
+            if goal_obs is None:
+                raise ValueError("Replay task sampling requires independent goal observations")
+            return jax.lax.stop_gradient(self.backward_network.apply(
+                params["b"], self.featuriser.transform(goal_obs)))
+        return _cauchy_ball(key, self.batch_size, self.embed_dim)
+
+    def _train_impl(self, state, transitions, other, goal_obs=None):
         key, wkey, zkey = jax.random.split(state["key"], 3)
-        w = _cauchy_ball(wkey, self.batch_size, self.embed_dim)
+        w = self._training_tasks(state["params"], wkey, goal_obs)
         zero = jax.random.uniform(zkey, (self.batch_size,)) > (1-self.zero_z_p)
         w = jnp.where(zero[:, None], 0.0, w)
         loss, grads = jax.value_and_grad(self._loss)(state["params"], state["target"], transitions, other, w, zero)
@@ -317,18 +334,25 @@ class FBLearner:
         transitions = {k: _array(v, self.device, v.dtype) for k, v in self.buffer.sample(self.batch_size).items()}
         other = self.buffer.sample(self.batch_size)
         other = {"obs": _array(other["obs"], self.device)}
-        self.state, loss = self._train(self.state, transitions, other)
+        goal_obs = (_array(self.buffer.sample(self.batch_size)["obs"], self.device)
+                    if self.z_sampling == "replay" else None)
+        self.state, loss = self._train(self.state, transitions, other, goal_obs)
         self._sync_networks()
         return loss if return_device_loss else float(loss)
 
     def _train_many_impl(self, state, storage, size, num_updates):
         def body(state, _):
-            key, k1, k2 = jax.random.split(state["key"], 3)
+            if self.z_sampling == "replay":
+                key, k1, k2, kg = jax.random.split(state["key"], 4)
+                goal_obs = storage["obs"][jax.random.randint(kg, (self.batch_size,), 0, size)]
+            else:
+                key, k1, k2 = jax.random.split(state["key"], 3)
+                goal_obs = None
             idx = jax.random.randint(k1, (self.batch_size,), 0, size)
             other_idx = jax.random.randint(k2, (self.batch_size,), 0, size)
             transitions = jax.tree_util.tree_map(lambda a: a[idx], storage)
             other = {"obs": storage["obs"][other_idx]}
-            return self._train_impl(dict(state, key=key), transitions, other)
+            return self._train_impl(dict(state, key=key), transitions, other, goal_obs)
         return jax.lax.scan(body, state, None, length=num_updates)
 
     def update_networks(self, num_updates):
@@ -357,6 +381,16 @@ class FBLearner:
         self.state = dict(self.state, key=key)
         return self._draw_w(draw_key, n=n, eps=eps)
 
+    def sample_task_vectors(self, n):
+        """Draw from the configured task distribution; replay mode needs data.
+
+        No renormalisation is applied. zero_z_p is applied separately in training.
+        """
+        if self.z_sampling == "cauchy":
+            return self.sample_cauchy_ball(n)
+        obs = _array(self.buffer.sample(n)["obs"], self.device)
+        return jax.lax.stop_gradient(self._embed_b(self.state["params"]["b"], obs))
+
     def embed_B(self, obs):
         return self._embed_b(self.state["params"]["b"], _array(obs, self.device))
 
@@ -381,15 +415,39 @@ class FBLearner:
         assert observations.ndim == 2, "export_sr is batch-only: expects (n, obs_dim) with n >= 2"
         return self._export(self.state["params"], observations, _array(available_actions, self.device, jnp.bool_))
 
-    def act(self, obs, w, target_network=False):
-        params = self.state["target" if target_network else "params"]["f"]
-        return self._act(params, _array(obs, self.device), _array(w, self.device))
+    def act(self, obs, w, target_network=False, available_actions=None, action_mask=None):
+        """Masked greedy actions; absent a mask, all actions are available.
 
-    def act_e_greedy(self, obs, g, available_actions=None, epsilon=0.2):
+        available_actions is a shared list of action IDs. action_mask accepts
+        boolean (n_actions,) or (batch, n_actions) masks. Supply only one.
+        """
+        if available_actions is not None and action_mask is not None:
+            raise ValueError("Supply available_actions or action_mask, not both")
+        obs = jnp.atleast_2d(_array(obs, self.device))
+        if available_actions is not None:
+            ids = np.asarray(available_actions)
+            if ids.size == 0 or ids.ndim != 1 or not np.issubdtype(ids.dtype, np.integer) or np.any((ids < 0) | (ids >= self.n_actions)):
+                raise ValueError("available_actions must contain valid action IDs")
+            action_mask = np.zeros(self.n_actions, dtype=bool)
+            action_mask[ids] = True
+        if action_mask is None:
+            action_mask = np.ones(self.n_actions, dtype=bool)
+        mask = np.asarray(action_mask, dtype=bool)
+        if mask.shape not in ((self.n_actions,), (obs.shape[0], self.n_actions)) or not np.all(mask.any(axis=-1)):
+            raise ValueError("Each observation needs at least one available action in a correctly shaped mask")
+        params = self.state["target" if target_network else "params"]["f"]
+        return self._act(params, obs, _array(w, self.device), _array(mask, self.device, jnp.bool_))
+
+    def act_e_greedy(self, obs, g, available_actions=None, epsilon=0.2, target_network=False):
+        if not 0 <= epsilon <= 1:
+            raise ValueError("epsilon must lie in [0, 1]")
+        if available_actions is not None:
+            ids = np.asarray(available_actions)
+            if ids.size == 0 or ids.ndim != 1 or not np.issubdtype(ids.dtype, np.integer) or np.any((ids < 0) | (ids >= self.n_actions)):
+                raise ValueError("available_actions must contain valid action IDs")
         if self._python_rng.random() < epsilon:
             return self._python_rng.choice(range(self.n_actions) if available_actions is None else available_actions)
-        # The original only constrains random exploration to available_actions.
-        return int(self.act(obs, g).item())
+        return int(self.act(obs, g, target_network=target_network, available_actions=available_actions).item())
 
     def save(self, path):
         """Save parameters, targets, Adam moments, config and RNG (not replay).

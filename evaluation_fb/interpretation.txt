@@ -1,7 +1,0 @@
-Mean normalized L1: 0.5081
-Mean relative total-mass error: 0.0488
-Finite-horizon missing mass: 0.088031
-Reference: reconstructed_final_replay
-Reference reconstructed with assumed original runner settings; original replay was not saved. Cross-backend numerical differences may change reset trajectories.
-
-The empirical maps and arbitrary-reward returns, not training loss or goal reaching, are the validation evidence. Errors substantially larger than MC variability and the finite-horizon tail indicate a failure of the evaluated factorization/reference combination. These results alone cannot separate representation error from reference-distribution error. Frozen target-policy evaluation removes greedy/softmax mismatch; online/target lag and a time-varying replay reference can still contribute. No clipping or normalization is applied.

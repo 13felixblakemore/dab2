@@ -108,7 +108,7 @@ def make_epoch(env, learner, cycles=25, episodes=4, steps=30, updates=40):
 
 def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
            cycles=25, episodes=4, steps=30, updates=40, env=None, learner=None,
-           progress=True):
+           progress=True, z_sampling="cauchy"):
     """Train and save all per-update losses plus a reloadable JAX checkpoint.
 
     Optional schedule/environment/learner arguments allow small validation runs.
@@ -123,7 +123,7 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
             learning_rate=5e-4, discount_factor=0.99, reg_coef=1,
             polyak_coef=0.95, batch_size=128, hidden_dim=256, num_layers=2,
             buffer_size=1_000_000, device=device, buffer_device=device,
-            temperature=200.0, zero_z_p=0.25, seed=seed,
+            temperature=200.0, zero_z_p=0.25, seed=seed, z_sampling=z_sampling,
             featuriser=RadialBasisFunction2D(
                 x_bounds=(0.0, 1.0), y_bounds=(0.0, 1.0), dim=21,
                 sigma=0.05, device=device,
@@ -182,5 +182,6 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=800)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--output-dir", default=".")
+    parser.add_argument("--z-sampling", choices=("cauchy", "replay"), default="cauchy")
     args = parser.parse_args()
     run_fb(**vars(args))
