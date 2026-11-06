@@ -1,0 +1,22 @@
+{
+  "first_door_approach": {
+    "reference_feasible_probes": 347,
+    "400": 0.26684077809798273,
+    "800": 0.17552233429394812
+  },
+  "just_after_crossing": {
+    "reference_feasible_probes": 192,
+    "400": 0.4254557291666667,
+    "800": 0.30126953125
+  },
+  "second_door_traversal": {
+    "reference_feasible_probes": 192,
+    "400": 0.44677734375,
+    "800": 0.3440755208333333
+  },
+  "full_start_diagonal_reference_feasible": {
+    "trials": 199,
+    "400": 0.2390075376884422,
+    "800": 0.1515389447236181
+  }
+}

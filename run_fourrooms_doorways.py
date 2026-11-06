@@ -24,6 +24,10 @@ def main():
     parser.add_argument('--config', type=Path, default=CONFIG)
     parser.add_argument('--doorway-scale', type=float, default=1.0)
     parser.add_argument('--checkpoint-every', type=int, default=200)
+    parser.add_argument('--recovery-every', type=int, default=1,
+                        help='Overwrite full replay/RNG recovery snapshot every N epochs')
+    parser.add_argument('--log-every', type=int, default=10,
+                        help='Print progress every N epochs; 0 disables progress printing')
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--output', type=Path, required=True)
@@ -31,6 +35,8 @@ def main():
     args = parser.parse_args()
     if args.checkpoint_every < 1:
         parser.error('--checkpoint-every must be positive')
+    if args.recovery_every < 1 or args.log_every < 0:
+        parser.error('--recovery-every must be positive and --log-every nonnegative')
     config = json.loads(args.config.read_text())
     config['environment']['doorway_scale'] = args.doorway_scale
     config['checkpoint_every'] = args.checkpoint_every
@@ -57,6 +63,7 @@ def main():
         for name in sources:
             (output/'source'/name).write_bytes((ROOT/name).read_bytes())
         (output/'metadata.json').write_text(json.dumps(dict(seed=args.seed, sha256=hashes,
+            recovery_every=args.recovery_every, log_every=args.log_every,
             python=platform.python_version(), jax=jax.__version__, numpy=np.__version__,
             doorway_width=env.size*args.doorway_scale/11,
             wall_blocks=[[b.xmin, b.ymin, b.xmax, b.ymax] for b in env.wall_blocks]), indent=2))
@@ -77,6 +84,10 @@ def main():
             with (output/'resume.pkl').open('rb') as stream:
                 saved = pickle.load(stream)
             start, history, training = saved['epoch'], saved['history'], saved['training']
+            if (output/'training.json').exists():
+                recorded = json.loads((output/'training.json').read_text())
+                if len(recorded) >= start and recorded[start-1]['epoch'] == start:
+                    training = recorded[:start]
             losses[:start] = saved['losses']
             carry = jax.device_put(saved['carry'], learner.device)
             learner.state = carry[0]
@@ -89,32 +100,51 @@ def main():
             before = time.perf_counter()
             carry, new_losses = epoch_fn(*carry)
             losses[epoch] = np.asarray(new_losses)
+            train_seconds = time.perf_counter()-before
             if not np.isfinite(losses[epoch]).all():
                 raise FloatingPointError('Nonfinite training loss')
             learner.state = carry[0]; learner._sync_networks()
             count = int(learner.state['optim'][0])
             assert count == (epoch+1)*config['cycles']*config['updates']
-            if retained_checkpoint(epoch+1, config['epochs'], args.checkpoint_every):
+            save_started = time.perf_counter()
+            checkpoint_due = retained_checkpoint(epoch+1, config['epochs'], args.checkpoint_every)
+            if checkpoint_due:
                 path = output/f'epoch_{epoch+1:04d}.pkl'
                 learner.save(path.with_suffix('.tmp'))
                 path.with_suffix('.tmp').replace(path)
+            checkpoint_seconds = time.perf_counter()-save_started
+            evaluation_started = time.perf_counter()
             if epoch+1 in config['evaluation_epochs']:
                 history.extend(evaluate_checkpoint(learner, env, pairs, output/'evaluation', epoch+1,
                                                   horizons=config['evaluation_horizons']))
                 plot_history(history, output/'evaluation')
+            evaluation_seconds = time.perf_counter()-evaluation_started
             training.append(dict(epoch=epoch+1, updates=count,
                 transitions=(epoch+1)*config['cycles']*config['episodes']*config['steps'],
-                loss_mean=float(losses[epoch].mean()), seconds=time.perf_counter()-before))
-            # A single atomic recovery snapshot includes matching model, replay,
-            # optimizer, RNG streams and losses; no per-epoch model accumulation.
-            saved = dict(epoch=epoch+1, history=history, training=training,
-                         carry=jax.device_get(carry), losses=losses[:epoch+1])
-            with (output/'resume.tmp').open('wb') as stream:
-                pickle.dump(saved, stream, protocol=pickle.HIGHEST_PROTOCOL)
-            (output/'resume.tmp').replace(output/'resume.pkl')
-            np.save(output/'losses.npy', losses)
-            (output/'training.json').write_text(json.dumps(training, indent=2))
-            print(json.dumps(training[-1]), flush=True)
+                loss_mean=float(losses[epoch].mean()), train_seconds=train_seconds,
+                checkpoint_seconds=checkpoint_seconds, evaluation_seconds=evaluation_seconds,
+                recovery_seconds=0., seconds=0.))
+            recovery_started = time.perf_counter()
+            recovery_due = checkpoint_due or retained_checkpoint(epoch+1, config['epochs'], args.recovery_every)
+            if recovery_due:
+                # A single atomic recovery snapshot includes matching model,
+                # replay, optimizer, RNG streams and losses. Avoid copying the
+                # replay to host on epochs that do not need a recovery save.
+                saved = dict(epoch=epoch+1, history=history, training=training,
+                             carry=jax.device_get(carry), losses=losses[:epoch+1])
+                with (output/'resume.tmp').open('wb') as stream:
+                    pickle.dump(saved, stream, protocol=pickle.HIGHEST_PROTOCOL)
+                (output/'resume.tmp').replace(output/'resume.pkl')
+            training[-1]['recovery_seconds'] = time.perf_counter()-recovery_started
+            training[-1]['seconds'] = time.perf_counter()-before
+            # Keep the durable snapshot's timing metadata accurate without
+            # rewriting its large payload: merge matching JSON rows on resume.
+            log_due = args.log_every > 0 and (epoch == 0 or (epoch+1) % args.log_every == 0 or epoch+1 == config['epochs'])
+            if log_due or recovery_due:
+                np.save(output/'losses.npy', losses)
+                (output/'training.json').write_text(json.dumps(training, indent=2))
+            if log_due:
+                print(json.dumps(training[-1]), flush=True)
     (output/'complete.json').write_text(json.dumps(dict(epochs=config['epochs'], updates=count, evaluation=history), indent=2))
 
 

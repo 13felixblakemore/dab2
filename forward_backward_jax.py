@@ -232,7 +232,10 @@ class FBLearner:
                  buffer_size=1_000_000, device="cuda", buffer_device="cpu",
                  featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
                  z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1,
-                 b_regularization="orthonormal"):
+                 b_regularization="orthonormal", goal_norm="l2"):
+        if goal_norm not in ("l2", "linf"):
+            raise ValueError("goal_norm must be 'l2' or 'linf'")
+        self.goal_norm = goal_norm
         if b_regularization not in ("orthonormal", "touati_continuous"):
             raise ValueError("Unknown B regularization mode")
         self.b_regularization = b_regularization
@@ -258,7 +261,7 @@ class FBLearner:
                            buffer_size=buffer_size, max_grad_norm=max_grad_norm,
                            zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling,
                            goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold,
-                           b_regularization=b_regularization)
+                           b_regularization=b_regularization, goal_norm=goal_norm)
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -300,7 +303,7 @@ class FBLearner:
     def _mask_goal_bootstrap(self, z_next, next_obs, goal_obs, zero):
         """Mask entire rows on next-state entry; zero tasks remain continuing.
 
-        This uses raw Euclidean coordinates, before RBF featurisation. It is
+        This uses raw coordinates and the configured goal norm, before RBFs. It is
         only a pre-entry stopped-measure equation for starts outside the goal;
         the unchanged immediate term does not implement a zero boundary at g.
         """
@@ -309,8 +312,11 @@ class FBLearner:
                 raise ValueError("Goal-terminated replay tasks require raw goal coordinates")
             if goal_obs.shape != next_obs.shape or next_obs.shape[-1] != 2:
                 raise ValueError("Expected matching (batch, 2) next-state and goal coordinates")
-            goal_reached = (jnp.sum((next_obs - goal_obs)**2, axis=-1)
-                            <= self.goal_threshold**2) & (~zero)
+            if self.goal_norm == "linf":
+                goal_reached = jnp.all(jnp.abs(next_obs-goal_obs) <= self.goal_threshold, axis=-1)
+            else:
+                goal_reached = jnp.sum((next_obs-goal_obs)**2, axis=-1) <= self.goal_threshold**2
+            goal_reached = goal_reached & (~zero)
             return jnp.where(goal_reached[:, None], 0.0, z_next)
         return z_next
 

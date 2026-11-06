@@ -56,6 +56,18 @@ def oracle(l,t,other,w,zero,goals,terminated):
 
 
 class GoalTerminationTests(unittest.TestCase):
+    def test_linf_matches_environment_and_preserves_default_l2(self):
+        t,o,g,zero=batch();matrix=jnp.ones((4,4))
+        square=learner(goal_norm='linf')
+        actual=jax.jit(square._mask_goal_bootstrap)(matrix,t['obs_next'],g,zero)
+        expected=np.ones((4,4));expected[[0,3]]=0
+        np.testing.assert_array_equal(actual,expected)
+        circle=learner()
+        self.assertEqual(circle.goal_norm,'l2')
+        self.assertTrue(np.asarray(circle._mask_goal_bootstrap(matrix,t['obs_next'],g,zero))[3].all())
+        self.assertEqual(square.config['goal_norm'],'linf')
+        with self.assertRaises(ValueError):learner(goal_norm='invalid')
+
     def test_rows_raw_coordinates_and_zero_tasks(self):
         l=learner();t,o,g,zero=batch();matrix=jnp.arange(16,dtype=jnp.float32).reshape(4,4)+1
         actual=jax.jit(l._mask_goal_bootstrap)(matrix,t['obs_next'],g,zero)

@@ -1,5 +1,71 @@
 # Adjustable Four Rooms doorways
 
+## Replay-goal sampling with stopped bootstrapping
+
+New separate variant: replay-sampled raw goal observations, task
+`z=stop_gradient(B(g_replay))`, and zero continuation on next-state goal entry.
+Upload the updated `forward_backward_jax.py` and
+`replay_goal_terminated.json` before running this command on the cluster:
+
+```bash
+python run_fourrooms_doorways.py \
+  --config experiments/fourrooms_doorways/replay_goal_terminated.json \
+  --device cuda --doorway-scale 2 \
+  --checkpoint-every 200 --recovery-every 200 --log-every 20 \
+  --seed 0 --output experiments/fourrooms_doorways/runs/width2_replay_stopped_seed0
+```
+
+This is 800 epochs / 800,000 updates and retains the authors' released B
+regulariser, zero-task mixing 0 and no clipping. Random action collection,
+environment dynamics and evaluation pairs are unchanged. No full variant run is
+launched by preparing the configuration.
+
+The configuration selects `z_sampling="replay"`, `goal_terminated=true`,
+`goal_threshold=.1`, `goal_norm="linf"`. For each independently sampled replay
+goal, the entire corresponding FB bootstrap row is set to zero if
+`all(abs(s_next-g)<=.1)`, exactly matching the Four Rooms success convention.
+Other rows bootstrap normally. The loss's immediate term is unchanged; this is
+a pre-entry stopped-bootstrap variant, not an imposed zero value for states
+already inside the goal. It deliberately differs from the authors' continuing
+Cauchy-task experiment.
+
+The configurable norm preserves the historical Euclidean mask by default
+(`goal_norm="l2"`); only this variant opts into the environment-compatible square
+predicate. Twelve regression/parity tests passed, including the new square-mask
+case, and a two-epoch compiled smoke run exercises replay sampling plus the mask.
+Recovery every 200 epochs can lose up to 199 epochs after interruption.
+
+## Cluster I/O and timing
+
+The runner prints only once per epoch in its original form, but its original
+rolling recovery saves copied full replay/model state to host and disk every
+epoch. On shared cluster storage that can cause pauses independent of printing.
+Evaluation and JIT compilation also cause expected spikes at scheduled epochs;
+the cluster has not been profiled, so these are potential causes, not a measured
+diagnosis.
+
+For fewer writes and progress messages in a new run:
+
+```bash
+python run_fourrooms_doorways.py --device cuda --doorway-scale 2 --checkpoint-every 200 --recovery-every 200 --log-every 20 --seed 0 --output experiments/fourrooms_doorways/runs/width2_lowio_seed0
+```
+
+`--log-every 0` suppresses progress prints entirely. Its default is 10.
+`--recovery-every` defaults to 1 to preserve the original crash-recovery behavior;
+setting it to 200 means interruptions may lose up to 199 epochs. Recovery is also
+always saved at retained model checkpoints and the final epoch. All epoch losses
+and metrics remain in memory and are flushed at logging/recovery epochs. Training
+hyperparameters, target updates, fixed pairs and evaluation cadence are unchanged.
+
+Progress records include `train_seconds` (synchronized training, including JIT on
+first invocation), `checkpoint_seconds`, `evaluation_seconds` and
+`recovery_seconds`. `seconds` covers those stages, excluding the small final
+metrics/console writes. Compare these fields to identify the source of pauses.
+Changing recovery/log cadence does not reduce arithmetic or change learning.
+The updated flags require the updated script; existing running Python jobs do
+not pick up edits. Existing runs' strict source checks require their archived
+script versions for resume; do not overwrite an active output directory.
+
 Run from the project root (800 epochs, released B regulariser, continuing FB,
 zero-task probability 0, no gradient clipping, all other reference settings):
 
