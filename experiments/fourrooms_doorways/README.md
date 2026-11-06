@@ -1,5 +1,28 @@
 # Adjustable Four Rooms doorways
 
+## Replay-goal sampling with the unchanged continuing objective
+
+This config changes only `z_sampling` from `cauchy` to `replay` relative to
+`experiments/fourrooms_reference/config.json`. The task is
+`z=stop_gradient(B(g))`, where g is an independent observation sampled from
+replay. `goal_terminated=false`: reaching the sampled goal does **not** zero the
+bootstrap. Immediate term, released B regulariser, optimizer and all other
+hyperparameters are unchanged (d=50, lr=.0005, Polyak=.95, zero-task mixing 0).
+Collection remains uniformly random, and goals at evaluation remain unchanged.
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python run_fourrooms_doorways.py \
+  --config experiments/fourrooms_doorways/replay_continuing.json \
+  --device cuda --doorway-scale 2 \
+  --checkpoint-every 200 --recovery-every 200 --log-every 20 \
+  --seed 0 --output experiments/fourrooms_doorways/runs/width2_replay_continuing_seed0
+```
+
+This starts a separate 800-epoch run (800,000 updates), with models at epochs
+200/400/600/800 and the usual fixed goal-reaching evaluations. It is distinct
+from the replay-plus-stopped-bootstrap variant below and does not use the
+Cauchy-only hyperparameter sweep launcher. No full run was started locally.
+
 ## Replay-goal sampling with stopped bootstrapping
 
 New separate variant: replay-sampled raw goal observations, task
