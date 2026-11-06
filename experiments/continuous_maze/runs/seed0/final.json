@@ -1,0 +1,29 @@
+{
+  "paper_epsilon_002": {
+    "success_rate": 0.792,
+    "successes": 792,
+    "goals": 1000,
+    "mean_successful_path_length": 8.23611111111111,
+    "wall_collisions": 3273,
+    "mean_final_distance": 0.08784178097766791,
+    "behavior_entropy": 0.10421468650480145
+  },
+  "greedy_diagnostic": {
+    "success_rate": 0.778,
+    "successes": 778,
+    "goals": 1000,
+    "mean_successful_path_length": 7.832904884318766,
+    "wall_collisions": 3449,
+    "mean_final_distance": 0.08974974667132009,
+    "behavior_entropy": -0.0
+  },
+  "random_diagnostic": {
+    "success_rate": 0.105,
+    "successes": 105,
+    "goals": 1000,
+    "mean_successful_path_length": 13.60952380952381,
+    "wall_collisions": 976,
+    "mean_final_distance": 0.46523780068022813,
+    "behavior_entropy": 1.6094379124341005
+  }
+}

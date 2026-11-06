@@ -1,0 +1,67 @@
+{
+    "time":  "2026-11-06T13:57:04.9804182+00:00",
+    "deleted":  [
+                    {
+                        "path":  "__pycache__/adjustable_four_rooms.cpython-312.pyc",
+                        "bytes":  4154
+                    },
+                    {
+                        "path":  "__pycache__/diagnose_continuous_maze.cpython-312.pyc",
+                        "bytes":  19478
+                    },
+                    {
+                        "path":  "__pycache__/fourrooms_reference_diagnostics.cpython-312.pyc",
+                        "bytes":  17635
+                    },
+                    {
+                        "path":  "__pycache__/run_fourrooms_doorways.cpython-312.pyc",
+                        "bytes":  11016
+                    },
+                    {
+                        "path":  "__pycache__/run_fourrooms_reference.cpython-312.pyc",
+                        "bytes":  11149
+                    },
+                    {
+                        "path":  "__pycache__/test_adjustable_four_rooms.cpython-312.pyc",
+                        "bytes":  4551
+                    },
+                    {
+                        "path":  "__pycache__/test_continuous_maze_diagnostics.cpython-312.pyc",
+                        "bytes":  10060
+                    },
+                    {
+                        "path":  "__pycache__/test_fourrooms_reference.cpython-312.pyc",
+                        "bytes":  8137
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/doorways_smoke_seed0/epoch_0002.pkl",
+                        "bytes":  9070896
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/doorways_smoke_seed0/losses.npy",
+                        "bytes":  448
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/doorways_smoke_seed0/resume.pkl",
+                        "bytes":  9082745
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/smoke_seed0/epoch_0001.pkl",
+                        "bytes":  9070896
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/smoke_seed0/epoch_0002.pkl",
+                        "bytes":  9070896
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/smoke_seed0/losses.npy",
+                        "bytes":  448
+                    },
+                    {
+                        "path":  "experiments/fourrooms_reference/runs/smoke_seed0/resume.pkl",
+                        "bytes":  15959
+                    }
+                ],
+    "bytes":  36398468,
+    "preserved":  "Tracked files, source, notebooks, full-run checkpoints/results, smoke metrics/plots"
+}

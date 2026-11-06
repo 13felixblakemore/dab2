@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Users\13fel\PycharmProjects\dab2\run_fourrooms_reference.py", line 122, in <module>
+    main()
+  File "C:\Users\13fel\PycharmProjects\dab2\run_fourrooms_reference.py", line 115, in main
+    pickle.dump(saved, stream, protocol=pickle.HIGHEST_PROTOCOL)
+OSError: [Errno 28] No space left on device

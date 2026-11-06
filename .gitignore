@@ -1,0 +1,9 @@
+# Model checkpoints and rolling recovery snapshots
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.msgpack
+resume.tmp
+epoch_*.tmp

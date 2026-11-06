@@ -121,6 +121,13 @@ short seed-0 run cannot establish comparable performance. Examine final metrics
 only after 800 epochs, then repeat seeds 1 and 2 before claiming replication.
 `RESULTS.md` records the work actually performed in this session.
 
+The subsequent evaluation audit, fixed checkpoint diagnostic definitions and
+conditional next-experiment plan are in `EVALUATION_AUDIT.md`. Run
+`& ./.venv/Scripts/python.exe diagnose_continuous_maze.py` from the project root
+to evaluate available epochs 100/200/400/600/800 without writing to the training
+directory. Results and plots live in `diagnostics/seed0/`; rerunning caches the
+already evaluated checkpoints and includes newly available ones.
+
 If the full run is substantially below Figure 9: first verify optimizer update
 count 800,000 and target update count 20,000; inspect entropy collapse, F/B norms,
 TD vs immediate/regularisation terms, collision-heavy trajectories and greedy vs

@@ -1,0 +1,51 @@
+{
+    "epochs":  2,
+    "cycles":  1,
+    "episodes":  4,
+    "steps":  30,
+    "updates":  40,
+    "evaluation_epochs":  [
+                              1,
+                              2
+                          ],
+    "evaluation_per_category":  4,
+    "evaluation_seed":  271828,
+    "evaluation_horizons":  [
+                                30,
+                                150
+                            ],
+    "environment":  {
+                        "include_stay_action":  false
+                    },
+    "learner":  {
+                    "obs_dim":  2,
+                    "n_actions":  4,
+                    "embed_dim":  50,
+                    "hidden_dim":  256,
+                    "num_layers":  2,
+                    "learning_rate":  0.0005,
+                    "discount_factor":  0.99,
+                    "temperature":  200.0,
+                    "batch_size":  128,
+                    "reg_coef":  1.0,
+                    "polyak_coef":  0.95,
+                    "buffer_size":  512,
+                    "max_grad_norm":  null,
+                    "zero_z_p":  0.0,
+                    "z_sampling":  "cauchy",
+                    "goal_terminated":  false,
+                    "b_regularization":  "touati_continuous"
+                },
+    "rbf":  {
+                "x_bounds":  [
+                                 0,
+                                 1
+                             ],
+                "y_bounds":  [
+                                 0,
+                                 1
+                             ],
+                "dim":  21,
+                "sigma":  0.05
+            }
+}

@@ -1,0 +1,6 @@
+{
+    "pid":  1936,
+    "command":  "run_fourrooms_reference.py --seed 0",
+    "started":  "2026-11-06T12:21:59.3452693+00:00",
+    "epochs":  800
+}
