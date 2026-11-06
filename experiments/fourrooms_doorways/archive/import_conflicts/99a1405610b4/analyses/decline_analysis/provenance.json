@@ -1,0 +1,7 @@
+{
+  "script_sha256": "1c77e15aa1899fd43ba75ab5ae95ab4b3452a69a5ac7d095c5be5e539e459d24",
+  "jax": "0.12.0.1",
+  "numpy": "2.5.4",
+  "run": "C:\\Users\\13fel\\PycharmProjects\\dab2\\experiments\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0",
+  "definition": "Common union trajectory probes; noiseless action transitions; separate native noisy Cauchy probes; map-oracle masking diagnostic only"
+}

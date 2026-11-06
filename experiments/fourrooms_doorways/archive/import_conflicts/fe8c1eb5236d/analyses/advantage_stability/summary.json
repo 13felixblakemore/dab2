@@ -1,0 +1,317 @@
+{
+  "checkpoints": {
+    "200": {
+      "blocked_preferred_fraction": 0.14375,
+      "mean_preferred_advantage": 35.69539260864258,
+      "median_preferred_advantage": 29.444137573242188,
+      "h30": {
+        "success_rate": 0.3771484375,
+        "discounted_return": 0.3454903682385281,
+        "discounted_return_ci": [
+          0.2830497312486285,
+          0.4086720636693981
+        ],
+        "mean_empirical_mc_regret": 0.1696048535912524,
+        "mc_best_action_fraction": 0.54375
+      },
+      "h150": {
+        "success_rate": 0.5283203125,
+        "discounted_return": 0.4159510953648534,
+        "discounted_return_ci": [
+          0.3582259803211554,
+          0.473141280564078
+        ],
+        "mean_empirical_mc_regret": 0.15029946236638164,
+        "mc_best_action_fraction": 0.4625
+      }
+    },
+    "400": {
+      "blocked_preferred_fraction": 0.10625,
+      "mean_preferred_advantage": 38.85152816772461,
+      "median_preferred_advantage": 25.5460205078125,
+      "h30": {
+        "success_rate": 0.459765625,
+        "discounted_return": 0.41535006583288947,
+        "discounted_return_ci": [
+          0.3513966513862742,
+          0.4792583177836921
+        ],
+        "mean_empirical_mc_regret": 0.15902543577692468,
+        "mc_best_action_fraction": 0.59375
+      },
+      "h150": {
+        "success_rate": 0.608984375,
+        "discounted_return": 0.4836293122725387,
+        "discounted_return_ci": [
+          0.42495640887459574,
+          0.540669594869327
+        ],
+        "mean_empirical_mc_regret": 0.14200171673871637,
+        "mc_best_action_fraction": 0.50625
+      }
+    },
+    "600": {
+      "blocked_preferred_fraction": 0.125,
+      "mean_preferred_advantage": 37.451045989990234,
+      "median_preferred_advantage": 24.30419921875,
+      "h30": {
+        "success_rate": 0.4697265625,
+        "discounted_return": 0.4253673417162247,
+        "discounted_return_ci": [
+          0.36353174653716736,
+          0.48648506713589507
+        ],
+        "mean_empirical_mc_regret": 0.1299563867958974,
+        "mc_best_action_fraction": 0.575
+      },
+      "h150": {
+        "success_rate": 0.60625,
+        "discounted_return": 0.4893020547580031,
+        "discounted_return_ci": [
+          0.43174537856843287,
+          0.5462790379295203
+        ],
+        "mean_empirical_mc_regret": 0.11565223432584522,
+        "mc_best_action_fraction": 0.5
+      }
+    },
+    "800": {
+      "blocked_preferred_fraction": 0.11875,
+      "mean_preferred_advantage": 38.33720779418945,
+      "median_preferred_advantage": 26.20831298828125,
+      "h30": {
+        "success_rate": 0.446484375,
+        "discounted_return": 0.40232023780295834,
+        "discounted_return_ci": [
+          0.3411263855649918,
+          0.4663344288983595
+        ],
+        "mean_empirical_mc_regret": 0.16645545301815098,
+        "mc_best_action_fraction": 0.5625
+      },
+      "h150": {
+        "success_rate": 0.6037109375,
+        "discounted_return": 0.47469974311405344,
+        "discounted_return_ci": [
+          0.41899593128583257,
+          0.5326185531596412
+        ],
+        "mean_empirical_mc_regret": 0.14210641038313984,
+        "mc_best_action_fraction": 0.4875
+      }
+    }
+  },
+  "comparisons": {
+    "200_400_30": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.25,
+      "changed_probes": 40,
+      "flip_to_blocked": 4,
+      "flip_from_blocked": 10,
+      "switch_gain_current_continuation": -0.0677728845191887,
+      "switch_gain_current_ci": [
+        -0.16541038386706247,
+        0.023417765853123766
+      ],
+      "switch_gain_previous_continuation": 0.16238299391663355,
+      "switch_return_improved": 14,
+      "switch_return_worsened": 10,
+      "switch_return_tied": 16,
+      "switch_improved_beyond_approx_mc_noise": 8,
+      "switch_worsened_beyond_approx_mc_noise": 6,
+      "own_policy_return_change_on_changed": 0.11550750210434042,
+      "own_policy_return_change_all": 0.06985969759436143,
+      "own_policy_change_all_ci": [
+        0.020361550266756227,
+        0.12367073757451341
+      ]
+    },
+    "200_400_150": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.25,
+      "changed_probes": 40,
+      "flip_to_blocked": 4,
+      "flip_from_blocked": 10,
+      "switch_gain_current_continuation": -0.051881108571015876,
+      "switch_gain_current_ci": [
+        -0.13302866295769183,
+        0.02181302387608725
+      ],
+      "switch_gain_previous_continuation": 0.13983179244972122,
+      "switch_return_improved": 21,
+      "switch_return_worsened": 10,
+      "switch_return_tied": 9,
+      "switch_improved_beyond_approx_mc_noise": 11,
+      "switch_worsened_beyond_approx_mc_noise": 6,
+      "own_policy_return_change_on_changed": 0.11849150843511361,
+      "own_policy_return_change_all": 0.06767821690768527,
+      "own_policy_change_all_ci": [
+        0.020940665201859453,
+        0.11699715226661817
+      ]
+    },
+    "400_600_30": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.21875,
+      "changed_probes": 35,
+      "flip_to_blocked": 6,
+      "flip_from_blocked": 3,
+      "switch_gain_current_continuation": 0.012343853428776396,
+      "switch_gain_current_ci": [
+        -0.06678062208219275,
+        0.09336637837762414
+      ],
+      "switch_gain_previous_continuation": 0.15425000487811935,
+      "switch_return_improved": 10,
+      "switch_return_worsened": 8,
+      "switch_return_tied": 17,
+      "switch_improved_beyond_approx_mc_noise": 7,
+      "switch_worsened_beyond_approx_mc_noise": 5,
+      "own_policy_return_change_on_changed": 0.07961170940145519,
+      "own_policy_return_change_all": 0.010017275883335251,
+      "own_policy_change_all_ci": [
+        -0.03736746838110922,
+        0.056386119968777015
+      ]
+    },
+    "400_600_150": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.21875,
+      "changed_probes": 35,
+      "flip_to_blocked": 6,
+      "flip_from_blocked": 3,
+      "switch_gain_current_continuation": 0.0031108161216568788,
+      "switch_gain_current_ci": [
+        -0.06339206346911024,
+        0.06884056572401329
+      ],
+      "switch_gain_previous_continuation": 0.1212389142932559,
+      "switch_return_improved": 14,
+      "switch_return_worsened": 11,
+      "switch_return_tied": 10,
+      "switch_improved_beyond_approx_mc_noise": 10,
+      "switch_worsened_beyond_approx_mc_noise": 5,
+      "own_policy_return_change_on_changed": 0.03299705068920511,
+      "own_policy_return_change_all": 0.005672742485464436,
+      "own_policy_change_all_ci": [
+        -0.04030574850348274,
+        0.050547577585828174
+      ]
+    },
+    "600_800_30": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.21875,
+      "changed_probes": 35,
+      "flip_to_blocked": 3,
+      "flip_from_blocked": 4,
+      "switch_gain_current_continuation": -0.13281785729736725,
+      "switch_gain_current_ci": [
+        -0.24509555556514565,
+        -0.03005002874116026
+      ],
+      "switch_gain_previous_continuation": -0.0033670162254221202,
+      "switch_return_improved": 7,
+      "switch_return_worsened": 11,
+      "switch_return_tied": 17,
+      "switch_improved_beyond_approx_mc_noise": 3,
+      "switch_worsened_beyond_approx_mc_noise": 9,
+      "own_policy_return_change_on_changed": -0.15885603771586124,
+      "own_policy_return_change_all": -0.023047103913266427,
+      "own_policy_change_all_ci": [
+        -0.06870457844932328,
+        0.02323366618822981
+      ]
+    },
+    "600_800_150": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.21875,
+      "changed_probes": 35,
+      "flip_to_blocked": 3,
+      "flip_from_blocked": 4,
+      "switch_gain_current_continuation": -0.09312870053796156,
+      "switch_gain_current_ci": [
+        -0.18759192584281623,
+        -0.0007679448295273821
+      ],
+      "switch_gain_previous_continuation": 0.004378250606101546,
+      "switch_return_improved": 14,
+      "switch_return_worsened": 14,
+      "switch_return_tied": 7,
+      "switch_improved_beyond_approx_mc_noise": 5,
+      "switch_worsened_beyond_approx_mc_noise": 11,
+      "own_policy_return_change_on_changed": -0.1070840045590659,
+      "own_policy_return_change_all": -0.014602311643949695,
+      "own_policy_change_all_ci": [
+        -0.054877785087853535,
+        0.027323123748214603
+      ]
+    },
+    "400_800_30": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.23125,
+      "changed_probes": 37,
+      "flip_to_blocked": 6,
+      "flip_from_blocked": 4,
+      "switch_gain_current_continuation": -0.11772447466290309,
+      "switch_gain_current_ci": [
+        -0.21118630204279437,
+        -0.03366684744824176
+      ],
+      "switch_gain_previous_continuation": 0.05604403288011837,
+      "switch_return_improved": 8,
+      "switch_return_worsened": 11,
+      "switch_return_tied": 18,
+      "switch_improved_beyond_approx_mc_noise": 2,
+      "switch_worsened_beyond_approx_mc_noise": 7,
+      "own_policy_return_change_on_changed": -0.08031045843610411,
+      "own_policy_return_change_all": -0.013029828029931181,
+      "own_policy_change_all_ci": [
+        -0.05694690979178585,
+        0.03287624558258539
+      ]
+    },
+    "400_800_150": {
+      "probes": 160,
+      "preferred_action_change_fraction": 0.23125,
+      "changed_probes": 37,
+      "flip_to_blocked": 6,
+      "flip_from_blocked": 4,
+      "switch_gain_current_continuation": -0.07513562212615403,
+      "switch_gain_current_ci": [
+        -0.15103364899529606,
+        -0.00486769587578499
+      ],
+      "switch_gain_previous_continuation": 0.042641614385166136,
+      "switch_return_improved": 15,
+      "switch_return_worsened": 12,
+      "switch_return_tied": 10,
+      "switch_improved_beyond_approx_mc_noise": 6,
+      "switch_worsened_beyond_approx_mc_noise": 9,
+      "own_policy_return_change_on_changed": -0.06189304648878078,
+      "own_policy_return_change_all": -0.008929569158485267,
+      "own_policy_change_all_ci": [
+        -0.051639913805875,
+        0.034362829303072044
+      ]
+    }
+  },
+  "available": [
+    200,
+    400,
+    600,
+    800
+  ],
+  "missing": [
+    100
+  ],
+  "probes": 160,
+  "states": 80,
+  "rollouts": 32,
+  "notes": [
+    "First action forced; then online epsilon=.02 policy. Return gamma^(hit-1) once on success, zero if censored.",
+    "Ordinal navigation validation: learned continuing FB Q values are not calibrated to stopped sparse-goal returns.",
+    "Shared noise/action keys across actions and checkpoints. Switch effects fix the continuation checkpoint.",
+    "Intervals resample fixed probes; they do not quantify training-seed uncertainty. MC maximum regret is upward biased.",
+    "Small differences between MC actions may be noise. Epoch 100 cannot be recovered from later checkpoints."
+  ]
+}

@@ -147,8 +147,8 @@ def comparison(previous,current,horizon,gamma=.99):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run',type=Path,default=Path('experiments/fourrooms_doorways/fourrooms_doorways/runs/width2_seed0'))
-    parser.add_argument('--output',type=Path,default=Path('experiments/fourrooms_doorways/advantage_stability'))
+    parser.add_argument('--run',type=Path,default=Path('experiments/fourrooms_doorways/runs/width2_seed0'))
+    parser.add_argument('--output',type=Path,default=Path('experiments/fourrooms_doorways/analyses/advantage_stability'))
     parser.add_argument('--epochs',nargs='+',type=int,default=[100,200,400,600,800])
     parser.add_argument('--rollouts',type=int,default=32)
     parser.add_argument('--horizon',type=int,default=150)

@@ -1,0 +1,10 @@
+{
+    "run":  "C:\\Users\\13fel\\PycharmProjects\\dab2\\experiments\\fourrooms_doorways\\runs\\width2_seed0",
+    "rollouts":  32,
+    "horizon":  150,
+    "seed":  63017,
+    "device":  "cpu",
+    "jax":  "0.12.0.1",
+    "numpy":  "2.5.4",
+    "script_sha256":  "819e3a256d195128d3d16d283f19315644719a0781ca82cf7ed520988ce7fa4b"
+}

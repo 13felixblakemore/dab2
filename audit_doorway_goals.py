@@ -9,7 +9,7 @@ from continuous_four_rooms_jax import Point,_move
 from control_bfs_bottlenecks import build_graph,bfs_distances
 
 ROOT=Path('experiments/fourrooms_doorways')
-RUN=ROOT/'fourrooms_doorways/runs/width2_seed0'
+RUN=ROOT/'runs/width2_seed0'
 
 
 def point_status(points,env):
@@ -95,8 +95,8 @@ def main():
     result=dict(walls_match_saved_metadata=bool(np.array_equal(actual,np.array(meta['wall_blocks']))),
         free_graph_nodes=len(nodes),connected_component_sizes=component_sizes(graph),native_graph=native_graph_check(env,nodes,graph),sets={},traces={})
     pairs=dict(np.load(RUN/'evaluation_pairs.npz'))
-    fixed=dict(np.load(ROOT/'advantage_stability/fixed_probes.npz'))
-    stage=json.loads((ROOT/'stage_analysis/probes.json').read_text())
+    fixed=dict(np.load(ROOT/'analyses/advantage_stability/fixed_probes.npz'))
+    stage=json.loads((ROOT/'analyses/stage_analysis/probes.json').read_text())
     sets=dict(original_600=(pairs['starts'],pairs['goals'],np.full(600,30)),
         fixed_doorway_160=(fixed['states'],fixed['goals'],np.full(len(fixed['states']),30)),
         matched_stage_759=(np.array([r['state'] for r in stage]),np.array([r['goal'] for r in stage]),np.array([r['remaining_budget'] for r in stage])))
@@ -122,8 +122,8 @@ def main():
         'Off-grid stage states attach by a collision-free geometric segment to one of their eight nearest free nodes; step counts are approximate there.',
         'Goal-square overlap with a wall is valid: only a reachable point within the square is required. Center validity is checked separately.',
         'Finite-horizon success is not guaranteed under Gaussian noise even when a collision-free route exists.']
-    path=ROOT/'goal_validity_audit.json';path.write_text(json.dumps(result,indent=2))
-    np.savez_compressed(ROOT/'goal_validity_reference_lengths.npz',**lengths_by_set)
+    path=ROOT/'analyses/goal_validity/goal_validity_audit.json';path.write_text(json.dumps(result,indent=2))
+    np.savez_compressed(ROOT/'analyses/goal_validity/goal_validity_reference_lengths.npz',**lengths_by_set)
     print(json.dumps(result,indent=2))
 
 

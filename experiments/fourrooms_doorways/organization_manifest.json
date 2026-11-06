@@ -1,0 +1,1902 @@
+{
+  "reclaimed_bytes": 84108677,
+  "operations": [
+    {
+      "source": "goal_validity_audit.json",
+      "target": "analyses\\goal_validity\\goal_validity_audit.json",
+      "action": "moved",
+      "sha256": "89b2305819142edbee0c960733f51969921a505069b6e7516497bfb320a78d2b",
+      "bytes": 4988
+    },
+    {
+      "source": "goal_validity_feasible_performance.json",
+      "target": "analyses\\goal_validity\\goal_validity_feasible_performance.json",
+      "action": "moved",
+      "sha256": "cc263521e120117a9dd259ecde9f7f30ba23390b2dc0aab09cdba91b1dc4e0d4",
+      "bytes": 541
+    },
+    {
+      "source": "goal_validity_reference_lengths.npz",
+      "target": "analyses\\goal_validity\\goal_validity_reference_lengths.npz",
+      "action": "moved",
+      "sha256": "fb08131f2eee23e267c6bf0ab3b782caf3f6fa8bf926a563323eb21313b14127",
+      "bytes": 2255
+    },
+    {
+      "source": "advantage_stability\\advantage_traces.png",
+      "target": "analyses\\advantage_stability\\advantage_traces.png",
+      "action": "moved",
+      "sha256": "02716d3faf8a7d901bbca2fabf336e6da94ef3534499161664f309a0726adafe",
+      "bytes": 372161
+    },
+    {
+      "source": "advantage_stability\\advantages.csv",
+      "target": "analyses\\advantage_stability\\advantages.csv",
+      "action": "moved",
+      "sha256": "c2c6cf06e0c53a4716c6d7c27a9c609d9abe3066ac99656864ad826a0bb0f459",
+      "bytes": 451072
+    },
+    {
+      "source": "advantage_stability\\by_goal_kind.json",
+      "target": "analyses\\advantage_stability\\by_goal_kind.json",
+      "action": "moved",
+      "sha256": "f0bb9accc40be260def8c29105035d339ff6d7010789451ddfabeda797893455",
+      "bytes": 1577
+    },
+    {
+      "source": "advantage_stability\\changed_validation.json",
+      "target": "analyses\\advantage_stability\\changed_validation.json",
+      "action": "moved",
+      "sha256": "d3b8c6c8200b8f7dc0c085d1cefa9414026ec9be014e12a911e6c09961ad6dc6",
+      "bytes": 1627
+    },
+    {
+      "source": "advantage_stability\\changed_validation_400.npz",
+      "target": "analyses\\advantage_stability\\changed_validation_400.npz",
+      "action": "moved",
+      "sha256": "22f0ae207c48b7041f7644448c5afa93654bc1b83811a76345c7a043b1c88e14",
+      "bytes": 11840
+    },
+    {
+      "source": "advantage_stability\\changed_validation_800.npz",
+      "target": "analyses\\advantage_stability\\changed_validation_800.npz",
+      "action": "moved",
+      "sha256": "b8373dc5c09af8e437c644da0ab5604afec876e00024a5caacdb0d4935715239",
+      "bytes": 12101
+    },
+    {
+      "source": "advantage_stability\\config.json",
+      "target": "analyses\\advantage_stability\\config.json",
+      "action": "moved",
+      "sha256": "e3aa2cfdc9213524236fcd7caedc35b384719887dd7e42e5b7b2492c82c22f5c",
+      "bytes": 336
+    },
+    {
+      "source": "advantage_stability\\epoch_0200.npz",
+      "target": "analyses\\advantage_stability\\epoch_0200.npz",
+      "action": "moved",
+      "sha256": "cd68cd226305f2ec3f20664eaca9935ff710efe7d7970fc5fa74915218699b35",
+      "bytes": 17257
+    },
+    {
+      "source": "advantage_stability\\epoch_0400.npz",
+      "target": "analyses\\advantage_stability\\epoch_0400.npz",
+      "action": "moved",
+      "sha256": "7c2258767617063e686b22fda251a0d1fe6bee180b55ee978dee633d04ec45e4",
+      "bytes": 17933
+    },
+    {
+      "source": "advantage_stability\\epoch_0600.npz",
+      "target": "analyses\\advantage_stability\\epoch_0600.npz",
+      "action": "moved",
+      "sha256": "4d9be15f02809d138fa483008c2627da3393faad6e377bd420bc4d7074a4aa37",
+      "bytes": 17252
+    },
+    {
+      "source": "advantage_stability\\epoch_0800.npz",
+      "target": "analyses\\advantage_stability\\epoch_0800.npz",
+      "action": "moved",
+      "sha256": "8ad7d897e7f66487c960786424717da428d60732a6b51e947f2957289a79b183",
+      "bytes": 17394
+    },
+    {
+      "source": "advantage_stability\\fixed_probes.npz",
+      "target": "analyses\\advantage_stability\\fixed_probes.npz",
+      "action": "moved",
+      "sha256": "e7ff83b3a05496e273117a302e731f4b0755429232f0fa2237fc46ed634fe05f",
+      "bytes": 2267
+    },
+    {
+      "source": "advantage_stability\\stability.png",
+      "target": "analyses\\advantage_stability\\stability.png",
+      "action": "moved",
+      "sha256": "2ded2c3c1a46a843e634b256620bf443b4e536f3ad6a2408f26217e790ad3be5",
+      "bytes": 135323
+    },
+    {
+      "source": "advantage_stability\\summary.json",
+      "target": "analyses\\advantage_stability\\summary.json",
+      "action": "moved",
+      "sha256": "1b833d8d9e8494adcdbe36e6e39d641e56f998242e2037506166a084fa4c2a84",
+      "bytes": 11098
+    },
+    {
+      "source": "decline_analysis\\REPORT.md",
+      "target": "analyses\\decline_analysis\\REPORT.md",
+      "action": "moved",
+      "sha256": "1b36801659658b540a7fa6c742b494c228912530f29b1a67a60f90f791f6d962",
+      "bytes": 10954
+    },
+    {
+      "source": "decline_analysis\\heldout_random_transitions.npz",
+      "target": "analyses\\decline_analysis\\heldout_random_transitions.npz",
+      "action": "moved",
+      "sha256": "c157f809605d8fc4978af08d54c899bf9d8859c23e41efe6c156152641280b96",
+      "bytes": 27213
+    },
+    {
+      "source": "decline_analysis\\lost_cases.json",
+      "target": "analyses\\decline_analysis\\lost_cases.json",
+      "action": "moved",
+      "sha256": "00880f6760a0a0a51189e7d141fbef5a0da1924192f8fef8f222826679617131",
+      "bytes": 4134
+    },
+    {
+      "source": "decline_analysis\\lost_trajectories.png",
+      "target": "analyses\\decline_analysis\\lost_trajectories.png",
+      "action": "moved",
+      "sha256": "021a0a84926e4dc17991e095211173d170dc7c720e2cda96c614cde8ca1ccfc3",
+      "bytes": 69611
+    },
+    {
+      "source": "decline_analysis\\oracle_mask_trace_400.npz",
+      "target": "analyses\\decline_analysis\\oracle_mask_trace_400.npz",
+      "action": "moved",
+      "sha256": "02791e1716dd00fc7df1975a20bd3487e1ab479577091417f24c792cba481249",
+      "bytes": 527713
+    },
+    {
+      "source": "decline_analysis\\oracle_mask_trace_800.npz",
+      "target": "analyses\\decline_analysis\\oracle_mask_trace_800.npz",
+      "action": "moved",
+      "sha256": "206651d1de80717496216319fb660d899c4cd922a729a15d9704420626694fa1",
+      "bytes": 650006
+    },
+    {
+      "source": "decline_analysis\\paired_deltas.png",
+      "target": "analyses\\decline_analysis\\paired_deltas.png",
+      "action": "moved",
+      "sha256": "89a16b837bf70e3cec29d18667156b082398217168492382ed3c5679af8822db",
+      "bytes": 122387
+    },
+    {
+      "source": "decline_analysis\\post_cross_and_mask_stages.json",
+      "target": "analyses\\decline_analysis\\post_cross_and_mask_stages.json",
+      "action": "moved",
+      "sha256": "64e0109d3991039469ab2bd3321c5c3867c5033ea0b350ab0883bccf33e6e199",
+      "bytes": 1321
+    },
+    {
+      "source": "decline_analysis\\probes_400.npz",
+      "target": "analyses\\decline_analysis\\probes_400.npz",
+      "action": "moved",
+      "sha256": "a3655e327edda94869a8f72e8ab79ad3033f128c8abfc05451b9da9765c62dc9",
+      "bytes": 188910
+    },
+    {
+      "source": "decline_analysis\\probes_800.npz",
+      "target": "analyses\\decline_analysis\\probes_800.npz",
+      "action": "moved",
+      "sha256": "33ce5d3d265c9a85fea9f3f487059c89424bcbc19c008463fa77bc81f7103e93",
+      "bytes": 189737
+    },
+    {
+      "source": "decline_analysis\\provenance.json",
+      "target": "analyses\\decline_analysis\\provenance.json",
+      "action": "moved",
+      "sha256": "e5f293350ac8adc83c0002ace445442c6c8ad3552525a86592968e122d0428a9",
+      "bytes": 414
+    },
+    {
+      "source": "decline_analysis\\stages_400_150.json",
+      "target": "analyses\\decline_analysis\\stages_400_150.json",
+      "action": "moved",
+      "sha256": "d41ee3f664d60a542daf2dfa4606edf8be81db1f834c66ec39abbe87e9d7895f",
+      "bytes": 184727
+    },
+    {
+      "source": "decline_analysis\\stages_400_30.json",
+      "target": "analyses\\decline_analysis\\stages_400_30.json",
+      "action": "moved",
+      "sha256": "5efe60f3ac5fe672f4e36a4b29f9fb48eec5db4c56acd40becc92509c1901c25",
+      "bytes": 185758
+    },
+    {
+      "source": "decline_analysis\\stages_800_150.json",
+      "target": "analyses\\decline_analysis\\stages_800_150.json",
+      "action": "moved",
+      "sha256": "77009771b64d1828e01bb6f983e3be1a1a9a856cd2183cee4b83e8e41253c429",
+      "bytes": 185708
+    },
+    {
+      "source": "decline_analysis\\stages_800_30.json",
+      "target": "analyses\\decline_analysis\\stages_800_30.json",
+      "action": "moved",
+      "sha256": "ce365af5883e39d646c1582b8f8ab4993a1e5dec6b38bc886ef7340c9bd10572",
+      "bytes": 186672
+    },
+    {
+      "source": "decline_analysis\\summary.json",
+      "target": "analyses\\decline_analysis\\summary.json",
+      "action": "moved",
+      "sha256": "5b074daff3ec7566a6cc4bd6b347adeea8d1ea74121c8e91947a739e1131f9cb",
+      "bytes": 44899
+    },
+    {
+      "source": "decline_analysis\\trace_400.npz",
+      "target": "analyses\\decline_analysis\\trace_400.npz",
+      "action": "moved",
+      "sha256": "3ab301225ae68aad3a1c08ed86eecdeb5dd2debe164e8dd70010cc0bf1ad4f89",
+      "bytes": 413970
+    },
+    {
+      "source": "decline_analysis\\trace_800.npz",
+      "target": "analyses\\decline_analysis\\trace_800.npz",
+      "action": "moved",
+      "sha256": "4063e7dbef1a7ee839aaa6a774ee42d2698e2069f5215fb2b248a3c431fcfa27",
+      "bytes": 470123
+    },
+    {
+      "source": "fourrooms_doorways\\README.md",
+      "target": "archive\\import_conflicts\\40af597281c7\\README.md",
+      "action": "archived_differing_copy",
+      "sha256": "c933f365b23d08f610be20ea901e7983894266a3f43662184306e5bd7f7b5d42",
+      "bytes": 3737
+    },
+    {
+      "source": "stage_analysis\\REPORT.md",
+      "target": "analyses\\stage_analysis\\REPORT.md",
+      "action": "moved",
+      "sha256": "fcc1f0c6028984d47cb48c28411ffd38b9447b3d71c48719b5189482a2e35907",
+      "bytes": 10309
+    },
+    {
+      "source": "stage_analysis\\action_rankings.csv",
+      "target": "analyses\\stage_analysis\\action_rankings.csv",
+      "action": "moved",
+      "sha256": "e86e80d527bd965a303b4412fd05031fff3c0c32166c82a8b5bdc32b0c668673",
+      "bytes": 562956
+    },
+    {
+      "source": "stage_analysis\\config.json",
+      "target": "analyses\\stage_analysis\\config.json",
+      "action": "moved",
+      "sha256": "2758e59bfddf768463a4432d40d96cfad67457e9f3740f98a223d45572c7ae8b",
+      "bytes": 443
+    },
+    {
+      "source": "stage_analysis\\epoch_400.npz",
+      "target": "analyses\\stage_analysis\\epoch_400.npz",
+      "action": "moved",
+      "sha256": "bceab2a38d50caa52b1afbd87a0d48963abe76d00771f921f976ba04407bfea8",
+      "bytes": 186592
+    },
+    {
+      "source": "stage_analysis\\epoch_800.npz",
+      "target": "analyses\\stage_analysis\\epoch_800.npz",
+      "action": "moved",
+      "sha256": "583c15643085936bfbe5515e75dc3730c7432394fb73e13f3f56bb85498a2096",
+      "bytes": 197040
+    },
+    {
+      "source": "stage_analysis\\full_start_400.npz",
+      "target": "analyses\\stage_analysis\\full_start_400.npz",
+      "action": "moved",
+      "sha256": "b5da7c1a38aaab5d230f6b0137969e619f8b522bc1e24349a44f515578cac8d4",
+      "bytes": 53185
+    },
+    {
+      "source": "stage_analysis\\full_start_800.npz",
+      "target": "analyses\\stage_analysis\\full_start_800.npz",
+      "action": "moved",
+      "sha256": "e06add65b173991212aaf1cdf680ebed5371fc7c902a4d0d8e019ab1d5cc984e",
+      "bytes": 53091
+    },
+    {
+      "source": "stage_analysis\\full_start_summary.json",
+      "target": "analyses\\stage_analysis\\full_start_summary.json",
+      "action": "moved",
+      "sha256": "2a7d4f4f4aec0eda1d809a3d9e480dd9c4ed2309d557a6c07920f314986ac7e0",
+      "bytes": 2808
+    },
+    {
+      "source": "stage_analysis\\probe_geometry.npz",
+      "target": "analyses\\stage_analysis\\probe_geometry.npz",
+      "action": "moved",
+      "sha256": "b8170cb1d6764bdce73e2f629ae1bcf4e7afa2cb8f57b17ad3c76a7c0987ef89",
+      "bytes": 4734
+    },
+    {
+      "source": "stage_analysis\\probes.json",
+      "target": "analyses\\stage_analysis\\probes.json",
+      "action": "moved",
+      "sha256": "7ed6a31a3aa19b441ed3730bce760efde9308ac316d35b1eb07e8eae2ca50612",
+      "bytes": 264070
+    },
+    {
+      "source": "stage_analysis\\ranking_and_cluster_intervals.json",
+      "target": "analyses\\stage_analysis\\ranking_and_cluster_intervals.json",
+      "action": "moved",
+      "sha256": "c7626fed02c83de1f9ffad47524487b855c213b6bf92b31ac2af705ea2b31e17",
+      "bytes": 1313
+    },
+    {
+      "source": "stage_analysis\\stages.png",
+      "target": "analyses\\stage_analysis\\stages.png",
+      "action": "moved",
+      "sha256": "ad5e15df2ceae4a670b52a551315253a7858b2fc86bdc3e5b57068b9e538ef24",
+      "bytes": 78912
+    },
+    {
+      "source": "stage_analysis\\summary.json",
+      "target": "analyses\\stage_analysis\\summary.json",
+      "action": "moved",
+      "sha256": "90a0f215dddb35c6d075fdf21bf7c42aabf5128cd5821535b55b5d40379faf03",
+      "bytes": 140219
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\ADVANTAGE_STABILITY.md",
+      "target": "ADVANTAGE_STABILITY.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "a5f973812e7b906773fd4fff164eb59ad134c8ffb20d14f79429db2f351847a4",
+      "bytes": 10770
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\GOAL_VALIDITY.md",
+      "target": "GOAL_VALIDITY.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "24de3432a1fbe5e98306827c957f3002f8c7298f6cbd3d859da3fd211ed9255a",
+      "bytes": 4041
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\README.md",
+      "target": "README.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "a541220498ec14d5b59b61b087921805a3a81139ffbb85195d38abcc6dca3d3a",
+      "bytes": 7367
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\RESULTS.md",
+      "target": "RESULTS.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "aee5bf5cc0f45af60e4e9a22160df1ead15c17c3c54a8c59527cd210f6bb3afe",
+      "bytes": 4264
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\goal_validity_audit.json",
+      "target": "archive\\import_conflicts\\1291d62f7c0d\\analyses\\goal_validity\\goal_validity_audit.json",
+      "action": "archived_differing_copy",
+      "sha256": "c6150c542d3684c87baae7f7d163d48b17fa88551f5b2cc6f3866dacce32f216",
+      "bytes": 4824
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\goal_validity_feasible_performance.json",
+      "target": "archive\\import_conflicts\\8848b6e71e53\\analyses\\goal_validity\\goal_validity_feasible_performance.json",
+      "action": "archived_differing_copy",
+      "sha256": "6758a546643f866f943b3baaebca5b3b1a615224f1d71359f0b470ebb41f9627",
+      "bytes": 520
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\goal_validity_reference_lengths.npz",
+      "target": "analyses\\goal_validity\\goal_validity_reference_lengths.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "fb08131f2eee23e267c6bf0ab3b782caf3f6fa8bf926a563323eb21313b14127",
+      "bytes": 2255
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\replay_goal_terminated.json",
+      "target": "replay_goal_terminated.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "715c21029df37e1034bca79bb5023f434c7f32dcf85abafa07d579b18a48481e",
+      "bytes": 805
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\replay_goal_terminated_smoke.json",
+      "target": "archive\\import_conflicts\\09c31eb4d08d\\replay_goal_terminated_smoke.json",
+      "action": "archived_differing_copy",
+      "sha256": "691ce00f5c9404313dbcd114c72683ac91b4fce466a424bc8e5c74e63bbc9ecf",
+      "bytes": 1822
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\complete.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\complete.json",
+      "action": "moved",
+      "sha256": "3d765cfa8bfb703347e406752eeedf1bcb503bacf1af26702505624f03f433fc",
+      "bytes": 7181
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\config.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\config.json",
+      "action": "moved",
+      "sha256": "3481f58696b5dc4a7405dd2523f1d49f778e08a85e0731b4d956ba28c326afff",
+      "bytes": 1031
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\environment.png",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\environment.png",
+      "action": "moved",
+      "sha256": "98483b5b7205e7292cc0b057d57ed094752ccbcbf874b405c895345140d041c4",
+      "bytes": 12001
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\epoch_0002.pkl",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\epoch_0002.pkl",
+      "action": "moved",
+      "sha256": "1ba277ec45dc73e7b26010aa99d35f2c3fc1ac733460391baf10978003ec4826",
+      "bytes": 9070915
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation_pairs.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation_pairs.npz",
+      "action": "moved",
+      "sha256": "f62fd9ec6a1b7aa118e13cded8b816b630636803f344cfea578249d1ac6af1ba",
+      "bytes": 1563
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\losses.npy",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\losses.npy",
+      "action": "moved",
+      "sha256": "3b1eb47365d781a9709c138da662ce8c474c5d7d3b17284454431f10424e1fd3",
+      "bytes": 448
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\metadata.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\metadata.json",
+      "action": "moved",
+      "sha256": "246b0d6a12c965f2f0aee32902268702aabcf46105cc98fb65d210d8406875fa",
+      "bytes": 1939
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\resume.pkl",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\resume.pkl",
+      "action": "moved",
+      "sha256": "23300b9117826cf9f5acc6fa641bfb971305fc3b9cb31179aff0e1c84f7b739f",
+      "bytes": 9082902
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\training.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\training.json",
+      "action": "moved",
+      "sha256": "a9566ba2cd864b24c2391cbfc95db1484cfbfd5a266fcbb4aee94a79e7d72055",
+      "bytes": 669
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\advantage_traces.png",
+      "target": "analyses\\advantage_stability\\advantage_traces.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "02716d3faf8a7d901bbca2fabf336e6da94ef3534499161664f309a0726adafe",
+      "bytes": 372161
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\advantages.csv",
+      "target": "archive\\import_conflicts\\d3e886489a05\\analyses\\advantage_stability\\advantages.csv",
+      "action": "archived_differing_copy",
+      "sha256": "162778993eecb707b8207f39cd229443972532b2a5571d66092bbc050d1861c6",
+      "bytes": 448511
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\by_goal_kind.json",
+      "target": "archive\\import_conflicts\\ed9d13cd4d7b\\analyses\\advantage_stability\\by_goal_kind.json",
+      "action": "archived_differing_copy",
+      "sha256": "b604d667065e863a18c204bbfe9bf0260c2e64eb214936d5284f497d616fae2d",
+      "bytes": 1520
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\changed_validation.json",
+      "target": "archive\\import_conflicts\\816310403783\\analyses\\advantage_stability\\changed_validation.json",
+      "action": "archived_differing_copy",
+      "sha256": "328f18fdb2299ae4c91d569c360f0bb1654f96214137517eefc465bd042a7fc8",
+      "bytes": 1578
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\changed_validation_400.npz",
+      "target": "analyses\\advantage_stability\\changed_validation_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "22f0ae207c48b7041f7644448c5afa93654bc1b83811a76345c7a043b1c88e14",
+      "bytes": 11840
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\changed_validation_800.npz",
+      "target": "analyses\\advantage_stability\\changed_validation_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "b8373dc5c09af8e437c644da0ab5604afec876e00024a5caacdb0d4935715239",
+      "bytes": 12101
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\config.json",
+      "target": "archive\\import_conflicts\\320bf89dde15\\analyses\\advantage_stability\\config.json",
+      "action": "archived_differing_copy",
+      "sha256": "aad2b367338c9083518d6725676330b3195ab8a154aba55cbfa9a23a793b77bd",
+      "bytes": 327
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\epoch_0200.npz",
+      "target": "analyses\\advantage_stability\\epoch_0200.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "cd68cd226305f2ec3f20664eaca9935ff710efe7d7970fc5fa74915218699b35",
+      "bytes": 17257
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\epoch_0400.npz",
+      "target": "analyses\\advantage_stability\\epoch_0400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "7c2258767617063e686b22fda251a0d1fe6bee180b55ee978dee633d04ec45e4",
+      "bytes": 17933
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\epoch_0600.npz",
+      "target": "analyses\\advantage_stability\\epoch_0600.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "4d9be15f02809d138fa483008c2627da3393faad6e377bd420bc4d7074a4aa37",
+      "bytes": 17252
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\epoch_0800.npz",
+      "target": "analyses\\advantage_stability\\epoch_0800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "8ad7d897e7f66487c960786424717da428d60732a6b51e947f2957289a79b183",
+      "bytes": 17394
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\fixed_probes.npz",
+      "target": "analyses\\advantage_stability\\fixed_probes.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "e7ff83b3a05496e273117a302e731f4b0755429232f0fa2237fc46ed634fe05f",
+      "bytes": 2267
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\stability.png",
+      "target": "analyses\\advantage_stability\\stability.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "2ded2c3c1a46a843e634b256620bf443b4e536f3ad6a2408f26217e790ad3be5",
+      "bytes": 135323
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\advantage_stability\\summary.json",
+      "target": "archive\\import_conflicts\\fe8c1eb5236d\\analyses\\advantage_stability\\summary.json",
+      "action": "archived_differing_copy",
+      "sha256": "201a6bab60f53c049b0e3190d836f8b3944d5b22be9bc3df315272b2ce3b7709",
+      "bytes": 10782
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\REPORT.md",
+      "target": "analyses\\decline_analysis\\REPORT.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "1b36801659658b540a7fa6c742b494c228912530f29b1a67a60f90f791f6d962",
+      "bytes": 10954
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\heldout_random_transitions.npz",
+      "target": "analyses\\decline_analysis\\heldout_random_transitions.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "c157f809605d8fc4978af08d54c899bf9d8859c23e41efe6c156152641280b96",
+      "bytes": 27213
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\lost_cases.json",
+      "target": "archive\\import_conflicts\\b829a2f556f8\\analyses\\decline_analysis\\lost_cases.json",
+      "action": "archived_differing_copy",
+      "sha256": "78b51a321112007500f82b94bd98f7d73e69ce5830b350366bd0690b2141db36",
+      "bytes": 3951
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\lost_trajectories.png",
+      "target": "analyses\\decline_analysis\\lost_trajectories.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "021a0a84926e4dc17991e095211173d170dc7c720e2cda96c614cde8ca1ccfc3",
+      "bytes": 69611
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\oracle_mask_trace_400.npz",
+      "target": "analyses\\decline_analysis\\oracle_mask_trace_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "02791e1716dd00fc7df1975a20bd3487e1ab479577091417f24c792cba481249",
+      "bytes": 527713
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\oracle_mask_trace_800.npz",
+      "target": "analyses\\decline_analysis\\oracle_mask_trace_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "206651d1de80717496216319fb660d899c4cd922a729a15d9704420626694fa1",
+      "bytes": 650006
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\paired_deltas.png",
+      "target": "analyses\\decline_analysis\\paired_deltas.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "89a16b837bf70e3cec29d18667156b082398217168492382ed3c5679af8822db",
+      "bytes": 122387
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\post_cross_and_mask_stages.json",
+      "target": "archive\\import_conflicts\\36b2c8dfebe9\\analyses\\decline_analysis\\post_cross_and_mask_stages.json",
+      "action": "archived_differing_copy",
+      "sha256": "aa2ebd2df2f1b9f912ac393cc7d2a36493fe67e9e0af510f000edaa7218be2b6",
+      "bytes": 1272
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\probes_400.npz",
+      "target": "analyses\\decline_analysis\\probes_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "a3655e327edda94869a8f72e8ab79ad3033f128c8abfc05451b9da9765c62dc9",
+      "bytes": 188910
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\probes_800.npz",
+      "target": "analyses\\decline_analysis\\probes_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "33ce5d3d265c9a85fea9f3f487059c89424bcbc19c008463fa77bc81f7103e93",
+      "bytes": 189737
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\provenance.json",
+      "target": "archive\\import_conflicts\\99a1405610b4\\analyses\\decline_analysis\\provenance.json",
+      "action": "archived_differing_copy",
+      "sha256": "772650288d1de6e64b0a21788f4de5354243ba6623d29b1329de6fff9ec7a278",
+      "bytes": 408
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\stages_400_150.json",
+      "target": "archive\\import_conflicts\\66238a2c41e7\\analyses\\decline_analysis\\stages_400_150.json",
+      "action": "archived_differing_copy",
+      "sha256": "873f718386e486fac2d3b81adaef705b2c44bd1c50131d1a6d565994a413de64",
+      "bytes": 177526
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\stages_400_30.json",
+      "target": "archive\\import_conflicts\\5c79b5f552d7\\analyses\\decline_analysis\\stages_400_30.json",
+      "action": "archived_differing_copy",
+      "sha256": "922c3d13e3f9b9215d7b8bde6f9d58eb06041fc770bb6d990b90b3fb75b1df78",
+      "bytes": 178557
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\stages_800_150.json",
+      "target": "archive\\import_conflicts\\161fe6c5b4ee\\analyses\\decline_analysis\\stages_800_150.json",
+      "action": "archived_differing_copy",
+      "sha256": "e4b29b2a36a250247620436f1ac9af1515e5005f89258391555ab2af49bb37fd",
+      "bytes": 178507
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\stages_800_30.json",
+      "target": "archive\\import_conflicts\\de3eff2487d1\\analyses\\decline_analysis\\stages_800_30.json",
+      "action": "archived_differing_copy",
+      "sha256": "70d442ff574eaa3220c86743eae1ea2c254e0808922bf799f093c48d11419a56",
+      "bytes": 179471
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\summary.json",
+      "target": "archive\\import_conflicts\\a17351304cd2\\analyses\\decline_analysis\\summary.json",
+      "action": "archived_differing_copy",
+      "sha256": "a37d908798ac01d576208904c086b08191f2e3c524a34ad450d7b590bc7798da",
+      "bytes": 43549
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\trace_400.npz",
+      "target": "analyses\\decline_analysis\\trace_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "3ab301225ae68aad3a1c08ed86eecdeb5dd2debe164e8dd70010cc0bf1ad4f89",
+      "bytes": 413970
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\decline_analysis\\trace_800.npz",
+      "target": "analyses\\decline_analysis\\trace_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "4063e7dbef1a7ee839aaa6a774ee42d2698e2069f5215fb2b248a3c431fcfa27",
+      "bytes": 470123
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\README.md",
+      "target": "archive\\import_conflicts\\21d9c714005e\\README.md",
+      "action": "archived_differing_copy",
+      "sha256": "c933f365b23d08f610be20ea901e7983894266a3f43662184306e5bd7f7b5d42",
+      "bytes": 3737
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\REPORT.md",
+      "target": "analyses\\stage_analysis\\REPORT.md",
+      "action": "removed_identical_duplicate",
+      "sha256": "fcc1f0c6028984d47cb48c28411ffd38b9447b3d71c48719b5189482a2e35907",
+      "bytes": 10309
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\action_rankings.csv",
+      "target": "archive\\import_conflicts\\a8c41533991e\\analyses\\stage_analysis\\action_rankings.csv",
+      "action": "archived_differing_copy",
+      "sha256": "0eb2c88a1005c37e7ad65c42e0c276a49504c74b9e216fe5d327c24418742436",
+      "bytes": 556883
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\config.json",
+      "target": "archive\\import_conflicts\\f701c4a0f9d6\\analyses\\stage_analysis\\config.json",
+      "action": "archived_differing_copy",
+      "sha256": "4b23b3376d8b4689d016135ce856358453d05820f17d5a2718b91525de8a0f71",
+      "bytes": 430
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\epoch_400.npz",
+      "target": "analyses\\stage_analysis\\epoch_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "bceab2a38d50caa52b1afbd87a0d48963abe76d00771f921f976ba04407bfea8",
+      "bytes": 186592
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\epoch_800.npz",
+      "target": "analyses\\stage_analysis\\epoch_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "583c15643085936bfbe5515e75dc3730c7432394fb73e13f3f56bb85498a2096",
+      "bytes": 197040
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\full_start_400.npz",
+      "target": "analyses\\stage_analysis\\full_start_400.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "b5da7c1a38aaab5d230f6b0137969e619f8b522bc1e24349a44f515578cac8d4",
+      "bytes": 53185
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\full_start_800.npz",
+      "target": "analyses\\stage_analysis\\full_start_800.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "e06add65b173991212aaf1cdf680ebed5371fc7c902a4d0d8e019ab1d5cc984e",
+      "bytes": 53091
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\full_start_summary.json",
+      "target": "archive\\import_conflicts\\0a37ab15d389\\analyses\\stage_analysis\\full_start_summary.json",
+      "action": "archived_differing_copy",
+      "sha256": "65f8a65f0ae542f810e6a4eb7790a7898fae0c5a504c75f26e7bf1eb10c780d2",
+      "bytes": 2731
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\probe_geometry.npz",
+      "target": "analyses\\stage_analysis\\probe_geometry.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "b8170cb1d6764bdce73e2f629ae1bcf4e7afa2cb8f57b17ad3c76a7c0987ef89",
+      "bytes": 4734
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\probes.json",
+      "target": "archive\\import_conflicts\\83f5ad499c9d\\analyses\\stage_analysis\\probes.json",
+      "action": "archived_differing_copy",
+      "sha256": "054f65620f9b3d358b4f4d92cd7e56a841cf0a936f8f41ce3e1024e057fa3302",
+      "bytes": 251166
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\ranking_and_cluster_intervals.json",
+      "target": "archive\\import_conflicts\\7a62a2017e3f\\analyses\\stage_analysis\\ranking_and_cluster_intervals.json",
+      "action": "archived_differing_copy",
+      "sha256": "3bd161e38c7dcd0f973e43e2325711735db36be59063d3b67297e0b679a184da",
+      "bytes": 1269
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\stages.png",
+      "target": "analyses\\stage_analysis\\stages.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "ad5e15df2ceae4a670b52a551315253a7858b2fc86bdc3e5b57068b9e538ef24",
+      "bytes": 78912
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\stage_analysis\\summary.json",
+      "target": "archive\\import_conflicts\\a18f0c5db6e7\\analyses\\stage_analysis\\summary.json",
+      "action": "archived_differing_copy",
+      "sha256": "b61fb3ba74c4005f785ebdb86946ffefb9a9723cb23b6fcf3bc9f79b892b8db1",
+      "bytes": 136929
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\complete.json",
+      "target": "runs\\width2_seed0\\complete.json",
+      "action": "moved",
+      "sha256": "78c81a7568d55bfea4cc1d68cc27de896702beddcc2d3e10d87d7f5841bff776",
+      "bytes": 18621
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\config.json",
+      "target": "runs\\width2_seed0\\config.json",
+      "action": "moved",
+      "sha256": "67a253746e06662180cf3e7fcaa3c2093febc21ab8673840f8270e06040c64db",
+      "bytes": 964
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\environment.png",
+      "target": "runs\\width2_seed0\\environment.png",
+      "action": "moved",
+      "sha256": "1ecfd8a01b08fadcc1ab46b324215880bb6a5083aad08f9a8f6b373368e9ad41",
+      "bytes": 13956
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\epoch_0200.pkl",
+      "target": "runs\\width2_seed0\\epoch_0200.pkl",
+      "action": "moved",
+      "sha256": "d3f28fd95c4d8f45b4d5243ded82f85f6295b5018c75c92d56e0e0e6fbb814f5",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\epoch_0400.pkl",
+      "target": "runs\\width2_seed0\\epoch_0400.pkl",
+      "action": "moved",
+      "sha256": "4df1c9347b5ff482e243999840ec481380ab9e0b4562caed6af0d99dbca1e717",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\epoch_0600.pkl",
+      "target": "runs\\width2_seed0\\epoch_0600.pkl",
+      "action": "moved",
+      "sha256": "6bd4a3bec8fb424bccb2968da9e30b3c981ea7e1f8dcf147dc58d8276d9c08f4",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\epoch_0800.pkl",
+      "target": "runs\\width2_seed0\\epoch_0800.pkl",
+      "action": "moved",
+      "sha256": "e9e49b74c4a6f92357215eab4986c32a0c3eb7325f935905374d101adc7c46de",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation_pairs.npz",
+      "target": "runs\\width2_seed0\\evaluation_pairs.npz",
+      "action": "moved",
+      "sha256": "830ed1149486319d2fc02c4a32d73695462881acc97eee3ac7fb5b63f9041814",
+      "bytes": 5504
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\losses.npy",
+      "target": "runs\\width2_seed0\\losses.npy",
+      "action": "moved",
+      "sha256": "1d9a177c8cdc3f357ecec5313c7d0de450cbcac9d67e30bbf55b43b779e05a8c",
+      "bytes": 3200128
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\metadata.json",
+      "target": "runs\\width2_seed0\\metadata.json",
+      "action": "moved",
+      "sha256": "15f9aabcf293197d66a9c612b6b416b21bbbdf6ef1b5127138c918c759977798",
+      "bytes": 1828
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\resume.pkl",
+      "target": "runs\\width2_seed0\\resume.pkl",
+      "action": "moved",
+      "sha256": "1a64f3c353944d14e0dea17f43b6a6cc0d46587de31364deb0b8dd5374b47812",
+      "bytes": 36311470
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\training.json",
+      "target": "runs\\width2_seed0\\training.json",
+      "action": "moved",
+      "sha256": "def582b0c5a6517b520524c81bfe56c63acee7d6b8970caa61c2c448334ede4b",
+      "bytes": 118624
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001.json",
+      "action": "moved",
+      "sha256": "26c5ab2d02a180a81dd60eb548a49e32e0cf44e21918ebbef1335a06046acc2f",
+      "bytes": 3335
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "moved",
+      "sha256": "7ad5c7b276feff98c0d916beb4264cd7a9eb83c6b6d77c84d9987ccd0ef2b250",
+      "bytes": 1240
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002.json",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002.json",
+      "action": "moved",
+      "sha256": "6d563a33d44b28ebe6769b1c4fa2e203a0880a90093f3bb0b9bf827d0a33180a",
+      "bytes": 3335
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002_trials.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002_trials.npz",
+      "action": "moved",
+      "sha256": "7ad5c7b276feff98c0d916beb4264cd7a9eb83c6b6d77c84d9987ccd0ef2b250",
+      "bytes": 1240
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\evaluation\\navigation.png",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\navigation.png",
+      "action": "moved",
+      "sha256": "cee836ab52aca5c328b2ef048743201da1188e99d1893c05f8369a18e05c648a",
+      "bytes": 87600
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\adjustable_four_rooms.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\adjustable_four_rooms.py",
+      "action": "moved",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "moved",
+      "sha256": "66771aafc2c6301de42b023df4ae90182e755f4f0d60bb0b87b62ae9c29de723",
+      "bytes": 12062
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "moved",
+      "sha256": "c13f80bba294536f59d3b464603997328d01308b3417b8c3fec5990946020ecc",
+      "bytes": 13235
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "moved",
+      "sha256": "2e3b7c7bdda9fffa91ed78a0110ad7f5630c9c61aa5d22e41e0214612143c926",
+      "bytes": 20114
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\forward_backward_jax.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\forward_backward_jax.py",
+      "action": "moved",
+      "sha256": "bc98d863d1c8091100a116a25097b95c1ec8aa622cfe88e4ff8aa56dc0c044f7",
+      "bytes": 28372
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "moved",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\run_fb_jax.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fb_jax.py",
+      "action": "moved",
+      "sha256": "f1025443041ea063a076033613abf694db4565b745ab4133d0e7fa6175902caa",
+      "bytes": 9779
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "moved",
+      "sha256": "c6d99c48c26c754b8a9316db0b562413592efd65a150e4ed1b9585195d575d62",
+      "bytes": 8968
+    },
+    {
+      "source": "runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_reference.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_reference.py",
+      "action": "moved",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\complete.json",
+      "target": "archive\\import_conflicts\\e6a8d7d8907c\\smoke_runs\\replay_stopped_smoke_seed0\\complete.json",
+      "action": "archived_differing_copy",
+      "sha256": "4620e7549c44a2e509262e30885fbfe76e211e33c03f2b2d8a054d2f3cf8ff0f",
+      "bytes": 6948
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\config.json",
+      "target": "archive\\import_conflicts\\901d12a98d2e\\smoke_runs\\replay_stopped_smoke_seed0\\config.json",
+      "action": "archived_differing_copy",
+      "sha256": "68c72bb377abeb5386524a91f9b37b59ffee41d2f77245b29d393a0080ab72e3",
+      "bytes": 977
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\environment.png",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\environment.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "98483b5b7205e7292cc0b057d57ed094752ccbcbf874b405c895345140d041c4",
+      "bytes": 12001
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation_pairs.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation_pairs.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "f62fd9ec6a1b7aa118e13cded8b816b630636803f344cfea578249d1ac6af1ba",
+      "bytes": 1563
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\losses.npy",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\losses.npy",
+      "action": "removed_identical_duplicate",
+      "sha256": "3b1eb47365d781a9709c138da662ce8c474c5d7d3b17284454431f10424e1fd3",
+      "bytes": 448
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\metadata.json",
+      "target": "archive\\import_conflicts\\31606c5f4b97\\smoke_runs\\replay_stopped_smoke_seed0\\metadata.json",
+      "action": "archived_differing_copy",
+      "sha256": "5402274b73aad1a985627fa16acc542db96c3d2ef54b119e9c275100b3b02b57",
+      "bytes": 1876
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\training.json",
+      "target": "archive\\import_conflicts\\a9cae4ed7309\\smoke_runs\\replay_stopped_smoke_seed0\\training.json",
+      "action": "archived_differing_copy",
+      "sha256": "2bef732b89be7d23a012e2d53e34f768a1bc3fe1f921b5cfae2718c01e0c08dd",
+      "bytes": 646
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\complete.json",
+      "target": "runs\\width2_replay_stopped_seed0\\complete.json",
+      "action": "moved",
+      "sha256": "0c5a02dee8bd15175ba6e1d6bf6ede64eec7e1d8e409d529b53d7fd743f8be05",
+      "bytes": 18474
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\config.json",
+      "target": "runs\\width2_replay_stopped_seed0\\config.json",
+      "action": "moved",
+      "sha256": "b379e4a84692b419a7b7a4cad8fff2ffd218355baab5de54bca2eff0510e6cd8",
+      "bytes": 1015
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\environment.png",
+      "target": "runs\\width2_replay_stopped_seed0\\environment.png",
+      "action": "moved",
+      "sha256": "1ecfd8a01b08fadcc1ab46b324215880bb6a5083aad08f9a8f6b373368e9ad41",
+      "bytes": 13956
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\epoch_0200.pkl",
+      "target": "runs\\width2_replay_stopped_seed0\\epoch_0200.pkl",
+      "action": "moved",
+      "sha256": "f138b7efa301c53022226eb7ab848654780ee8721eb0dcdec121898720e0b4ae",
+      "bytes": 9070917
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\epoch_0400.pkl",
+      "target": "runs\\width2_replay_stopped_seed0\\epoch_0400.pkl",
+      "action": "moved",
+      "sha256": "531b04fd477c568015423f9f45186529a698ce65a49d8425b87611ab80f30ec9",
+      "bytes": 9070917
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\epoch_0600.pkl",
+      "target": "runs\\width2_replay_stopped_seed0\\epoch_0600.pkl",
+      "action": "moved",
+      "sha256": "41acb24b86c6c065ea7fa212f7b6b1fb380873841531b47dc2f753de5f04e8a7",
+      "bytes": 9070917
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\epoch_0800.pkl",
+      "target": "runs\\width2_replay_stopped_seed0\\epoch_0800.pkl",
+      "action": "moved",
+      "sha256": "26f06c5d9cb7a90504f801757d547264e93a4bacbef7a4bfd8c439d5cd6f9635",
+      "bytes": 9070917
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation_pairs.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation_pairs.npz",
+      "action": "moved",
+      "sha256": "830ed1149486319d2fc02c4a32d73695462881acc97eee3ac7fb5b63f9041814",
+      "bytes": 5504
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\losses.npy",
+      "target": "runs\\width2_replay_stopped_seed0\\losses.npy",
+      "action": "moved",
+      "sha256": "a8bcc01b78fc36de84ec28842532ae244fbc694a4fa8bf8c0ab37b14cf8ea883",
+      "bytes": 3200128
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\metadata.json",
+      "target": "runs\\width2_replay_stopped_seed0\\metadata.json",
+      "action": "moved",
+      "sha256": "40d28650da19a3dc8f2725e293519d0f565981555a50499f18895425f7e7ea1f",
+      "bytes": 1872
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\resume.pkl",
+      "target": "runs\\width2_replay_stopped_seed0\\resume.pkl",
+      "action": "moved",
+      "sha256": "612ad583e380638c7f9fd7cbb7d84f4e77a1340437064073d7da4479b65d90d4",
+      "bytes": 36346415
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\training.json",
+      "target": "runs\\width2_replay_stopped_seed0\\training.json",
+      "action": "moved",
+      "sha256": "ae7c6106123c8dcee03ffc7f904f641a3da172ffa4443b4a509e4eb694a39a50",
+      "bytes": 267894
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\complete.json",
+      "target": "runs\\width2_seed0\\complete.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "78c81a7568d55bfea4cc1d68cc27de896702beddcc2d3e10d87d7f5841bff776",
+      "bytes": 18621
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\config.json",
+      "target": "runs\\width2_seed0\\config.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "67a253746e06662180cf3e7fcaa3c2093febc21ab8673840f8270e06040c64db",
+      "bytes": 964
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\environment.png",
+      "target": "runs\\width2_seed0\\environment.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "1ecfd8a01b08fadcc1ab46b324215880bb6a5083aad08f9a8f6b373368e9ad41",
+      "bytes": 13956
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\epoch_0200.pkl",
+      "target": "runs\\width2_seed0\\epoch_0200.pkl",
+      "action": "removed_identical_duplicate",
+      "sha256": "d3f28fd95c4d8f45b4d5243ded82f85f6295b5018c75c92d56e0e0e6fbb814f5",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\epoch_0400.pkl",
+      "target": "runs\\width2_seed0\\epoch_0400.pkl",
+      "action": "removed_identical_duplicate",
+      "sha256": "4df1c9347b5ff482e243999840ec481380ab9e0b4562caed6af0d99dbca1e717",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\epoch_0600.pkl",
+      "target": "runs\\width2_seed0\\epoch_0600.pkl",
+      "action": "removed_identical_duplicate",
+      "sha256": "6bd4a3bec8fb424bccb2968da9e30b3c981ea7e1f8dcf147dc58d8276d9c08f4",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\epoch_0800.pkl",
+      "target": "runs\\width2_seed0\\epoch_0800.pkl",
+      "action": "removed_identical_duplicate",
+      "sha256": "e9e49b74c4a6f92357215eab4986c32a0c3eb7325f935905374d101adc7c46de",
+      "bytes": 9070898
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation_pairs.npz",
+      "target": "runs\\width2_seed0\\evaluation_pairs.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "830ed1149486319d2fc02c4a32d73695462881acc97eee3ac7fb5b63f9041814",
+      "bytes": 5504
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\losses.npy",
+      "target": "runs\\width2_seed0\\losses.npy",
+      "action": "removed_identical_duplicate",
+      "sha256": "1d9a177c8cdc3f357ecec5313c7d0de450cbcac9d67e30bbf55b43b779e05a8c",
+      "bytes": 3200128
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\metadata.json",
+      "target": "runs\\width2_seed0\\metadata.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "15f9aabcf293197d66a9c612b6b416b21bbbdf6ef1b5127138c918c759977798",
+      "bytes": 1828
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\resume.pkl",
+      "target": "runs\\width2_seed0\\resume.pkl",
+      "action": "removed_identical_duplicate",
+      "sha256": "1a64f3c353944d14e0dea17f43b6a6cc0d46587de31364deb0b8dd5374b47812",
+      "bytes": 36311470
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\training.json",
+      "target": "runs\\width2_seed0\\training.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "def582b0c5a6517b520524c81bfe56c63acee7d6b8970caa61c2c448334ede4b",
+      "bytes": 118624
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "action": "moved",
+      "sha256": "8b0e0ecd21182b6db1a345200671ea4fbc802f8431890ea740c93d3c8b3dea1b",
+      "bytes": 3410
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "moved",
+      "sha256": "77a437f99d6a5dec560a213f738319840d2074b73634127aea7e11f84509f9e3",
+      "bytes": 3061
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "action": "moved",
+      "sha256": "148cc729027900e5df3dbd2102aa71ece362c1995d321b0dc5fed9840a44eb46",
+      "bytes": 3496
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "action": "moved",
+      "sha256": "12230b61acfc65ecda56adfc52eadfe1d0c9675fbf53f0c3ddd35c4dc3a2a23b",
+      "bytes": 3831
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "action": "moved",
+      "sha256": "9303786b788facfd988856d8ff33f108673e290fa7b7722c8395f48920a0c2b2",
+      "bytes": 3489
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "action": "moved",
+      "sha256": "b3d63cd2d2e9c5e5ffe73eda74b4168287caa743ffaf7cf5ae4509727950eb62",
+      "bytes": 3900
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "action": "moved",
+      "sha256": "b9021bad803eac5a01d599e969477728c92d04b1278c2bc31c2bf46d8a7bcc95",
+      "bytes": 3532
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "action": "moved",
+      "sha256": "bf58c602d7a02eeb3be896d93034c9ecaac3e16d730d640b831a795c156cf3b7",
+      "bytes": 3877
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "action": "moved",
+      "sha256": "921d7570d4ee396e5e84fbcf1a07b2266a63ffd6d0688d1137b739da2394270d",
+      "bytes": 3502
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "action": "moved",
+      "sha256": "2b8bcb563b29305629a79232fe2ee1c4637b85ed2b9589fd6b6202a6d42fe790",
+      "bytes": 3791
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\evaluation\\navigation.png",
+      "target": "runs\\width2_seed0\\evaluation\\navigation.png",
+      "action": "moved",
+      "sha256": "c9de82d9d483268a6ca289ec01d07685d5ea97b9d7deb5755c04106f539e2525",
+      "bytes": 229841
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "target": "runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "action": "moved",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "moved",
+      "sha256": "48870fb2b1470fa4318c930a27fc5de8507aa2b3e5d1d905c16f57337eb193fb",
+      "bytes": 11700
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "moved",
+      "sha256": "ff95581aec98691d8d30962ecb67c10e34d6e22851f9a7dda8ab73cbd47490b4",
+      "bytes": 13234
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "moved",
+      "sha256": "db2cc1e68a1d725b9266ef65a9ed1f04c1ee6d821811cb3d43e8633781655a37",
+      "bytes": 20113
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "target": "runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "action": "moved",
+      "sha256": "1ff00b3e82042f2ddf7e5984709d3883406e32f4f175ab578497640f23868f53",
+      "bytes": 28015
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "moved",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\run_fb_jax.py",
+      "target": "runs\\width2_seed0\\source\\run_fb_jax.py",
+      "action": "moved",
+      "sha256": "aed75853a4d298c66c016d808ab41989a7a1079275650b4650d66c83155d4e5b",
+      "bytes": 9585
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "moved",
+      "sha256": "a1ba229ccb5a8fd331d33fac94db61b8ad7090f6bcd5d7ba7bafad573e0f7ea5",
+      "bytes": 6929
+    },
+    {
+      "source": "fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "action": "moved",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\complete.json",
+      "target": "runs\\width2_seed0\\complete.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "78c81a7568d55bfea4cc1d68cc27de896702beddcc2d3e10d87d7f5841bff776",
+      "bytes": 18621
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\config.json",
+      "target": "runs\\width2_seed0\\config.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "67a253746e06662180cf3e7fcaa3c2093febc21ab8673840f8270e06040c64db",
+      "bytes": 964
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\environment.png",
+      "target": "runs\\width2_seed0\\environment.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "1ecfd8a01b08fadcc1ab46b324215880bb6a5083aad08f9a8f6b373368e9ad41",
+      "bytes": 13956
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation_pairs.npz",
+      "target": "runs\\width2_seed0\\evaluation_pairs.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "830ed1149486319d2fc02c4a32d73695462881acc97eee3ac7fb5b63f9041814",
+      "bytes": 5504
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\losses.npy",
+      "target": "runs\\width2_seed0\\losses.npy",
+      "action": "removed_identical_duplicate",
+      "sha256": "1d9a177c8cdc3f357ecec5313c7d0de450cbcac9d67e30bbf55b43b779e05a8c",
+      "bytes": 3200128
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\metadata.json",
+      "target": "runs\\width2_seed0\\metadata.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "15f9aabcf293197d66a9c612b6b416b21bbbdf6ef1b5127138c918c759977798",
+      "bytes": 1828
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\training.json",
+      "target": "runs\\width2_seed0\\training.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "def582b0c5a6517b520524c81bfe56c63acee7d6b8970caa61c2c448334ede4b",
+      "bytes": 118624
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001.json",
+      "target": "archive\\import_conflicts\\9fd33f6464d3\\smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001.json",
+      "action": "archived_differing_copy",
+      "sha256": "418019eee0b445fa5e2fe503aa22e47640d445a187a7c9f8c80a17990d27e6ae",
+      "bytes": 3220
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "7ad5c7b276feff98c0d916beb4264cd7a9eb83c6b6d77c84d9987ccd0ef2b250",
+      "bytes": 1240
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002.json",
+      "target": "archive\\import_conflicts\\4f19d1b6154f\\smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002.json",
+      "action": "archived_differing_copy",
+      "sha256": "c3f0734dd37dda22ff469ede057e204a672b5beb3ad066c9cbd0631c00147578",
+      "bytes": 3220
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002_trials.npz",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\epoch_0002_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "7ad5c7b276feff98c0d916beb4264cd7a9eb83c6b6d77c84d9987ccd0ef2b250",
+      "bytes": 1240
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\evaluation\\navigation.png",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\evaluation\\navigation.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "cee836ab52aca5c328b2ef048743201da1188e99d1893c05f8369a18e05c648a",
+      "bytes": 87600
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\adjustable_four_rooms.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\adjustable_four_rooms.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "archive\\import_conflicts\\2a6fb5cbfdba\\smoke_runs\\replay_stopped_smoke_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "archived_differing_copy",
+      "sha256": "48870fb2b1470fa4318c930a27fc5de8507aa2b3e5d1d905c16f57337eb193fb",
+      "bytes": 11700
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "archive\\import_conflicts\\9ca76e1a4f5d\\smoke_runs\\replay_stopped_smoke_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "archived_differing_copy",
+      "sha256": "ff95581aec98691d8d30962ecb67c10e34d6e22851f9a7dda8ab73cbd47490b4",
+      "bytes": 13234
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "archive\\import_conflicts\\b4182334d764\\smoke_runs\\replay_stopped_smoke_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "archived_differing_copy",
+      "sha256": "db2cc1e68a1d725b9266ef65a9ed1f04c1ee6d821811cb3d43e8633781655a37",
+      "bytes": 20113
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\forward_backward_jax.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\forward_backward_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "bc98d863d1c8091100a116a25097b95c1ec8aa622cfe88e4ff8aa56dc0c044f7",
+      "bytes": 28372
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\run_fb_jax.py",
+      "target": "archive\\import_conflicts\\f480d9a822d3\\smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fb_jax.py",
+      "action": "archived_differing_copy",
+      "sha256": "aed75853a4d298c66c016d808ab41989a7a1079275650b4650d66c83155d4e5b",
+      "bytes": 9585
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "c6d99c48c26c754b8a9316db0b562413592efd65a150e4ed1b9585195d575d62",
+      "bytes": 8968
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_reference.py",
+      "target": "smoke_runs\\replay_stopped_smoke_seed0\\source\\run_fourrooms_reference.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0001.json",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0001.json",
+      "action": "moved",
+      "sha256": "21c2cf3a4e8083cf1b9e40cc436d5874c79d7bbae8dac1dd3b75dadecce4faf7",
+      "bytes": 3368
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "moved",
+      "sha256": "49f1f8fc0fc17425fff0f5ef411db28e0635ff9e34cbdcc2cbc24015cd9c0319",
+      "bytes": 2716
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0200.json",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0200.json",
+      "action": "moved",
+      "sha256": "4999ccd40928678ae04bf5800961eff5ad1d1e8eff8ddfd9d6a5c592f21647e4",
+      "bytes": 3492
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0200_trials.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0200_trials.npz",
+      "action": "moved",
+      "sha256": "8feb53c007effac074fd4281a43a9d344f90a3b5388702f0d182918e420fa9e8",
+      "bytes": 3319
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0400.json",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0400.json",
+      "action": "moved",
+      "sha256": "55970708e499007f4fad904fd77a49eca95b1744728256061842639707eb26c7",
+      "bytes": 3435
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0400_trials.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0400_trials.npz",
+      "action": "moved",
+      "sha256": "b0ef8e410b05638f1693240d32161952be559d85966e2dd596d52d8b9a7c2649",
+      "bytes": 3154
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0600.json",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0600.json",
+      "action": "moved",
+      "sha256": "429a2121abb2eacd62dc2e771429d5f88fd7c0f84f77d42d6c818206c08a3695",
+      "bytes": 3472
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0600_trials.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0600_trials.npz",
+      "action": "moved",
+      "sha256": "7f79dcd84bb1dcd1d03bb201e3b2ed9ff15d311930f04920972798138c2ea7ed",
+      "bytes": 3155
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0800.json",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0800.json",
+      "action": "moved",
+      "sha256": "9a430f95258ea2e8df1e7c4694350fe61c699e14e68fd326cd322124c5f6c76c",
+      "bytes": 3515
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0800_trials.npz",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\epoch_0800_trials.npz",
+      "action": "moved",
+      "sha256": "1e7066a1477301ed7deb8ec8f6f3b41be36b2f338b769b02503a25873e3a1601",
+      "bytes": 3173
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\evaluation\\navigation.png",
+      "target": "runs\\width2_replay_stopped_seed0\\evaluation\\navigation.png",
+      "action": "moved",
+      "sha256": "294f26eeef4f42b17de4e79cb63d63ed315c8fd397425871c16be11e496aea62",
+      "bytes": 218348
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\adjustable_four_rooms.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\adjustable_four_rooms.py",
+      "action": "moved",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "moved",
+      "sha256": "48870fb2b1470fa4318c930a27fc5de8507aa2b3e5d1d905c16f57337eb193fb",
+      "bytes": 11700
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "moved",
+      "sha256": "ff95581aec98691d8d30962ecb67c10e34d6e22851f9a7dda8ab73cbd47490b4",
+      "bytes": 13234
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "moved",
+      "sha256": "db2cc1e68a1d725b9266ef65a9ed1f04c1ee6d821811cb3d43e8633781655a37",
+      "bytes": 20113
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\forward_backward_jax.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\forward_backward_jax.py",
+      "action": "moved",
+      "sha256": "bc98d863d1c8091100a116a25097b95c1ec8aa622cfe88e4ff8aa56dc0c044f7",
+      "bytes": 28372
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "moved",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\run_fb_jax.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\run_fb_jax.py",
+      "action": "moved",
+      "sha256": "aed75853a4d298c66c016d808ab41989a7a1079275650b4650d66c83155d4e5b",
+      "bytes": 9585
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "moved",
+      "sha256": "c6d99c48c26c754b8a9316db0b562413592efd65a150e4ed1b9585195d575d62",
+      "bytes": 8968
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_replay_stopped_seed0\\source\\run_fourrooms_reference.py",
+      "target": "runs\\width2_replay_stopped_seed0\\source\\run_fourrooms_reference.py",
+      "action": "moved",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "8b0e0ecd21182b6db1a345200671ea4fbc802f8431890ea740c93d3c8b3dea1b",
+      "bytes": 3410
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "77a437f99d6a5dec560a213f738319840d2074b73634127aea7e11f84509f9e3",
+      "bytes": 3061
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "148cc729027900e5df3dbd2102aa71ece362c1995d321b0dc5fed9840a44eb46",
+      "bytes": 3496
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "12230b61acfc65ecda56adfc52eadfe1d0c9675fbf53f0c3ddd35c4dc3a2a23b",
+      "bytes": 3831
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "9303786b788facfd988856d8ff33f108673e290fa7b7722c8395f48920a0c2b2",
+      "bytes": 3489
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "b3d63cd2d2e9c5e5ffe73eda74b4168287caa743ffaf7cf5ae4509727950eb62",
+      "bytes": 3900
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "b9021bad803eac5a01d599e969477728c92d04b1278c2bc31c2bf46d8a7bcc95",
+      "bytes": 3532
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "bf58c602d7a02eeb3be896d93034c9ecaac3e16d730d640b831a795c156cf3b7",
+      "bytes": 3877
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "921d7570d4ee396e5e84fbcf1a07b2266a63ffd6d0688d1137b739da2394270d",
+      "bytes": 3502
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "2b8bcb563b29305629a79232fe2ee1c4637b85ed2b9589fd6b6202a6d42fe790",
+      "bytes": 3791
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\navigation.png",
+      "target": "runs\\width2_seed0\\evaluation\\navigation.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "c9de82d9d483268a6ca289ec01d07685d5ea97b9d7deb5755c04106f539e2525",
+      "bytes": 229841
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "target": "runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "48870fb2b1470fa4318c930a27fc5de8507aa2b3e5d1d905c16f57337eb193fb",
+      "bytes": 11700
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "ff95581aec98691d8d30962ecb67c10e34d6e22851f9a7dda8ab73cbd47490b4",
+      "bytes": 13234
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "db2cc1e68a1d725b9266ef65a9ed1f04c1ee6d821811cb3d43e8633781655a37",
+      "bytes": 20113
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "target": "runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "1ff00b3e82042f2ddf7e5984709d3883406e32f4f175ab578497640f23868f53",
+      "bytes": 28015
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fb_jax.py",
+      "target": "runs\\width2_seed0\\source\\run_fb_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "aed75853a4d298c66c016d808ab41989a7a1079275650b4650d66c83155d4e5b",
+      "bytes": 9585
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "a1ba229ccb5a8fd331d33fac94db61b8ad7090f6bcd5d7ba7bafad573e0f7ea5",
+      "bytes": 6929
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "8b0e0ecd21182b6db1a345200671ea4fbc802f8431890ea740c93d3c8b3dea1b",
+      "bytes": 3410
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0001_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "77a437f99d6a5dec560a213f738319840d2074b73634127aea7e11f84509f9e3",
+      "bytes": 3061
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "148cc729027900e5df3dbd2102aa71ece362c1995d321b0dc5fed9840a44eb46",
+      "bytes": 3496
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0200_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "12230b61acfc65ecda56adfc52eadfe1d0c9675fbf53f0c3ddd35c4dc3a2a23b",
+      "bytes": 3831
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "9303786b788facfd988856d8ff33f108673e290fa7b7722c8395f48920a0c2b2",
+      "bytes": 3489
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0400_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "b3d63cd2d2e9c5e5ffe73eda74b4168287caa743ffaf7cf5ae4509727950eb62",
+      "bytes": 3900
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "b9021bad803eac5a01d599e969477728c92d04b1278c2bc31c2bf46d8a7bcc95",
+      "bytes": 3532
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0600_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "bf58c602d7a02eeb3be896d93034c9ecaac3e16d730d640b831a795c156cf3b7",
+      "bytes": 3877
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800.json",
+      "action": "removed_identical_duplicate",
+      "sha256": "921d7570d4ee396e5e84fbcf1a07b2266a63ffd6d0688d1137b739da2394270d",
+      "bytes": 3502
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "target": "runs\\width2_seed0\\evaluation\\epoch_0800_trials.npz",
+      "action": "removed_identical_duplicate",
+      "sha256": "2b8bcb563b29305629a79232fe2ee1c4637b85ed2b9589fd6b6202a6d42fe790",
+      "bytes": 3791
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\evaluation\\navigation.png",
+      "target": "runs\\width2_seed0\\evaluation\\navigation.png",
+      "action": "removed_identical_duplicate",
+      "sha256": "c9de82d9d483268a6ca289ec01d07685d5ea97b9d7deb5755c04106f539e2525",
+      "bytes": 229841
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "target": "runs\\width2_seed0\\source\\adjustable_four_rooms.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "76d0407be63e04028e1be9cbbc39ad93fc218c9ac37a0effa70ea08b756d43d2",
+      "bytes": 2270
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "target": "runs\\width2_seed0\\source\\continuous_four_rooms_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "48870fb2b1470fa4318c930a27fc5de8507aa2b3e5d1d905c16f57337eb193fb",
+      "bytes": 11700
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "target": "runs\\width2_seed0\\source\\control_bfs_bottlenecks.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "ff95581aec98691d8d30962ecb67c10e34d6e22851f9a7dda8ab73cbd47490b4",
+      "bytes": 13234
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "target": "runs\\width2_seed0\\source\\estimate_fb_bottlenecks_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "db2cc1e68a1d725b9266ef65a9ed1f04c1ee6d821811cb3d43e8633781655a37",
+      "bytes": 20113
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "target": "runs\\width2_seed0\\source\\forward_backward_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "1ff00b3e82042f2ddf7e5984709d3883406e32f4f175ab578497640f23868f53",
+      "bytes": 28015
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "target": "runs\\width2_seed0\\source\\fourrooms_reference_diagnostics.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "41beb212aa2f7e657e9f81b4c05567c5f639f8092c9f6a18d08a261396880a44",
+      "bytes": 9116
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fb_jax.py",
+      "target": "runs\\width2_seed0\\source\\run_fb_jax.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "aed75853a4d298c66c016d808ab41989a7a1079275650b4650d66c83155d4e5b",
+      "bytes": 9585
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_doorways.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "a1ba229ccb5a8fd331d33fac94db61b8ad7090f6bcd5d7ba7bafad573e0f7ea5",
+      "bytes": 6929
+    },
+    {
+      "source": "fourrooms_doorways\\fourrooms_doorways\\fourrooms_doorways\\runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "target": "runs\\width2_seed0\\source\\run_fourrooms_reference.py",
+      "action": "removed_identical_duplicate",
+      "sha256": "987370a716a76e97348ec825538a2b5137d41c9158de270fee1823eba2af76fd",
+      "bytes": 6882
+    }
+  ]
+}

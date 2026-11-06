@@ -1,0 +1,45 @@
+{
+  "first_door_approach": {
+    "success_difference": -0.09578036723163842,
+    "trial_cluster_interval95": [
+      -0.15215606875763127,
+      -0.04005661867977526
+    ],
+    "success_change_on_rank_flips": 0.048763736263736264,
+    "success_change_without_rank_flip": -0.14579372623574144,
+    "bfs_nonprogress": {
+      "400": 0.15254237288135594,
+      "800": 0.1977401129943503
+    }
+  },
+  "just_after_crossing": {
+    "success_difference": -0.13900862068965517,
+    "trial_cluster_interval95": [
+      -0.21905499124607583,
+      -0.058332006224519395
+    ],
+    "success_change_on_rank_flips": -0.17442602040816327,
+    "success_change_without_rank_flip": -0.10595238095238095,
+    "bfs_nonprogress": {
+      "400": 0.014778325123152709,
+      "800": 0.0
+    },
+    "points_back_toward_first_door": {
+      "400": 0.014778325123152709,
+      "800": 0.0
+    }
+  },
+  "second_door_traversal": {
+    "success_difference": -0.11107673267326733,
+    "trial_cluster_interval95": [
+      -0.18068901879472168,
+      -0.04425417253896441
+    ],
+    "success_change_on_rank_flips": -0.16314338235294118,
+    "success_change_without_rank_flip": -0.08465485074626866,
+    "bfs_nonprogress": {
+      "400": 0.05025125628140704,
+      "800": 0.06532663316582915
+    }
+  }
+}

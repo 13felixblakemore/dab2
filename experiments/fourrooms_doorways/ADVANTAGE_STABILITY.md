@@ -80,13 +80,13 @@ the local-suite averages.
 
 ### Results artifacts
 
-- `advantage_stability/summary.json`: checkpoint and transition measurements.
-- `advantage_stability/advantages.csv`: all 2,560 checkpoint/probe/action rows,
+- `analyses/advantage_stability/summary.json`: checkpoint and transition measurements.
+- `analyses/advantage_stability/advantages.csv`: all 2,560 checkpoint/probe/action rows,
   including raw Q, signed A, blocked/preferred flags and MC returns.
-- `advantage_stability/changed_validation.json` and matching NPZ files: the
+- `analyses/advantage_stability/changed_validation.json` and matching NPZ files: the
   independent 128-replica validation on the 37 changed probes.
-- `advantage_stability/by_goal_kind.json`: adjacent/diagonal breakdown.
-- `advantage_stability/stability.png` and `advantage_traces.png`: summary and
+- `analyses/advantage_stability/by_goal_kind.json`: adjacent/diagonal breakdown.
+- `analyses/advantage_stability/stability.png` and `advantage_traces.png`: summary and
   example advantage trajectories. The latter shows the first eight changed
   probes in deterministic ordering, all at the bottom doorway; it is an example
   selection, not representative sampling of all doors.
@@ -172,7 +172,7 @@ training seeds or a representative uniform free-space task distribution.
 
 ## Artifacts and validation
 
-Outputs: `advantage_stability/fixed_probes.npz`, one cached `epoch_NNNN.npz` per
+Outputs: `analyses/advantage_stability/fixed_probes.npz`, one cached `epoch_NNNN.npz` per
 available checkpoint, `summary.json`, `stability.png`, and `advantage_traces.png`.
 Each cache retains Q, all signed advantages, all action/replica first-hit times,
 first-step actual collisions, nominal blocked-action masks and checkpoint hash.

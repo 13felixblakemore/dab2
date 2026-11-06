@@ -1,0 +1,58 @@
+{
+  "200_adjacent": {
+    "blocked_preference": 0.175,
+    "success30": 0.631640625,
+    "return30": 0.5897520809529958,
+    "success150": 0.7625,
+    "return150": 0.6513099176015358
+  },
+  "200_diagonal": {
+    "blocked_preference": 0.1125,
+    "success30": 0.12265625,
+    "return30": 0.10122865552406032,
+    "success150": 0.294140625,
+    "return150": 0.18059227312817105
+  },
+  "400_adjacent": {
+    "blocked_preference": 0.125,
+    "success30": 0.6640625,
+    "return30": 0.6197622767391902,
+    "success150": 0.784765625,
+    "return150": 0.6758945525811544
+  },
+  "400_diagonal": {
+    "blocked_preference": 0.0875,
+    "success30": 0.25546875,
+    "return30": 0.21093785492658879,
+    "success150": 0.433203125,
+    "return150": 0.291364071963923
+  },
+  "600_adjacent": {
+    "blocked_preference": 0.1125,
+    "success30": 0.6875,
+    "return30": 0.6407317293462877,
+    "success150": 0.8171875,
+    "return150": 0.7022458985953406
+  },
+  "600_diagonal": {
+    "blocked_preference": 0.1375,
+    "success30": 0.251953125,
+    "return30": 0.21000295408616174,
+    "success150": 0.3953125,
+    "return150": 0.2763582109206656
+  },
+  "800_adjacent": {
+    "blocked_preference": 0.125,
+    "success30": 0.634765625,
+    "return30": 0.5903524960240873,
+    "success150": 0.79296875,
+    "return150": 0.663506309872242
+  },
+  "800_diagonal": {
+    "blocked_preference": 0.1125,
+    "success30": 0.258203125,
+    "return30": 0.21428797958182927,
+    "success150": 0.414453125,
+    "return150": 0.28589317635586486
+  }
+}

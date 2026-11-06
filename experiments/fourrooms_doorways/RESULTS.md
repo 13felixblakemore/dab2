@@ -1,6 +1,6 @@
 # Doubled-doorway seed-0 results
 
-Inspected uploaded results at `fourrooms_doorways/runs/width2_seed0/` against
+Inspected uploaded results at `runs/width2_seed0/` against
 `../fourrooms_reference/runs/seed0/`. Both completed 800 epochs; the width-2 loss
 array has shape (800,25,40), all finite, and final counters report 800,000 updates
 and 2,400,000 transitions. Width is 2/11 = .1818, twice the original .0909.

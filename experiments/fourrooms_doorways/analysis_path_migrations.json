@@ -1,0 +1,16 @@
+[
+    {
+        "analysis":  "advantage_stability",
+        "reason":  "Only default artifact paths changed; checkpoint contents and analysis mathematics unchanged",
+        "original_script_sha256":  "72c412c0f227b21fa346097fbb9ea3083b65200a53732a05bc390619d7b455a7",
+        "current_script_sha256":  "819e3a256d195128d3d16d283f19315644719a0781ca82cf7ed520988ce7fa4b",
+        "original_manifest":  "C:\\Users\\13fel\\PycharmProjects\\dab2\\experiments\\fourrooms_doorways\\analyses\\advantage_stability\\config.before_organization.json"
+    },
+    {
+        "analysis":  "stage_analysis",
+        "reason":  "Only default artifact paths changed; checkpoint contents and analysis mathematics unchanged",
+        "original_script_sha256":  "278e642935c56ce83054ec8196ecdb08eca922f58c215c3bda928a581982f75a",
+        "current_script_sha256":  "6ed018245e015f1e5d9369ef10db6c0e737c2ad754f7627a4e366ef6b8b99a62",
+        "original_manifest":  "C:\\Users\\13fel\\PycharmProjects\\dab2\\experiments\\fourrooms_doorways\\analyses\\stage_analysis\\config.before_organization.json"
+    }
+]

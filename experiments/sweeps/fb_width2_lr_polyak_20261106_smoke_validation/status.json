@@ -1,0 +1,12 @@
+[
+  {
+    "run": "lr0.0001_polyak0.95_seed0",
+    "completed": true,
+    "epoch": 2
+  },
+  {
+    "run": "lr5e-05_polyak0.95_seed0",
+    "completed": true,
+    "epoch": 2
+  }
+]

@@ -7,3 +7,9 @@
 *.msgpack
 resume.tmp
 epoch_*.tmp
+
+# Regenerable Python/editor caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/

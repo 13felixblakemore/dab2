@@ -1,0 +1,28 @@
+{
+  "seed": 20261107,
+  "rollouts": 32,
+  "pairs_per_category": 200,
+  "jax": "0.12.0.1",
+  "device": "cpu",
+  "script_sha256": "fb1b44807610050db3828c65c7f915ccf93b9d1e04afa81b218ef5f0e6c9a190",
+  "validity": {
+    "starts": {
+      "count": 600,
+      "inside_wall": 0,
+      "native_float32_inside_wall": 0,
+      "outside_world": 0,
+      "bad_indices": [],
+      "minimum_wall_clearance": 0.020454539494080937,
+      "success_square_overlaps_wall": 258
+    },
+    "goals": {
+      "count": 600,
+      "inside_wall": 0,
+      "native_float32_inside_wall": 0,
+      "outside_world": 0,
+      "bad_indices": [],
+      "minimum_wall_clearance": 0.020454539494080937,
+      "success_square_overlaps_wall": 244
+    }
+  }
+}

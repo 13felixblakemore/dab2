@@ -150,9 +150,9 @@ def summary_for(record,rows,mask,blocked,column):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run',type=Path,default=Path('experiments/fourrooms_doorways/fourrooms_doorways/runs/width2_seed0'))
-    parser.add_argument('--traces',type=Path,default=Path('experiments/fourrooms_doorways/decline_analysis'))
-    parser.add_argument('--output',type=Path,default=Path('experiments/fourrooms_doorways/stage_analysis'))
+    parser.add_argument('--run',type=Path,default=Path('experiments/fourrooms_doorways/runs/width2_seed0'))
+    parser.add_argument('--traces',type=Path,default=Path('experiments/fourrooms_doorways/analyses/decline_analysis'))
+    parser.add_argument('--output',type=Path,default=Path('experiments/fourrooms_doorways/analyses/stage_analysis'))
     parser.add_argument('--rollouts',type=int,default=32)
     parser.add_argument('--batch-size',type=int,default=512)
     parser.add_argument('--device',default='cpu')

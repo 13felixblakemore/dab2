@@ -1,0 +1,50 @@
+{
+  "400_30_adjacent_failed_after_cross": {
+    "count": 7,
+    "wall_run5": 2
+  },
+  "400_30_diagonal_failed_after_cross": {
+    "count": 59,
+    "wall_run5": 46
+  },
+  "400_150_adjacent_failed_after_cross": {
+    "count": 6,
+    "wall_run5": 2
+  },
+  "400_150_diagonal_failed_after_cross": {
+    "count": 55,
+    "wall_run5": 48
+  },
+  "masked_400_30_diagonal_stages": {
+    "approached_no_progress_crossing": 9,
+    "crossed_then_approached_next_door_no_completion": 3,
+    "crossed_then_never_approached_next_door": 9,
+    "entered_goal_room_failed_goal_control": 11,
+    "never_approached_useful_door": 22,
+    "success": 146
+  },
+  "800_30_adjacent_failed_after_cross": {
+    "count": 7,
+    "wall_run5": 1
+  },
+  "800_30_diagonal_failed_after_cross": {
+    "count": 73,
+    "wall_run5": 57
+  },
+  "800_150_adjacent_failed_after_cross": {
+    "count": 4,
+    "wall_run5": 1
+  },
+  "800_150_diagonal_failed_after_cross": {
+    "count": 64,
+    "wall_run5": 56
+  },
+  "masked_800_30_diagonal_stages": {
+    "approached_no_progress_crossing": 16,
+    "crossed_then_approached_next_door_no_completion": 6,
+    "crossed_then_never_approached_next_door": 19,
+    "entered_goal_room_failed_goal_control": 11,
+    "never_approached_useful_door": 26,
+    "success": 122
+  }
+}

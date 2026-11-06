@@ -1,0 +1,1351 @@
+{
+  "checkpoints": {
+    "400": {
+      "sha256": "4df1c9347b5ff482e243999840ec481380ab9e0b4562caed6af0d99dbca1e717",
+      "replay_success_disagreements": {
+        "30": 0,
+        "150": 0
+      },
+      "fixed_probe_metrics": {
+        "residual_rmse": 23.188804626464844,
+        "relative_residual": 0.03517415001988411,
+        "q_rms": 3964.64013671875,
+        "median_q_gap": 26.14013671875,
+        "mean_z_norm": 2.8745813369750977,
+        "online_target_q_rmse": 31.241512298583984,
+        "near_wall_probe_count": 3925,
+        "near_wall_greedy_blocked_fraction": 0.5740127388535032,
+        "near_wall_bfs_nonprogress_fraction": 0.5857103295486015,
+        "mean_blocked_action_advantage": -1.1772232055664062
+      }
+    },
+    "800": {
+      "sha256": "e9e49b74c4a6f92357215eab4986c32a0c3eb7325f935905374d101adc7c46de",
+      "replay_success_disagreements": {
+        "30": 0,
+        "150": 0
+      },
+      "fixed_probe_metrics": {
+        "residual_rmse": 23.567264556884766,
+        "relative_residual": 0.03159469738602638,
+        "q_rms": 5060.29833984375,
+        "median_q_gap": 25.04534912109375,
+        "mean_z_norm": 2.79433012008667,
+        "online_target_q_rmse": 35.251705169677734,
+        "near_wall_probe_count": 3925,
+        "near_wall_greedy_blocked_fraction": 0.6242038216560509,
+        "near_wall_bfs_nonprogress_fraction": 0.6527277762392689,
+        "mean_blocked_action_advantage": 0.6235104203224182
+      }
+    }
+  },
+  "stages": {
+    "400_30_same_room": {
+      "counts": {
+        "never_approached_useful_door": 8,
+        "success": 192
+      },
+      "wall_action_fraction": 0.0782472613458529,
+      "repeated_wall_action_fraction": 0.07120500782472614,
+      "fraction_wall_run_at_least_5": 0.025,
+      "mean_longest_wall_run": 0.45
+    },
+    "400_30_adjacent_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 56,
+        "entered_goal_room_failed_goal_control": 7,
+        "never_approached_useful_door": 39,
+        "success": 98
+      },
+      "wall_action_fraction": 0.5198008062603747,
+      "repeated_wall_action_fraction": 0.484230495612995,
+      "fraction_wall_run_at_least_5": 0.475,
+      "mean_longest_wall_run": 10.04
+    },
+    "400_30_diagonal_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 43,
+        "crossed_then_approached_next_door_no_completion": 30,
+        "crossed_then_never_approached_next_door": 25,
+        "entered_goal_room_failed_goal_control": 4,
+        "never_approached_useful_door": 50,
+        "success": 48
+      },
+      "wall_action_fraction": 0.4852252252252252,
+      "repeated_wall_action_fraction": 0.44594594594594594,
+      "fraction_wall_run_at_least_5": 0.625,
+      "mean_longest_wall_run": 12.075
+    },
+    "400_150_same_room": {
+      "counts": {
+        "never_approached_useful_door": 4,
+        "success": 196
+      },
+      "wall_action_fraction": 0.18481675392670158,
+      "repeated_wall_action_fraction": 0.1774869109947644,
+      "fraction_wall_run_at_least_5": 0.025,
+      "mean_longest_wall_run": 1.255
+    },
+    "400_150_adjacent_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 32,
+        "entered_goal_room_failed_goal_control": 6,
+        "never_approached_useful_door": 27,
+        "success": 135
+      },
+      "wall_action_fraction": 0.7588412880966072,
+      "repeated_wall_action_fraction": 0.7385710178263369,
+      "fraction_wall_run_at_least_5": 0.5,
+      "mean_longest_wall_run": 37.655
+    },
+    "400_150_diagonal_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 32,
+        "crossed_then_approached_next_door_no_completion": 31,
+        "crossed_then_never_approached_next_door": 22,
+        "entered_goal_room_failed_goal_control": 2,
+        "never_approached_useful_door": 38,
+        "success": 75
+      },
+      "wall_action_fraction": 0.7237773562207931,
+      "repeated_wall_action_fraction": 0.7038819229167631,
+      "fraction_wall_run_at_least_5": 0.65,
+      "mean_longest_wall_run": 53.44
+    },
+    "800_30_same_room": {
+      "counts": {
+        "never_approached_useful_door": 12,
+        "success": 188
+      },
+      "wall_action_fraction": 0.05146533238027162,
+      "repeated_wall_action_fraction": 0.04503216583273767,
+      "fraction_wall_run_at_least_5": 0.015,
+      "mean_longest_wall_run": 0.24
+    },
+    "800_30_adjacent_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 51,
+        "entered_goal_room_failed_goal_control": 7,
+        "never_approached_useful_door": 47,
+        "success": 95
+      },
+      "wall_action_fraction": 0.5128264386410908,
+      "repeated_wall_action_fraction": 0.47839149526230645,
+      "fraction_wall_run_at_least_5": 0.47,
+      "mean_longest_wall_run": 10.22
+    },
+    "800_30_diagonal_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 57,
+        "crossed_then_approached_next_door_no_completion": 23,
+        "crossed_then_never_approached_next_door": 45,
+        "entered_goal_room_failed_goal_control": 5,
+        "never_approached_useful_door": 46,
+        "success": 24
+      },
+      "wall_action_fraction": 0.5338604331385356,
+      "repeated_wall_action_fraction": 0.4917497421794431,
+      "fraction_wall_run_at_least_5": 0.72,
+      "mean_longest_wall_run": 13.965
+    },
+    "800_150_same_room": {
+      "counts": {
+        "never_approached_useful_door": 7,
+        "success": 193
+      },
+      "wall_action_fraction": 0.08540497193263834,
+      "repeated_wall_action_fraction": 0.08139534883720931,
+      "fraction_wall_run_at_least_5": 0.015,
+      "mean_longest_wall_run": 0.695
+    },
+    "800_150_adjacent_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 35,
+        "entered_goal_room_failed_goal_control": 4,
+        "never_approached_useful_door": 33,
+        "success": 128
+      },
+      "wall_action_fraction": 0.7292034197313069,
+      "repeated_wall_action_fraction": 0.7100692088478763,
+      "fraction_wall_run_at_least_5": 0.48,
+      "mean_longest_wall_run": 38.04
+    },
+    "800_150_diagonal_rooms": {
+      "counts": {
+        "approached_no_progress_crossing": 46,
+        "crossed_then_approached_next_door_no_completion": 22,
+        "crossed_then_never_approached_next_door": 39,
+        "entered_goal_room_failed_goal_control": 3,
+        "never_approached_useful_door": 37,
+        "success": 53
+      },
+      "wall_action_fraction": 0.7324190021864441,
+      "repeated_wall_action_fraction": 0.7125819916517591,
+      "fraction_wall_run_at_least_5": 0.735,
+      "mean_longest_wall_run": 63.685
+    }
+  },
+  "paired": {
+    "30_same_room": {
+      "groups": {
+        "lost": {
+          "count": 8,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 18.748416900634766,
+              "epoch800": 17.122665405273438
+            },
+            "relative_residual": {
+              "epoch400": 0.041839439421892166,
+              "epoch800": 0.05129014328122139
+            },
+            "q_rms": {
+              "epoch400": 3198.09375,
+              "epoch800": 3888.599853515625
+            },
+            "q_gap": {
+              "epoch400": 27.165550231933594,
+              "epoch800": 25.8913516998291
+            },
+            "z_norm": {
+              "epoch400": 3.0325231552124023,
+              "epoch800": 2.9237120151519775
+            },
+            "online_target_q_rmse": {
+              "epoch400": 10.423571586608887,
+              "epoch800": 22.2232666015625
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.1171875,
+              "epoch800": 0.0859375
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.21510416666666665,
+              "epoch800": 0.6421874999999999
+            }
+          }
+        },
+        "kept_success": {
+          "count": 184,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 20.079456329345703,
+              "epoch800": 19.196596145629883
+            },
+            "relative_residual": {
+              "epoch400": 0.04932187497615814,
+              "epoch800": 0.05004911869764328
+            },
+            "q_rms": {
+              "epoch400": 2671.93115234375,
+              "epoch800": 3113.311767578125
+            },
+            "q_gap": {
+              "epoch400": 49.669883728027344,
+              "epoch800": 51.672332763671875
+            },
+            "z_norm": {
+              "epoch400": 2.7970149517059326,
+              "epoch800": 2.701714515686035
+            },
+            "online_target_q_rmse": {
+              "epoch400": 18.91021156311035,
+              "epoch800": 19.672832489013672
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.0,
+              "epoch800": 0.0
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.055175983436852996,
+              "epoch800": 0.07318438656753874
+            }
+          }
+        },
+        "gained": {
+          "count": 4,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 40.36617660522461,
+              "epoch800": 35.37714385986328
+            },
+            "relative_residual": {
+              "epoch400": 0.027908936142921448,
+              "epoch800": 0.02461087703704834
+            },
+            "q_rms": {
+              "epoch400": 7892.97265625,
+              "epoch800": 8377.6767578125
+            },
+            "q_gap": {
+              "epoch400": 70.97434997558594,
+              "epoch800": 53.33820343017578
+            },
+            "z_norm": {
+              "epoch400": 4.220861911773682,
+              "epoch800": 3.9562184810638428
+            },
+            "online_target_q_rmse": {
+              "epoch400": 49.57771301269531,
+              "epoch800": 75.51374816894531
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.28125,
+              "epoch800": 0.078125
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.5050595238095238,
+              "epoch800": 0.125
+            }
+          }
+        },
+        "both_failed": {
+          "count": 4,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 32.79451370239258,
+              "epoch800": 18.20559310913086
+            },
+            "relative_residual": {
+              "epoch400": 0.043171338737010956,
+              "epoch800": 0.038151465356349945
+            },
+            "q_rms": {
+              "epoch400": 8094.3720703125,
+              "epoch800": 3868.12939453125
+            },
+            "q_gap": {
+              "epoch400": 57.60478973388672,
+              "epoch800": 33.9278678894043
+            },
+            "z_norm": {
+              "epoch400": 4.073721885681152,
+              "epoch800": 3.9130616188049316
+            },
+            "online_target_q_rmse": {
+              "epoch400": 79.5846939086914,
+              "epoch800": 41.23904037475586
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.234375,
+              "epoch800": 0.234375
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.578125,
+              "epoch800": 0.484375
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.02886658958191157,
+        "relative_residual": 0.11910504264381243,
+        "q_rms": 0.016247378392285298,
+        "q_gap": 0.043141971716573795,
+        "z_norm": 0.043645311764131584,
+        "online_target_q_rmse": -0.01191940592572077,
+        "wall_greedy_fraction": 0.27112977282463446,
+        "bfs_nonprogress_fraction": 0.5105201934447876
+      }
+    },
+    "30_adjacent_rooms": {
+      "groups": {
+        "lost": {
+          "count": 25,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.773229598999023,
+              "epoch800": 20.763368606567383
+            },
+            "relative_residual": {
+              "epoch400": 0.07074496150016785,
+              "epoch800": 0.07939919084310532
+            },
+            "q_rms": {
+              "epoch400": 2002.29443359375,
+              "epoch800": 1697.474853515625
+            },
+            "q_gap": {
+              "epoch400": 24.82181167602539,
+              "epoch800": 27.538286209106445
+            },
+            "z_norm": {
+              "epoch400": 2.833866834640503,
+              "epoch800": 2.680379629135132
+            },
+            "online_target_q_rmse": {
+              "epoch400": 17.498851776123047,
+              "epoch800": 18.093368530273438
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.0975,
+              "epoch800": 0.38
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.10366666666666667,
+              "epoch800": 0.4908315018315018
+            }
+          }
+        },
+        "kept_success": {
+          "count": 73,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 19.87944221496582,
+              "epoch800": 20.601280212402344
+            },
+            "relative_residual": {
+              "epoch400": 0.06098604202270508,
+              "epoch800": 0.07152117043733597
+            },
+            "q_rms": {
+              "epoch400": 2104.820556640625,
+              "epoch800": 1993.42236328125
+            },
+            "q_gap": {
+              "epoch400": 44.4642219543457,
+              "epoch800": 44.120452880859375
+            },
+            "z_norm": {
+              "epoch400": 2.678504228591919,
+              "epoch800": 2.5799684524536133
+            },
+            "online_target_q_rmse": {
+              "epoch400": 14.92017650604248,
+              "epoch800": 14.768730163574219
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.011986301369863013,
+              "epoch800": 0.018835616438356163
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.030750413969592053,
+              "epoch800": 0.046020246876411264
+            }
+          }
+        },
+        "gained": {
+          "count": 22,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 24.342815399169922,
+              "epoch800": 19.98751449584961
+            },
+            "relative_residual": {
+              "epoch400": 0.06721793860197067,
+              "epoch800": 0.07142001390457153
+            },
+            "q_rms": {
+              "epoch400": 2930.038818359375,
+              "epoch800": 1888.8992919921875
+            },
+            "q_gap": {
+              "epoch400": 35.59531021118164,
+              "epoch800": 24.797334671020508
+            },
+            "z_norm": {
+              "epoch400": 2.9270544052124023,
+              "epoch800": 2.7633092403411865
+            },
+            "online_target_q_rmse": {
+              "epoch400": 26.55451202392578,
+              "epoch800": 16.801546096801758
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.3125,
+              "epoch800": 0.09375
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.36057206682206683,
+              "epoch800": 0.133270202020202
+            }
+          }
+        },
+        "both_failed": {
+          "count": 80,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 24.463871002197266,
+              "epoch800": 25.374942779541016
+            },
+            "relative_residual": {
+              "epoch400": 0.08389755338430405,
+              "epoch800": 0.09965524822473526
+            },
+            "q_rms": {
+              "epoch400": 2690.822265625,
+              "epoch800": 2606.919189453125
+            },
+            "q_gap": {
+              "epoch400": 32.23633575439453,
+              "epoch800": 36.23511505126953
+            },
+            "z_norm": {
+              "epoch400": 2.98498272895813,
+              "epoch800": 2.920942544937134
+            },
+            "online_target_q_rmse": {
+              "epoch400": 21.308868408203125,
+              "epoch800": 22.64234161376953
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.66015625,
+              "epoch800": 0.67890625
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.6957961309523809,
+              "epoch800": 0.7049021291208791
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.10013880873396509,
+        "relative_residual": 0.036568010047506684,
+        "q_rms": 0.07799931967330755,
+        "q_gap": 0.11420505689605588,
+        "z_norm": 0.0024918431133437065,
+        "online_target_q_rmse": 0.10872297815752081,
+        "wall_greedy_fraction": 0.5593622608445465,
+        "bfs_nonprogress_fraction": 0.529103266229993
+      }
+    },
+    "30_diagonal_rooms": {
+      "groups": {
+        "lost": {
+          "count": 38,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 20.39992904663086,
+              "epoch800": 22.52303123474121
+            },
+            "relative_residual": {
+              "epoch400": 0.07763566821813583,
+              "epoch800": 0.0838760957121849
+            },
+            "q_rms": {
+              "epoch400": 1768.102783203125,
+              "epoch800": 2606.457275390625
+            },
+            "q_gap": {
+              "epoch400": 23.62014389038086,
+              "epoch800": 31.593341827392578
+            },
+            "z_norm": {
+              "epoch400": 2.7387535572052,
+              "epoch800": 2.6802706718444824
+            },
+            "online_target_q_rmse": {
+              "epoch400": 13.687610626220703,
+              "epoch800": 13.349581718444824
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.06743421052631579,
+              "epoch800": 0.2598684210526316
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.08782894736842105,
+              "epoch800": 0.34149545629808786
+            }
+          }
+        },
+        "kept_success": {
+          "count": 10,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 22.937488555908203,
+              "epoch800": 24.408859252929688
+            },
+            "relative_residual": {
+              "epoch400": 0.05530267953872681,
+              "epoch800": 0.06034872680902481
+            },
+            "q_rms": {
+              "epoch400": 3188.330078125,
+              "epoch800": 3571.95947265625
+            },
+            "q_gap": {
+              "epoch400": 34.77733612060547,
+              "epoch800": 41.54706954956055
+            },
+            "z_norm": {
+              "epoch400": 3.1816999912261963,
+              "epoch800": 3.1787052154541016
+            },
+            "online_target_q_rmse": {
+              "epoch400": 20.78805923461914,
+              "epoch800": 23.95985984802246
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.01875,
+              "epoch800": 0.01875
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.03125,
+              "epoch800": 0.03125
+            }
+          }
+        },
+        "gained": {
+          "count": 14,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 20.4010066986084,
+              "epoch800": 17.87013053894043
+            },
+            "relative_residual": {
+              "epoch400": 0.07998240739107132,
+              "epoch800": 0.08678744733333588
+            },
+            "q_rms": {
+              "epoch400": 1031.5733642578125,
+              "epoch800": 658.8549194335938
+            },
+            "q_gap": {
+              "epoch400": 24.09859848022461,
+              "epoch800": 17.8840389251709
+            },
+            "z_norm": {
+              "epoch400": 2.5510716438293457,
+              "epoch800": 2.3556761741638184
+            },
+            "online_target_q_rmse": {
+              "epoch400": 12.787962913513184,
+              "epoch800": 6.641940593719482
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.33482142857142855,
+              "epoch800": 0.07589285714285714
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.3605540293040293,
+              "epoch800": 0.10416666666666666
+            }
+          }
+        },
+        "both_failed": {
+          "count": 138,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.53144073486328,
+              "epoch800": 21.976133346557617
+            },
+            "relative_residual": {
+              "epoch400": 0.07607907056808472,
+              "epoch800": 0.07555978000164032
+            },
+            "q_rms": {
+              "epoch400": 2284.167236328125,
+              "epoch800": 2878.014892578125
+            },
+            "q_gap": {
+              "epoch400": 28.643335342407227,
+              "epoch800": 28.83429527282715
+            },
+            "z_norm": {
+              "epoch400": 2.9817655086517334,
+              "epoch800": 2.9578516483306885
+            },
+            "online_target_q_rmse": {
+              "epoch400": 17.94115447998047,
+              "epoch800": 20.164018630981445
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.4882246376811594,
+              "epoch800": 0.5276268115942029
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.5631801471475385,
+              "epoch800": 0.6201720984329679
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.11040831678580333,
+        "relative_residual": 0.04599917785837022,
+        "q_rms": 0.07968544521845564,
+        "q_gap": 0.14783052968984056,
+        "z_norm": 0.045803759305763754,
+        "online_target_q_rmse": 0.027118421530674373,
+        "wall_greedy_fraction": 0.4294627582683265,
+        "bfs_nonprogress_fraction": 0.4246854235357815
+      }
+    },
+    "150_same_room": {
+      "groups": {
+        "lost": {
+          "count": 5,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 15.843429565429688,
+              "epoch800": 13.955554008483887
+            },
+            "relative_residual": {
+              "epoch400": 0.05234629660844803,
+              "epoch800": 0.05417501926422119
+            },
+            "q_rms": {
+              "epoch400": 1415.58154296875,
+              "epoch800": 1478.614990234375
+            },
+            "q_gap": {
+              "epoch400": 22.075641632080078,
+              "epoch800": 15.960339546203613
+            },
+            "z_norm": {
+              "epoch400": 2.6292190551757812,
+              "epoch800": 2.4341492652893066
+            },
+            "online_target_q_rmse": {
+              "epoch400": 7.237192630767822,
+              "epoch800": 12.807446479797363
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.05,
+              "epoch800": 0.0
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.30666666666666664,
+              "epoch800": 0.7274999999999999
+            }
+          }
+        },
+        "kept_success": {
+          "count": 191,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 20.135499954223633,
+              "epoch800": 19.217756271362305
+            },
+            "relative_residual": {
+              "epoch400": 0.048739973455667496,
+              "epoch800": 0.04960737004876137
+            },
+            "q_rms": {
+              "epoch400": 2728.01220703125,
+              "epoch800": 3190.641357421875
+            },
+            "q_gap": {
+              "epoch400": 48.87660598754883,
+              "epoch800": 51.03969192504883
+            },
+            "z_norm": {
+              "epoch400": 2.8129663467407227,
+              "epoch800": 2.7208540439605713
+            },
+            "online_target_q_rmse": {
+              "epoch400": 18.818876266479492,
+              "epoch800": 20.052398681640625
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.012761780104712041,
+              "epoch800": 0.008507853403141362
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.0644321864871603,
+              "epoch800": 0.08359124151008968
+            }
+          }
+        },
+        "gained": {
+          "count": 2,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 57.381263732910156,
+              "epoch800": 52.904048919677734
+            },
+            "relative_residual": {
+              "epoch400": 0.024521302431821823,
+              "epoch800": 0.0195614043623209
+            },
+            "q_rms": {
+              "epoch400": 12802.228515625,
+              "epoch800": 14137.87109375
+            },
+            "q_gap": {
+              "epoch400": 124.08340454101562,
+              "epoch800": 69.537841796875
+            },
+            "z_norm": {
+              "epoch400": 5.192298412322998,
+              "epoch800": 4.834183692932129
+            },
+            "online_target_q_rmse": {
+              "epoch400": 71.80178833007812,
+              "epoch800": 128.68812561035156
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.15625,
+              "epoch800": 0.15625
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.5267857142857143,
+              "epoch800": 0.25
+            }
+          }
+        },
+        "both_failed": {
+          "count": 2,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 48.695045471191406,
+              "epoch800": 18.6544132232666
+            },
+            "relative_residual": {
+              "epoch400": 0.03707679361104965,
+              "epoch800": 0.042701080441474915
+            },
+            "q_rms": {
+              "epoch400": 13718.3935546875,
+              "epoch800": 3930.0380859375
+            },
+            "q_gap": {
+              "epoch400": 88.46171569824219,
+              "epoch800": 48.223388671875
+            },
+            "z_norm": {
+              "epoch400": 5.641003131866455,
+              "epoch800": 5.230081558227539
+            },
+            "online_target_q_rmse": {
+              "epoch400": 152.66110229492188,
+              "epoch800": 56.58845138549805
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.0,
+              "epoch800": 0.0
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.65625,
+              "epoch800": 0.46875
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.010438100327618816,
+        "relative_residual": 0.030026455217502572,
+        "q_rms": -0.03396346259255127,
+        "q_gap": 0.07560409412656469,
+        "z_norm": 0.004112762902248558,
+        "online_target_q_rmse": -0.10607324014785095,
+        "wall_greedy_fraction": -0.1423218946153101,
+        "bfs_nonprogress_fraction": 0.35697279242625446
+      }
+    },
+    "150_adjacent_rooms": {
+      "groups": {
+        "lost": {
+          "count": 25,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.24169921875,
+              "epoch800": 20.17767906188965
+            },
+            "relative_residual": {
+              "epoch400": 0.07295820116996765,
+              "epoch800": 0.0828656405210495
+            },
+            "q_rms": {
+              "epoch400": 2443.684814453125,
+              "epoch800": 2062.06298828125
+            },
+            "q_gap": {
+              "epoch400": 25.991342544555664,
+              "epoch800": 27.477127075195312
+            },
+            "z_norm": {
+              "epoch400": 2.980344772338867,
+              "epoch800": 2.8495242595672607
+            },
+            "online_target_q_rmse": {
+              "epoch400": 20.211286544799805,
+              "epoch800": 24.210891723632812
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.21,
+              "epoch800": 0.4625
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.21083333333333334,
+              "epoch800": 0.6084981684981685
+            }
+          }
+        },
+        "kept_success": {
+          "count": 110,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.226346969604492,
+              "epoch800": 22.02667999267578
+            },
+            "relative_residual": {
+              "epoch400": 0.07072748243808746,
+              "epoch800": 0.08397762477397919
+            },
+            "q_rms": {
+              "epoch400": 2008.8770751953125,
+              "epoch800": 1912.5548095703125
+            },
+            "q_gap": {
+              "epoch400": 38.193885803222656,
+              "epoch800": 38.29034423828125
+            },
+            "z_norm": {
+              "epoch400": 2.674669027328491,
+              "epoch800": 2.56062388420105
+            },
+            "online_target_q_rmse": {
+              "epoch400": 14.909582138061523,
+              "epoch800": 14.382800102233887
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.18125,
+              "epoch800": 0.19318181818181818
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.1894222444222444,
+              "epoch800": 0.2163740426240426
+            }
+          }
+        },
+        "gained": {
+          "count": 18,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 27.609947204589844,
+              "epoch800": 21.60928726196289
+            },
+            "relative_residual": {
+              "epoch400": 0.05978184938430786,
+              "epoch800": 0.06460702419281006
+            },
+            "q_rms": {
+              "epoch400": 4680.0556640625,
+              "epoch800": 3048.2099609375
+            },
+            "q_gap": {
+              "epoch400": 46.28367614746094,
+              "epoch800": 36.70243835449219
+            },
+            "z_norm": {
+              "epoch400": 3.361872673034668,
+              "epoch800": 3.2082083225250244
+            },
+            "online_target_q_rmse": {
+              "epoch400": 42.743194580078125,
+              "epoch800": 27.53815269470215
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.3055555555555556,
+              "epoch800": 0.11805555555555555
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.4337547483380817,
+              "epoch800": 0.1381172839506173
+            }
+          }
+        },
+        "both_failed": {
+          "count": 47,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 23.941749572753906,
+              "epoch800": 25.028810501098633
+            },
+            "relative_residual": {
+              "epoch400": 0.07938622683286667,
+              "epoch800": 0.09101230651140213
+            },
+            "q_rms": {
+              "epoch400": 2492.048828125,
+              "epoch800": 2580.119873046875
+            },
+            "q_gap": {
+              "epoch400": 32.85573959350586,
+              "epoch800": 38.172142028808594
+            },
+            "z_norm": {
+              "epoch400": 2.985858917236328,
+              "epoch800": 2.9608712196350098
+            },
+            "online_target_q_rmse": {
+              "epoch400": 19.166793823242188,
+              "epoch800": 21.88097381591797
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.6875,
+              "epoch800": 0.6875
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.7344224924012157,
+              "epoch800": 0.7118014963759645
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.12094479312806587,
+        "relative_residual": 0.03407411696810768,
+        "q_rms": 0.10967257039471885,
+        "q_gap": 0.08090555696542746,
+        "z_norm": 0.007929040522002958,
+        "online_target_q_rmse": 0.18611903105556063,
+        "wall_greedy_fraction": 0.47340869862126217,
+        "bfs_nonprogress_fraction": 0.5717042507497627
+      }
+    },
+    "150_diagonal_rooms": {
+      "groups": {
+        "lost": {
+          "count": 43,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.195281982421875,
+              "epoch800": 24.288511276245117
+            },
+            "relative_residual": {
+              "epoch400": 0.0746585950255394,
+              "epoch800": 0.07733569294214249
+            },
+            "q_rms": {
+              "epoch400": 2088.989990234375,
+              "epoch800": 3269.85107421875
+            },
+            "q_gap": {
+              "epoch400": 26.534343719482422,
+              "epoch800": 35.81526184082031
+            },
+            "z_norm": {
+              "epoch400": 2.8807952404022217,
+              "epoch800": 2.882479190826416
+            },
+            "online_target_q_rmse": {
+              "epoch400": 16.48381233215332,
+              "epoch800": 19.6143798828125
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.1613372093023256,
+              "epoch800": 0.3125
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.18696013289036545,
+              "epoch800": 0.39062313655336917
+            }
+          }
+        },
+        "kept_success": {
+          "count": 32,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.367040634155273,
+              "epoch800": 21.29470443725586
+            },
+            "relative_residual": {
+              "epoch400": 0.07332198321819305,
+              "epoch800": 0.08156736940145493
+            },
+            "q_rms": {
+              "epoch400": 1929.61962890625,
+              "epoch800": 2012.161376953125
+            },
+            "q_gap": {
+              "epoch400": 23.297401428222656,
+              "epoch800": 27.035472869873047
+            },
+            "z_norm": {
+              "epoch400": 2.789513349533081,
+              "epoch800": 2.712904214859009
+            },
+            "online_target_q_rmse": {
+              "epoch400": 14.472587585449219,
+              "epoch800": 13.909767150878906
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.16015625,
+              "epoch800": 0.181640625
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.144140625,
+              "epoch800": 0.20018939393939394
+            }
+          }
+        },
+        "gained": {
+          "count": 21,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 18.8553524017334,
+              "epoch800": 19.189321517944336
+            },
+            "relative_residual": {
+              "epoch400": 0.09044855833053589,
+              "epoch800": 0.08998716622591019
+            },
+            "q_rms": {
+              "epoch400": 884.1321411132812,
+              "epoch800": 768.8701171875
+            },
+            "q_gap": {
+              "epoch400": 22.236799240112305,
+              "epoch800": 15.686287879943848
+            },
+            "z_norm": {
+              "epoch400": 2.502249240875244,
+              "epoch800": 2.3917293548583984
+            },
+            "online_target_q_rmse": {
+              "epoch400": 10.90943717956543,
+              "epoch800": 7.157803535461426
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.39880952380952384,
+              "epoch800": 0.2648809523809524
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.49067599067599066,
+              "epoch800": 0.3081529581529581
+            }
+          }
+        },
+        "both_failed": {
+          "count": 104,
+          "metrics": {
+            "residual_rmse": {
+              "epoch400": 21.830965042114258,
+              "epoch800": 21.673458099365234
+            },
+            "relative_residual": {
+              "epoch400": 0.07370967417955399,
+              "epoch800": 0.07315126806497574
+            },
+            "q_rms": {
+              "epoch400": 2486.41455078125,
+              "epoch800": 3077.07666015625
+            },
+            "q_gap": {
+              "epoch400": 30.59646987915039,
+              "epoch800": 29.91272735595703
+            },
+            "z_norm": {
+              "epoch400": 3.0519461631774902,
+              "epoch800": 3.017446756362915
+            },
+            "online_target_q_rmse": {
+              "epoch400": 19.056692123413086,
+              "epoch800": 20.996726989746094
+            },
+            "wall_greedy_fraction": {
+              "epoch400": 0.5228365384615384,
+              "epoch800": 0.5685096153846154
+            },
+            "bfs_nonprogress_fraction": {
+              "epoch400": 0.6101984153666845,
+              "epoch800": 0.6793975255513717
+            }
+          }
+        }
+      },
+      "correlation_with_failure_change": {
+        "residual_rmse": 0.10938479949611629,
+        "relative_residual": 0.0356000465808878,
+        "q_rms": 0.12321133453078158,
+        "q_gap": 0.1880768022419321,
+        "z_norm": 0.08967157759516076,
+        "online_target_q_rmse": 0.101918846137122,
+        "wall_greedy_fraction": 0.3237912543212783,
+        "bfs_nonprogress_fraction": 0.362916912635879
+      }
+    }
+  },
+  "approach_sensitivity": {
+    "400_30_0.025": {
+      "approached_no_progress_crossing": 53,
+      "crossed_then_approached_next_door_no_completion": 17,
+      "crossed_then_never_approached_next_door": 38,
+      "entered_goal_room_failed_goal_control": 11,
+      "never_approached_useful_door": 135,
+      "success": 146
+    },
+    "400_30_0.05": {
+      "approached_no_progress_crossing": 99,
+      "crossed_then_approached_next_door_no_completion": 30,
+      "crossed_then_never_approached_next_door": 25,
+      "entered_goal_room_failed_goal_control": 11,
+      "never_approached_useful_door": 89,
+      "success": 146
+    },
+    "400_30_0.1": {
+      "approached_no_progress_crossing": 138,
+      "crossed_then_approached_next_door_no_completion": 39,
+      "crossed_then_never_approached_next_door": 16,
+      "entered_goal_room_failed_goal_control": 11,
+      "never_approached_useful_door": 50,
+      "success": 146
+    },
+    "400_150_0.025": {
+      "approached_no_progress_crossing": 29,
+      "crossed_then_approached_next_door_no_completion": 15,
+      "crossed_then_never_approached_next_door": 38,
+      "entered_goal_room_failed_goal_control": 8,
+      "never_approached_useful_door": 100,
+      "success": 210
+    },
+    "400_150_0.05": {
+      "approached_no_progress_crossing": 64,
+      "crossed_then_approached_next_door_no_completion": 31,
+      "crossed_then_never_approached_next_door": 22,
+      "entered_goal_room_failed_goal_control": 8,
+      "never_approached_useful_door": 65,
+      "success": 210
+    },
+    "400_150_0.1": {
+      "approached_no_progress_crossing": 95,
+      "crossed_then_approached_next_door_no_completion": 41,
+      "crossed_then_never_approached_next_door": 12,
+      "entered_goal_room_failed_goal_control": 8,
+      "never_approached_useful_door": 34,
+      "success": 210
+    },
+    "800_30_0.025": {
+      "approached_no_progress_crossing": 55,
+      "crossed_then_approached_next_door_no_completion": 14,
+      "crossed_then_never_approached_next_door": 54,
+      "entered_goal_room_failed_goal_control": 12,
+      "never_approached_useful_door": 146,
+      "success": 119
+    },
+    "800_30_0.05": {
+      "approached_no_progress_crossing": 108,
+      "crossed_then_approached_next_door_no_completion": 23,
+      "crossed_then_never_approached_next_door": 45,
+      "entered_goal_room_failed_goal_control": 12,
+      "never_approached_useful_door": 93,
+      "success": 119
+    },
+    "800_30_0.1": {
+      "approached_no_progress_crossing": 149,
+      "crossed_then_approached_next_door_no_completion": 42,
+      "crossed_then_never_approached_next_door": 26,
+      "entered_goal_room_failed_goal_control": 12,
+      "never_approached_useful_door": 52,
+      "success": 119
+    },
+    "800_150_0.025": {
+      "approached_no_progress_crossing": 37,
+      "crossed_then_approached_next_door_no_completion": 9,
+      "crossed_then_never_approached_next_door": 52,
+      "entered_goal_room_failed_goal_control": 7,
+      "never_approached_useful_door": 114,
+      "success": 181
+    },
+    "800_150_0.05": {
+      "approached_no_progress_crossing": 81,
+      "crossed_then_approached_next_door_no_completion": 22,
+      "crossed_then_never_approached_next_door": 39,
+      "entered_goal_room_failed_goal_control": 7,
+      "never_approached_useful_door": 70,
+      "success": 181
+    },
+    "800_150_0.1": {
+      "approached_no_progress_crossing": 117,
+      "crossed_then_approached_next_door_no_completion": 40,
+      "crossed_then_never_approached_next_door": 21,
+      "entered_goal_room_failed_goal_control": 7,
+      "never_approached_useful_door": 34,
+      "success": 181
+    }
+  },
+  "rank_changes": {
+    "all_argmax_flip": 0.278125,
+    "near_wall_argmax_flip": 0.32254777070063695,
+    "near_wall_rank_order_changed": 0.5546496815286625
+  },
+  "heldout_cauchy_bootstrap": {
+    "400": {
+      "backup_entropy": 1.2758323177695274,
+      "residual_mae": 12.963293552398682,
+      "residual_mean": 1.4827271811664104,
+      "residual_rmse": 25.198127832956374,
+      "relative_residual_rmse": 0.06287859903536769,
+      "b_second_moment_trace": 9.875499725341797,
+      "b_largest_eigenvalue": 1.2172119617462158,
+      "b_effective_rank": 20.820627212524414
+    },
+    "800": {
+      "backup_entropy": 1.2633200623095036,
+      "residual_mae": 13.653049498796463,
+      "residual_mean": 0.6707294387742877,
+      "residual_rmse": 29.858281617080344,
+      "relative_residual_rmse": 0.05356583530522062,
+      "b_second_moment_trace": 9.575410842895508,
+      "b_largest_eigenvalue": 1.1450144052505493,
+      "b_effective_rank": 20.032657623291016
+    }
+  },
+  "oracle_wall_mask_diagnostic": {
+    "400_30_same_room": {
+      "success_rate": 0.98,
+      "rescued": 4,
+      "harmed": 0
+    },
+    "400_30_adjacent_rooms": {
+      "success_rate": 0.905,
+      "rescued": 84,
+      "harmed": 1
+    },
+    "400_30_diagonal_rooms": {
+      "success_rate": 0.73,
+      "rescued": 100,
+      "harmed": 2
+    },
+    "400_150_same_room": {
+      "success_rate": 0.985,
+      "rescued": 1,
+      "harmed": 0
+    },
+    "400_150_adjacent_rooms": {
+      "success_rate": 0.95,
+      "rescued": 55,
+      "harmed": 0
+    },
+    "400_150_diagonal_rooms": {
+      "success_rate": 0.815,
+      "rescued": 91,
+      "harmed": 3
+    },
+    "400_lost38_rescued": 37,
+    "800_30_same_room": {
+      "success_rate": 0.955,
+      "rescued": 3,
+      "harmed": 0
+    },
+    "800_30_adjacent_rooms": {
+      "success_rate": 0.875,
+      "rescued": 80,
+      "harmed": 0
+    },
+    "800_30_diagonal_rooms": {
+      "success_rate": 0.61,
+      "rescued": 98,
+      "harmed": 0
+    },
+    "800_150_same_room": {
+      "success_rate": 0.965,
+      "rescued": 0,
+      "harmed": 0
+    },
+    "800_150_adjacent_rooms": {
+      "success_rate": 0.91,
+      "rescued": 55,
+      "harmed": 1
+    },
+    "800_150_diagonal_rooms": {
+      "success_rate": 0.725,
+      "rescued": 92,
+      "harmed": 0
+    },
+    "800_lost38_rescued": 25
+  }
+}

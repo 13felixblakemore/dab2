@@ -231,8 +231,8 @@ def correlation(a, b):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run', type=Path, default=Path('experiments/fourrooms_doorways/fourrooms_doorways/runs/width2_seed0'))
-    parser.add_argument('--output', type=Path, default=Path('experiments/fourrooms_doorways/decline_analysis'))
+    parser.add_argument('--run', type=Path, default=Path('experiments/fourrooms_doorways/runs/width2_seed0'))
+    parser.add_argument('--output', type=Path, default=Path('experiments/fourrooms_doorways/analyses/decline_analysis'))
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     config = json.loads((args.run/'config.json').read_text())

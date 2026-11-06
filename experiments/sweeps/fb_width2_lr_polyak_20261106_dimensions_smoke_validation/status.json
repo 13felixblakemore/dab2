@@ -1,0 +1,12 @@
+[
+  {
+    "run": "d25_lr0.0001_polyak0.95_seed0",
+    "completed": true,
+    "epoch": 2
+  },
+  {
+    "run": "d100_lr0.0001_polyak0.95_seed0",
+    "completed": true,
+    "epoch": 2
+  }
+]

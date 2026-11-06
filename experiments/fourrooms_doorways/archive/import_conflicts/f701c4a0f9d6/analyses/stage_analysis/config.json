@@ -1,0 +1,14 @@
+{
+  "rollouts": 32,
+  "seed": 84117,
+  "source_horizon": 30,
+  "first_approach_distance": 0.1,
+  "post_cross_steps": 3,
+  "script_sha256": "278e642935c56ce83054ec8196ecdb08eca922f58c215c3bda928a581982f75a",
+  "jax": "0.12.0.1",
+  "numpy": "2.5.4",
+  "trace_sha256": {
+    "400": "3ab301225ae68aad3a1c08ed86eecdeb5dd2debe164e8dd70010cc0bf1ad4f89",
+    "800": "4063e7dbef1a7ee839aaa6a774ee42d2698e2069f5215fb2b248a3c431fcfa27"
+  }
+}
