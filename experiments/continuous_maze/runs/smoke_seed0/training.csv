@@ -1,0 +1,2 @@
+epoch,updates,transitions,seconds,loss_mean,collection_wall_collisions,success_rate,successes,goals,mean_successful_path_length,wall_collisions,mean_final_distance,behavior_entropy,b_norm,entropy,f_norm,fb,immediate,regularization,td,total
+1,1000,3000,8.6861750999999,-1.0873999444693327,125,0.0,0,20,,0,0.6251685263236642,0.10421468650480145,0.9824228286743164,1.6090706586837769,8.02716064453125,-2.0307226181030273,-3.349032163619995,-0.0281980037689209,1.3183094263076782,-2.0589206218719482

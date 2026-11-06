@@ -231,7 +231,11 @@ class FBLearner:
                  polyak_coef=0.95, batch_size=128, hidden_dim=128, num_layers=1,
                  buffer_size=1_000_000, device="cuda", buffer_device="cpu",
                  featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
-                 z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1):
+                 z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1,
+                 b_regularization="orthonormal"):
+        if b_regularization not in ("orthonormal", "touati_continuous"):
+            raise ValueError("Unknown B regularization mode")
+        self.b_regularization = b_regularization
         if z_sampling not in ("cauchy", "replay"):
             raise ValueError("z_sampling must be 'cauchy' or 'replay'")
         self.z_sampling = z_sampling
@@ -253,7 +257,8 @@ class FBLearner:
                            batch_size=batch_size, hidden_dim=hidden_dim, num_layers=num_layers,
                            buffer_size=buffer_size, max_grad_norm=max_grad_norm,
                            zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling,
-                           goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold)
+                           goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold,
+                           b_regularization=b_regularization)
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -309,7 +314,8 @@ class FBLearner:
             return jnp.where(goal_reached[:, None], 0.0, z_next)
         return z_next
 
-    def _loss(self, params, target, transitions, other, w, zero, goal_obs=None):
+    def _loss(self, params, target, transitions, other, w, zero, goal_obs=None,
+              return_components=False):
         obs = self.featuriser.transform(transitions["obs"])
         obs_next = self.featuriser.transform(transitions["obs_next"])
         obs_other = self.featuriser.transform(other["obs"])
@@ -335,7 +341,19 @@ class FBLearner:
         b_b_other_detach = jnp.matmul(b, stop(b_other).T, precision=jax.lax.Precision.HIGHEST)
         b_b_detach = jnp.sum(b*stop(b), axis=1)
         reg_loss = jnp.mean(b_b_other_detach*stop(b_b_other)) - b_b_detach.mean()
-        return fb_loss + self.reg_coef*reg_loss
+        if self.b_regularization == "touati_continuous":
+            # Exact released continuous_world_modules/fb_agent.py expression.
+            # (batch,) broadcasts over COLUMNS of (batch, batch).
+            reg_loss = jnp.mean(b_b_detach*stop(b_b_other)) - b_b_other_detach.mean()
+        total = fb_loss + self.reg_coef*reg_loss
+        if return_components:
+            return dict(total=total, fb=fb_loss, regularization=reg_loss,
+                        td=0.5*jnp.mean((z-self.discount_factor*z_next)**2),
+                        immediate=-z_diag.mean(),
+                        entropy=-jnp.mean(jnp.sum(jax.scipy.special.xlogy(pi, pi), axis=-1)),
+                        b_norm=jnp.mean(jnp.linalg.norm(b, axis=-1)),
+                        f_norm=jnp.mean(jnp.linalg.norm(f, axis=-1)))
+        return total
 
     def _training_tasks(self, params, key, goal_obs=None):
         if self.z_sampling == "replay":

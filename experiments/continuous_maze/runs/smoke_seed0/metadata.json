@@ -1,0 +1,18 @@
+{
+  "seed": 0,
+  "python": "3.12.10",
+  "jax": "0.12.0.1",
+  "numpy": "2.5.4",
+  "devices": [
+    "cpu:0"
+  ],
+  "schedule": {
+    "updates": 1000,
+    "transitions": 3000
+  },
+  "sha256": {
+    "forward_backward_jax.py": "1ff00b3e82042f2ddf7e5984709d3883406e32f4f175ab578497640f23868f53",
+    "continuous_maze.py": "639dfc99129db2c8b1ebe3b025786d6694c0639f043a0a7adb224f17e997b9c0",
+    "run_continuous_maze.py": "e94b55ddf8a77ead775641441186b7605d01a3c24b33fdcb57e26f753c9f6ade"
+  }
+}
