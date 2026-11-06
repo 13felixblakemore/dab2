@@ -13,3 +13,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ipynb_checkpoints/
+
+# Local interpreter and IDE configuration
+.venv/
+.idea/

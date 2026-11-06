@@ -1,0 +1,2770 @@
+[
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      57.309452056884766,
+      59.17305801808834,
+      57.309452056884766,
+      65.36299708485603
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      1.8636059612035751,
+      0.0,
+      8.053545027971268
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        1.344265003989137,
+        2.4683947893579834
+      ],
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        7.759615954125918,
+        8.330345294882855
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      80.3917465209961,
+      56.33693972416222,
+      80.3917465209961,
+      -28.949031526222825
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -24.054806796833873,
+      0.0,
+      -109.34077804721892
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -31.254002024851495,
+        -17.279088795684522
+      ],
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -110.60755659529356,
+        -108.03089189173073
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      445.69940185546875,
+      442.12725722789764,
+      445.24512100219727,
+      443.03018450737
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -3.572144627571106,
+      -0.4542808532714844,
+      -2.669217348098755
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.010296883588366229,
+        0.010296883588366229
+      ],
+      [
+        -4.154344418054156,
+        -3.066560716027684
+      ],
+      [
+        -0.5894723320060298,
+        -0.3351265138334706
+      ],
+      [
+        -3.221983393436007,
+        -2.1632063454336596
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      4198.6279296875,
+      4170.9333391189575,
+      4195.453042984009,
+      4181.032155990601
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -27.69459056854248,
+      -3.174886703491211,
+      -17.595773696899414
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.18745868194972845,
+        0.18745868194972845
+      ],
+      [
+        -32.268690347561,
+        -23.64533736716831
+      ],
+      [
+        -4.9240271328774625,
+        -1.5350741149100122
+      ],
+      [
+        -21.851148533710592,
+        -13.58641769897068
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      270.0956426858902,
+      270.1938763856888,
+      258.5863801240921,
+      271.089777469635
+    ],
+    "gaps_vs_fb_wall": [
+      -0.09823369979858398,
+      0.0,
+      -11.60749626159668,
+      0.895901083946228
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.5521841745979403,
+        0.34676188045807826
+      ],
+      [
+        -0.007662318289956843,
+        0.007662318289956843
+      ],
+      [
+        -12.782957784474572,
+        -10.45882525032691
+      ],
+      [
+        0.590094207584181,
+        1.2254695456630806
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      1700.7438378334045,
+      1661.1452369689941,
+      2807.8360481262207,
+      1683.9779181480408
+    ],
+    "gaps_vs_fb_wall": [
+      39.5986008644104,
+      0.0,
+      1146.6908111572266,
+      22.83268117904663
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        30.63397430597887,
+        50.13969919265166
+      ],
+      [
+        -0.23111843646421598,
+        0.23111843646421598
+      ],
+      [
+        1070.7355063599264,
+        1216.2925404507007
+      ],
+      [
+        15.891536657205675,
+        30.337238104947954
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      48.29611587524414,
+      113.17850115895271,
+      113.12693563103676,
+      238.81803053617477
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      64.88238528370857,
+      64.83081975579262,
+      190.52191466093063
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.009799751737461938,
+        0.009799751737461938
+      ],
+      [
+        51.726607627323524,
+        78.02160422662769
+      ],
+      [
+        51.67483793338265,
+        77.96979634175574
+      ],
+      [
+        190.36433071782315,
+        190.68452785620963
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      100.81851196289062,
+      1285.5306273400784,
+      1283.8970798552036,
+      3562.8785429000854
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      1184.7121153771877,
+      1183.078567892313,
+      3462.060030937195
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.3211078285249627,
+        0.3211078285249627
+      ],
+      [
+        944.0110262216059,
+        1424.0157432324263
+      ],
+      [
+        942.3719884105948,
+        1422.3880502878696
+      ],
+      [
+        3455.1148913026777,
+        3468.8868676303896
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      126.25064198672771,
+      251.17405927181244,
+      126.1779580116272,
+      61.594116270542145
+    ],
+    "gaps_vs_fb_wall": [
+      64.65652571618557,
+      189.5799430012703,
+      64.58384174108505,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        50.812412749118316,
+        78.59616298463276
+      ],
+      [
+        185.81511767830622,
+        192.25178975846697
+      ],
+      [
+        50.74107600364756,
+        78.52267288167108
+      ],
+      [
+        -0.01015643637705626,
+        0.01015643637705626
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      2288.7101834714413,
+      6285.48578453064,
+      2292.377126827836,
+      204.70683181285858
+    ],
+    "gaps_vs_fb_wall": [
+      2084.0033516585827,
+      6080.778952717781,
+      2087.6702950149775,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        1643.833414817334,
+        2529.3136692306853
+      ],
+      [
+        5960.909559834481,
+        6165.294978153973
+      ],
+      [
+        1647.507398331643,
+        2532.97948264134
+      ],
+      [
+        -0.42744055417106025,
+        0.42744055417106025
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "greedy",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      121.71093708276749,
+      73.32142639160156,
+      102.24935746192932,
+      149.98878419399261
+    ],
+    "gaps_vs_fb_wall": [
+      48.389510691165924,
+      0.0,
+      28.92793107032776,
+      76.66735780239105
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        40.54652569263227,
+        56.59579466686601
+      ],
+      [
+        -0.007518217275069912,
+        0.007518217275069912
+      ],
+      [
+        21.58384089439161,
+        35.91565370590442
+      ],
+      [
+        68.63797986327656,
+        84.30731906474583
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "greedy",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      1134.93534424901,
+      -484.3268737792969,
+      483.3643589913845,
+      2099.8643832206726
+    ],
+    "gaps_vs_fb_wall": [
+      1619.262218028307,
+      0.0,
+      967.6912327706814,
+      2584.1912569999695
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        1354.1440937439743,
+        1898.1169531849391
+      ],
+      [
+        -0.29584945414041475,
+        0.29584945414041475
+      ],
+      [
+        719.5982299218716,
+        1202.8254702662286
+      ],
+      [
+        2313.1333689334633,
+        2843.075354277825
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      270.236947119236,
+      267.4664695262909,
+      270.236947119236,
+      279.9426525235176
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -2.770477592945099,
+      0.0,
+      9.705705404281616
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        -6.627872893099987,
+        1.307042001073575
+      ],
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        5.2736320019910705,
+        14.302723668401446
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      4233.4676966667175,
+      4179.200544834137,
+      4233.4676966667175,
+      4425.458441257477
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -54.267151832580566,
+      0.0,
+      191.99074459075928
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -139.3634000685194,
+        33.935883476970545
+      ],
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        96.71510696149083,
+        291.7841078426817
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      339.30782771110535,
+      337.78498047590256,
+      339.58947598934174,
+      337.7117049098015
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -1.5228472352027893,
+      0.28164827823638916,
+      -1.5961228013038635
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.010296883588366229,
+        0.010296883588366229
+      ],
+      [
+        -3.0351963380032108,
+        0.09549227744870653
+      ],
+      [
+        -0.8751824536972568,
+        1.4752470740728945
+      ],
+      [
+        -2.917508199220233,
+        -0.3033815658039514
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      3195.2122893333435,
+      3176.094277381897,
+      3198.12167263031,
+      3187.3722677230835
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -19.118011951446533,
+      2.9093832969665527,
+      -7.84002161026001
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.18745868194972845,
+        0.18745868194972845
+      ],
+      [
+        -35.586241447815055,
+        -0.8546233774336521
+      ],
+      [
+        -9.99756447065746,
+        15.932659983524443
+      ],
+      [
+        -21.868949687370414,
+        5.921211850532646
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      176.97287023067474,
+      178.62728744745255,
+      177.0118347108364,
+      178.475631326437
+    ],
+    "gaps_vs_fb_wall": [
+      -1.6544172167778015,
+      0.0,
+      -1.6154527366161346,
+      -0.1516561210155487
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -3.0044487964517685,
+        -0.39166732317141495
+      ],
+      [
+        -0.007662318289956843,
+        0.007662318289956843
+      ],
+      [
+        -3.239721240491352,
+        -0.07071025854281218
+      ],
+      [
+        -1.2818653848178003,
+        0.9645197030312664
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      1606.762869477272,
+      1650.7513537406921,
+      1672.8116210699081,
+      1651.1181622743607
+    ],
+    "gaps_vs_fb_wall": [
+      -43.988484263420105,
+      0.0,
+      22.060267329216003,
+      0.36680853366851807
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -67.94423447430982,
+        -20.30941703139886
+      ],
+      [
+        -0.23111843646421598,
+        0.23111843646421598
+      ],
+      [
+        -8.511925728925611,
+        51.53018299520866
+      ],
+      [
+        -19.74401183904066,
+        19.80613974512472
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      117.69359485805035,
+      112.31480930745602,
+      109.45937050879002,
+      128.13851435482502
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -5.37878555059433,
+      -8.23422434926033,
+      10.444919496774673
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.009799751737461938,
+        0.009799751737461938
+      ],
+      [
+        -7.445009588175759,
+        -3.3863959665360586
+      ],
+      [
+        -10.87160683544849,
+        -5.636569536751755
+      ],
+      [
+        7.21184021522726,
+        13.776013029464831
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      1018.3964937180281,
+      934.9819531328976,
+      904.9473423913587,
+      1174.6330431625247
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -83.41454058513045,
+      -113.44915132666938,
+      156.23654944449663
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.3211078285249627,
+        0.3211078285249627
+      ],
+      [
+        -117.163604221494,
+        -50.06640288261595
+      ],
+      [
+        -155.45734881027118,
+        -72.26114703314275
+      ],
+      [
+        103.49403055691992,
+        211.38480772944274
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      136.64185735583305,
+      153.75556693971157,
+      137.07503925263882,
+      142.56687833368778
+    ],
+    "gaps_vs_fb_wall": [
+      -5.925020977854729,
+      11.188688606023788,
+      -5.4918390810489655,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -9.112573243045098,
+        -2.9563511843599
+      ],
+      [
+        7.737325274831764,
+        14.734754886590727
+      ],
+      [
+        -7.925400247537382,
+        -3.0722627575315116
+      ],
+      [
+        -0.01015643637705626,
+        0.01015643637705626
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      2214.8769996464252,
+      2682.891623735428,
+      2256.3144249022007,
+      2394.227758347988
+    ],
+    "gaps_vs_fb_wall": [
+      -179.35075870156288,
+      288.6638653874397,
+      -137.91333344578743,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -264.96332682099865,
+        -100.17230879116124
+      ],
+      [
+        198.8419770521231,
+        383.573951104551
+      ],
+      [
+        -206.96201295283362,
+        -71.73033222454855
+      ],
+      [
+        -0.42744055417106025,
+        0.42744055417106025
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "softmax200",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      114.29805199801922,
+      116.16842219233513,
+      114.45274636149406,
+      122.95672127604485
+    ],
+    "gaps_vs_fb_wall": [
+      -1.8703701943159103,
+      0.0,
+      -1.7156758308410645,
+      6.788299083709717
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -3.9718467041199674,
+        0.11511036635392005
+      ],
+      [
+        -0.007518217275069912,
+        0.007518217275069912
+      ],
+      [
+        -3.25626563535087,
+        -0.3143431720042952
+      ],
+      [
+        4.392272269790841,
+        9.269422295624542
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      1006.3823938257992,
+      1037.544043071568,
+      995.072963418439,
+      1191.7705881893635
+    ],
+    "gaps_vs_fb_wall": [
+      -31.161649245768785,
+      0.0,
+      -42.47107965312898,
+      154.22654511779547
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -78.72115492924874,
+        14.587259005492678
+      ],
+      [
+        -0.29584945414041475,
+        0.29584945414041475
+      ],
+      [
+        -82.13379343796348,
+        -7.086708791769902
+      ],
+      [
+        98.84492802608932,
+        214.62138547275055
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      378.7743043899536,
+      374.22992861270905,
+      378.7743043899536,
+      381.5447105169296
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -4.544375777244568,
+      0.0,
+      2.770406126976013
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        -5.688330976550781,
+        -3.4674126462290644
+      ],
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        1.7440551893065341,
+        3.8229364975144495
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      6838.044546127319,
+      6740.022539138794,
+      6838.044546127319,
+      6894.628196716309
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -98.02200698852539,
+      0.0,
+      56.58365058898926
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -128.98012538218288,
+        -68.91454453206272
+      ],
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        28.25676693654271,
+        84.83809848093777
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      439.85364842414856,
+      439.1652364730835,
+      439.83063089847565,
+      439.35903680324554
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -0.6884119510650635,
+      -0.023017525672912598,
+      -0.49461162090301514
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.010296883588366229,
+        0.010296883588366229
+      ],
+      [
+        -0.8588572973065898,
+        -0.5309749609178975
+      ],
+      [
+        -0.13240078032546493,
+        0.08883547723823054
+      ],
+      [
+        -0.6145919793897197,
+        -0.3775847649521305
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      4132.482048988342,
+      4124.371097564697,
+      4132.216114044189,
+      4130.865016937256
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -8.11095142364502,
+      -0.26593494415283203,
+      -1.6170320510864258
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.18745868194972845,
+        0.18745868194972845
+      ],
+      [
+        -10.147628879436606,
+        -6.20582826148594
+      ],
+      [
+        -1.6326397417870697,
+        1.1198105095711894
+      ],
+      [
+        -2.9853065489617525,
+        -0.22793719779575097
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      274.3262938261032,
+      274.8974059820175,
+      272.91707968711853,
+      274.9261440038681
+    ],
+    "gaps_vs_fb_wall": [
+      -0.5711121559143066,
+      0.0,
+      -1.9803262948989868,
+      0.028738021850585938
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.7163145583278749,
+        -0.42820875829390503
+      ],
+      [
+        -0.007662318289956843,
+        0.007662318289956843
+      ],
+      [
+        -2.312118760884485,
+        -1.667844145356931
+      ],
+      [
+        -0.11148766988583543,
+        0.16590877586670885
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      1794.8212022781372,
+      1803.421215057373,
+      1916.9732809066772,
+      1803.787414073944
+    ],
+    "gaps_vs_fb_wall": [
+      -8.60001277923584,
+      0.0,
+      113.5520658493042,
+      0.3661990165710449
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -12.904659219392682,
+        -3.976023022523974
+      ],
+      [
+        -0.23111843646421598,
+        0.23111843646421598
+      ],
+      [
+        98.70880756794557,
+        128.69037921012296
+      ],
+      [
+        -3.4726906615580573,
+        4.1931938725794815
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "UP"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      236.89411735534668,
+      234.93183386325836,
+      234.88026595115662,
+      238.81803053617477
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -1.9622834920883179,
+      -2.0138514041900635,
+      1.9239131808280945
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.009799751737461938,
+        0.009799751737461938
+      ],
+      [
+        -2.1269852624324423,
+        -1.8366989581796065
+      ],
+      [
+        -2.178358864882336,
+        -1.8886093168469802
+      ],
+      [
+        1.8441654412957564,
+        2.003207494416581
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      3526.499219894409,
+      3493.2009267807007,
+      3491.5674200057983,
+      3562.8785429000854
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -33.298293113708496,
+      -34.93179988861084,
+      36.37932300567627
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.3211078285249627,
+        0.3211078285249627
+      ],
+      [
+        -38.19301191559162,
+        -28.26453081378613
+      ],
+      [
+        -39.82851732960071,
+        -29.894234120937927
+      ],
+      [
+        31.69405418643628,
+        41.287914431002996
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      247.19057714939117,
+      251.17405927181244,
+      247.11789202690125,
+      249.26361215114594
+    ],
+    "gaps_vs_fb_wall": [
+      -2.0730350017547607,
+      1.910447120666504,
+      -2.14572012424469,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -2.2217245147757607,
+        -1.934592960662357
+      ],
+      [
+        1.8174251614875716,
+        2.0024069340162356
+      ],
+      [
+        -2.2944653229050713,
+        -2.007613171524517
+      ],
+      [
+        -0.01015643637705626,
+        0.01015643637705626
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      6155.563428878784,
+      6285.48578453064,
+      6159.230363845825,
+      6223.558599472046
+    ],
+    "gaps_vs_fb_wall": [
+      -67.99517059326172,
+      61.92718505859375,
+      -64.3282356262207,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -73.13926292088553,
+        -63.06678208682015
+      ],
+      [
+        58.483792775601884,
+        65.39667378094718
+      ],
+      [
+        -69.47763109829947,
+        -59.386743205518265
+      ],
+      [
+        -0.42744055417106025,
+        0.42744055417106025
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "wall_masked",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      184.79016560316086,
+      185.86284321546555,
+      184.97867649793625,
+      186.89104694128036
+    ],
+    "gaps_vs_fb_wall": [
+      -1.0726776123046875,
+      0.0,
+      -0.8841667175292969,
+      1.0282037258148193
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -1.2463108334039914,
+        -0.9076818254495393
+      ],
+      [
+        -0.007518217275069912,
+        0.007518217275069912
+      ],
+      [
+        -1.0763978603576885,
+        -0.7151787620688211
+      ],
+      [
+        0.8641151454950106,
+        1.19034242511742
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "wall_masked",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      3276.434594154358,
+      3308.579352378845,
+      3280.8665142059326,
+      3343.2736654281616
+    ],
+    "gaps_vs_fb_wall": [
+      -32.144758224487305,
+      0.0,
+      -27.712838172912598,
+      34.694313049316406
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -38.47099188539957,
+        -26.05818311002278
+      ],
+      [
+        -0.29584945414041475,
+        0.29584945414041475
+      ],
+      [
+        -34.22208534452891,
+        -21.888440716529132
+      ],
+      [
+        29.03858684327627,
+        40.36445969316935
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      323.4175442457199,
+      320.565199136734,
+      323.4175442457199,
+      325.8611319065094
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -2.852345108985901,
+      0.0,
+      2.4435876607894897
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        -3.6394775881220927,
+        -2.12965662639836
+      ],
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        1.7396508292506108,
+        3.138885532205307
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      5499.894807815552,
+      5435.301580429077,
+      5499.894807815552,
+      5548.983776092529
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -64.59322738647461,
+      0.0,
+      49.08896827697754
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -85.50814266466884,
+        -44.854335257770735
+      ],
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        30.13711547589513,
+        67.71560158991605
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      312.43039524555206,
+      311.05692207813263,
+      312.42891800403595,
+      311.18210875988007
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -1.3734731674194336,
+      -0.0014772415161132812,
+      -1.248286485671997
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.010296883588366229,
+        0.010296883588366229
+      ],
+      [
+        -1.6973005378299282,
+        -1.0559726333565187
+      ],
+      [
+        -0.1903899127297923,
+        0.18448200464778405
+      ],
+      [
+        -1.5663972282462644,
+        -0.9294608151859711
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      3186.6977519989014,
+      3176.448293685913,
+      3187.5433826446533,
+      3181.0712671279907
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -10.249458312988281,
+      0.8456306457519531,
+      -5.6264848709106445
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.18745868194972845,
+        0.18745868194972845
+      ],
+      [
+        -13.80046577442562,
+        -6.605966377368811
+      ],
+      [
+        -1.3283831595269378,
+        2.966522431263086
+      ],
+      [
+        -8.92714784134304,
+        -2.2526230336340687
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      212.10455739498138,
+      213.16023117303848,
+      212.56907016038895,
+      213.17010486125946
+    ],
+    "gaps_vs_fb_wall": [
+      -1.0556737780570984,
+      0.0,
+      -0.5911610126495361,
+      0.009873688220977783
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -1.2270869445211505,
+        -0.8868839148276235
+      ],
+      [
+        -0.007662318289956843,
+        0.007662318289956843
+      ],
+      [
+        -0.7579631831652736,
+        -0.4212193626754667
+      ],
+      [
+        -0.1145079922086809,
+        0.13096921408244128
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      2989.8646268844604,
+      3017.591329574585,
+      3031.379179954529,
+      3018.299786567688
+    ],
+    "gaps_vs_fb_wall": [
+      -27.72670269012451,
+      0.0,
+      13.787850379943848,
+      0.7084569931030273
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -29.775773592599773,
+        -25.608940820089433
+      ],
+      [
+        -0.23111843646421598,
+        0.23111843646421598
+      ],
+      [
+        11.591324667326067,
+        15.855910726198104
+      ],
+      [
+        -0.851094432481672,
+        2.3409368473376304
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "UP"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      203.85897666215897,
+      202.3062469959259,
+      202.25129026174545,
+      205.50968366861343
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -1.5527296662330627,
+      -1.6076864004135132,
+      1.6507070064544678
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.009799751737461938,
+        0.009799751737461938
+      ],
+      [
+        -1.7527329267052278,
+        -1.3636301084371938
+      ],
+      [
+        -1.807381087639676,
+        -1.418139585754527
+      ],
+      [
+        1.4805898650499716,
+        1.824051979282247
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      3235.3541507720947,
+      3202.2695121765137,
+      3200.422158241272,
+      3266.078377723694
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -33.084638595581055,
+      -34.931992530822754,
+      30.72422695159912
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.3211078285249627,
+        0.3211078285249627
+      ],
+      [
+        -37.92757953396167,
+        -28.28663047561322
+      ],
+      [
+        -39.751619231608764,
+        -30.133054244610413
+      ],
+      [
+        26.351099431606873,
+        35.140173780826
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      232.9696273803711,
+      236.5772517323494,
+      232.82863706350327,
+      234.859306037426
+    ],
+    "gaps_vs_fb_wall": [
+      -1.8896786570549011,
+      1.7179456949234009,
+      -2.0306689739227295,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -2.044237990789898,
+        -1.7454371808833997
+      ],
+      [
+        1.5903074501819532,
+        1.8485522852473344
+      ],
+      [
+        -2.1830493779115754,
+        -1.8872628121442716
+      ],
+      [
+        -0.01015643637705626,
+        0.01015643637705626
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      5585.570974349976,
+      5700.409557342529,
+      5590.904821395874,
+      5646.515186309814
+    ],
+    "gaps_vs_fb_wall": [
+      -60.94421195983887,
+      53.894371032714844,
+      -55.61036491394043,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -66.35806961682364,
+        -55.569972318143385
+      ],
+      [
+        48.82771319720223,
+        59.087550169497
+      ],
+      [
+        -61.04590473797844,
+        -50.23711156222298
+      ],
+      [
+        -0.42744055417106025,
+        0.42744055417106025
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "geometry_detour",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      179.95029854774475,
+      180.75693809986115,
+      179.8912569284439,
+      181.71996051073074
+    ],
+    "gaps_vs_fb_wall": [
+      -0.806639552116394,
+      0.0,
+      -0.8656811714172363,
+      0.9630224108695984
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.9764596599435079,
+        -0.6359574806595576
+      ],
+      [
+        -0.007518217275069912,
+        0.007518217275069912
+      ],
+      [
+        -1.055595349082874,
+        -0.6931206089163552
+      ],
+      [
+        0.8002616909051669,
+        1.1336252975558507
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "geometry_detour",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      3247.5743112564087,
+      3271.3890171051025,
+      3243.722777366638,
+      3305.2720289230347
+    ],
+    "gaps_vs_fb_wall": [
+      -23.814705848693848,
+      0.0,
+      -27.666239738464355,
+      33.88301181793213
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -29.62546011183237,
+        -18.06100245740437
+      ],
+      [
+        -0.29584945414041475,
+        0.29584945414041475
+      ],
+      [
+        -33.965745222306005,
+        -21.9126203420403
+      ],
+      [
+        28.334751737380273,
+        39.85750669214701
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      270.3833586871624,
+      270.06095653772354,
+      270.3833586871624,
+      281.2662920355797
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -0.32240214943885803,
+      0.0,
+      10.882933348417282
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        -4.555032426004612,
+        3.890336909775937
+      ],
+      [
+        -0.007908721153937849,
+        0.007908721153937849
+      ],
+      [
+        5.9198760518083935,
+        16.10219291362664
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 1,
+    "pair": 472,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      4254.336994886398,
+      4251.38818693161,
+      4254.336994886398,
+      4467.575424671173
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -2.948807954788208,
+      0.0,
+      213.23842978477478
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        -96.42411241197375,
+        89.31538583898356
+      ],
+      [
+        -0.2688410308339976,
+        0.2688410308339976
+      ],
+      [
+        106.1620166513941,
+        324.4180543329695
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      337.8244397640228,
+      334.87048602104187,
+      337.82507449388504,
+      336.04269671440125
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -2.953953742980957,
+      0.0006347298622131348,
+      -1.781743049621582
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.010296883588366229,
+        0.010296883588366229
+      ],
+      [
+        -4.505685489779048,
+        -1.4232977068371246
+      ],
+      [
+        -1.1124147111230418,
+        1.0384553188138532
+      ],
+      [
+        -3.055575554972224,
+        -0.5571085101313065
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "LEFT",
+    "mean_returns": [
+      3175.6208839416504,
+      3139.6900572776794,
+      3175.3484683036804,
+      3165.9289655685425
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -35.93082666397095,
+      -0.2724156379699707,
+      -9.69191837310791
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.18745868194972845,
+        0.18745868194972845
+      ],
+      [
+        -53.135300242790336,
+        -18.731332540622596
+      ],
+      [
+        -12.7693438886491,
+        11.28893011797345
+      ],
+      [
+        -23.513903617748372,
+        4.058509492763646
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      174.2587147653103,
+      177.2356297671795,
+      175.11685854196548,
+      176.66506606340408
+    ],
+    "gaps_vs_fb_wall": [
+      -2.9769150018692017,
+      0.0,
+      -2.1187712252140045,
+      -0.5705637037754059
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -4.318850863367996,
+        -1.6849476817839517
+      ],
+      [
+        -0.007662318289956843,
+        0.007662318289956843
+      ],
+      [
+        -3.6941064845926377,
+        -0.6171976376169109
+      ],
+      [
+        -1.6749515991813753,
+        0.549959370136941
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "UP",
+    "mean_returns": [
+      1591.8071584701538,
+      1647.7726196050644,
+      1669.6863615512848,
+      1645.7121419906616
+    ],
+    "gaps_vs_fb_wall": [
+      -55.96546113491058,
+      0.0,
+      21.913741946220398,
+      -2.060477614402771
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -81.93725101233377,
+        -31.344159601322268
+      ],
+      [
+        -0.23111843646421598,
+        0.23111843646421598
+      ],
+      [
+        -6.661871661552335,
+        49.77004585743799
+      ],
+      [
+        -21.621048184045698,
+        16.17552332759754
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP"
+    ],
+    "better_moving_actions": [],
+    "finding": "not_resolved_by_simultaneous_MC_intervals"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      116.07251486182213,
+      111.03670321404934,
+      109.11703777313232,
+      126.4504888355732
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -5.035811647772789,
+      -6.955477088689804,
+      10.377973973751068
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.009799751737461938,
+        0.009799751737461938
+      ],
+      [
+        -7.030185791948186,
+        -3.0396650030227974
+      ],
+      [
+        -9.538242034712182,
+        -4.474198898574961
+      ],
+      [
+        7.370925674116863,
+        13.491423672908303
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "LEFT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      1022.9193624416366,
+      941.7495532222092,
+      924.4162270901725,
+      1183.0359675474465
+    ],
+    "gaps_vs_fb_wall": [
+      0.0,
+      -81.1698092194274,
+      -98.50313535146415,
+      160.11660510580987
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -0.3211078285249627,
+        0.3211078285249627
+      ],
+      [
+        -116.86176795670862,
+        -46.35794367147508
+      ],
+      [
+        -140.85419375440205,
+        -58.17109215771675
+      ],
+      [
+        108.01638144305808,
+        215.36816110797326
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "RIGHT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      135.82628318667412,
+      152.75541977584362,
+      137.06587193906307,
+      142.3886061012745
+    ],
+    "gaps_vs_fb_wall": [
+      -6.562322914600372,
+      10.36681367456913,
+      -5.322734162211418,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -9.66311928343106,
+        -3.6725475731111676
+      ],
+      [
+        7.124473181626908,
+        13.850700828173052
+      ],
+      [
+        -7.832826978825816,
+        -2.935690284035317
+      ],
+      [
+        -0.01015643637705626,
+        0.01015643637705626
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "DOWN",
+    "mc_best_action": "RIGHT",
+    "mean_returns": [
+      2202.8609486222267,
+      2657.867691129446,
+      2261.190194070339,
+      2389.1581920981407
+    ],
+    "gaps_vs_fb_wall": [
+      -186.297243475914,
+      268.7094990313053,
+      -127.96799802780151,
+      0.0
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -270.47450604763554,
+        -107.92971712771126
+      ],
+      [
+        182.86823672849013,
+        360.96937908184464
+      ],
+      [
+        -196.0303977000408,
+        -62.22565934631298
+      ],
+      [
+        -0.42744055417106025,
+        0.42744055417106025
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "better_moving_actions": [
+      "RIGHT"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "target_softmax200",
+    "reward": "raw",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      114.27683508396149,
+      116.79064445197582,
+      115.07907611131668,
+      123.52699571847916
+    ],
+    "gaps_vs_fb_wall": [
+      -2.5138093680143356,
+      0.0,
+      -1.7115683406591415,
+      6.736351266503334
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -4.55897634134643,
+        -0.4618512880707512
+      ],
+      [
+        -0.007518217275069912,
+        0.007518217275069912
+      ],
+      [
+        -3.3267246901338567,
+        -0.257924869349074
+      ],
+      [
+        4.420442318236304,
+        9.131554214591313
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "policy": "target_softmax200",
+    "reward": "covariance_adjusted",
+    "fb_action": "RIGHT",
+    "mc_best_action": "DOWN",
+    "mean_returns": [
+      1004.9989524520934,
+      1053.4825364723802,
+      1010.2648833496496,
+      1204.7232461571693
+    ],
+    "gaps_vs_fb_wall": [
+      -48.4835840202868,
+      0.0,
+      -43.21765312273055,
+      151.24070968478918
+    ],
+    "simultaneous95_gap_intervals_with_tail": [
+      [
+        -96.83717963967298,
+        -1.0163710370490908
+      ],
+      [
+        -0.29584945414041475,
+        0.29584945414041475
+      ],
+      [
+        -84.13509094330308,
+        -6.917742944352198
+      ],
+      [
+        97.71038938302722,
+        206.27653494767682
+      ]
+    ],
+    "genuinely_moving_nominal_actions": [
+      "LEFT",
+      "UP",
+      "DOWN"
+    ],
+    "better_moving_actions": [
+      "DOWN"
+    ],
+    "finding": "moving_initial_action_better_than_FB_wall_action"
+  }
+]

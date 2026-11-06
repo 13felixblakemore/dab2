@@ -1,0 +1,88 @@
+{
+  "source_sha256": {
+    "summarize_implicit_reward_traps_20261106.py": "5ac0e8c901d24c798198cae297025f8e4ccd4fbb12d2be80a6f89403723725be",
+    "diagnose_implicit_reward_traps_20261106.py": "a830ba1a44d904feb0132cbdbf2270692e28b1f7dffbcb7b723082bd9613d76a",
+    "geometry_detour_implicit_reward_20261106.py": "dc4fa3b411019bbc7e55079b7678202f12a6e1a2b02e916b310817ea8583f0c4",
+    "test_implicit_reward_rollout.py": "536bf3c84275cfca6eec646d82846141bab8b1460cbfcdfbc68381109ed526b8"
+  },
+  "checkpoint_sha256": "e9afd60e504da094738f38c0d91d4231770d94fb4903955f8c64dfada5e42415",
+  "target_policy": "frozen target F softmax(Q/200), online B goal task",
+  "covariance_reward": "B(s)^T pinv(C) B(goal); C from 32768 final replay samples; same fixed policy task z=B(goal)",
+  "simultaneous_intervals": "paired bootstrap 4000 draws; Bonferroni over 3 action alternatives, plus conservative remaining-discount tail",
+  "target_q": [
+    [
+      2394.16357421875,
+      2278.736083984375,
+      2305.5615234375,
+      2387.001220703125
+    ],
+    [
+      2968.97509765625,
+      2941.044677734375,
+      2953.506591796875,
+      2911.32958984375
+    ],
+    [
+      1035.88427734375,
+      1098.7828369140625,
+      1091.9111328125,
+      1091.656982421875
+    ],
+    [
+      435.65643310546875,
+      378.05206298828125,
+      377.7969055175781,
+      433.43511962890625
+    ],
+    [
+      706.4055786132812,
+      781.53271484375,
+      701.2322998046875,
+      781.422119140625
+    ],
+    [
+      493.42584228515625,
+      566.8067626953125,
+      487.221435546875,
+      565.7662963867188
+    ]
+  ],
+  "geometry_detour_goal_rates": [
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  ]
+}

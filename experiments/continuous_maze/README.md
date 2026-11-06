@@ -9,7 +9,7 @@ The reference files are for validation and attribution, not a replacement learne
 From the repository root in PowerShell, using this project's configured interpreter:
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest test_continuous_maze test_goal_terminated_fb_jax -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_continuous_maze tests.test_goal_terminated_fb_jax -v
 & ./.venv/Scripts/python.exe run_continuous_maze.py --epochs 1 --output experiments/continuous_maze/runs/my_smoke
 & ./.venv/Scripts/python.exe run_continuous_maze.py --seed 0
 & ./.venv/Scripts/python.exe run_continuous_maze.py --seed 0 --resume

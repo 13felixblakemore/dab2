@@ -1,0 +1,24 @@
+{
+  "training_seed": 0,
+  "evaluation_threshold": 0.025,
+  "matched_monitor_endpoints": true,
+  "all_losses_finite": true,
+  "training_updates": 800000,
+  "training_transitions": 2400000,
+  "evaluation_seed": 20261107,
+  "matched_source_files": {
+    "adjustable_four_rooms.py": false,
+    "continuous_four_rooms_jax.py": true,
+    "control_bfs_bottlenecks.py": true,
+    "estimate_fb_bottlenecks_jax.py": true,
+    "forward_backward_jax.py": true,
+    "fourrooms_reference_diagnostics.py": true,
+    "run_fb_jax.py": true,
+    "run_fourrooms_doorways.py": true,
+    "run_fourrooms_reference.py": true
+  },
+  "checkpoints": {
+    "width2_replay_continuing_seed0": "04fde123ba3ad5be8ac417b4589311c11d45ba9140297260f53d63ae1b85376f",
+    "width2_replay_continuing_threshold025_seed0": "e9afd60e504da094738f38c0d91d4231770d94fb4903955f8c64dfada5e42415"
+  }
+}

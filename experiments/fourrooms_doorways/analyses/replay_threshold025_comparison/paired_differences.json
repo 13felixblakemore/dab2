@@ -1,0 +1,116 @@
+[
+  {
+    "horizon": 30,
+    "category": "same_room",
+    "success_delta_pp": -1.65625,
+    "success_delta_interval95_pp": [
+      -3.875,
+      0.546875
+    ],
+    "wall_action_delta_pp": 0.2530559338588423,
+    "wall_action_delta_interval95_pp": [
+      -1.980177092442403,
+      2.5661526454140966
+    ],
+    "repeated_wall_action_delta_pp": 0.2677870608999572,
+    "repeated_wall_action_delta_interval95_pp": [
+      -1.7834908013305122,
+      2.413391099751582
+    ]
+  },
+  {
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "success_delta_pp": -3.6249999999999996,
+    "success_delta_interval95_pp": [
+      -7.4691406250000005,
+      0.15625
+    ],
+    "wall_action_delta_pp": 0.6564502140605777,
+    "wall_action_delta_interval95_pp": [
+      -3.2184833886840334,
+      4.544614596955178
+    ],
+    "repeated_wall_action_delta_pp": 0.6518170682957236,
+    "repeated_wall_action_delta_interval95_pp": [
+      -3.007297483468413,
+      4.364777429341707
+    ]
+  },
+  {
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "success_delta_pp": 1.421875,
+    "success_delta_interval95_pp": [
+      -2.7816406249999996,
+      5.547265624999994
+    ],
+    "wall_action_delta_pp": -3.2272703207418987,
+    "wall_action_delta_interval95_pp": [
+      -7.233325946737666,
+      0.8364347067678992
+    ],
+    "repeated_wall_action_delta_pp": -3.1003862883522526,
+    "repeated_wall_action_delta_interval95_pp": [
+      -6.9148345944867735,
+      0.7601168985548857
+    ]
+  },
+  {
+    "horizon": 150,
+    "category": "same_room",
+    "success_delta_pp": -1.359375,
+    "success_delta_interval95_pp": [
+      -3.7503906249999996,
+      0.984375
+    ],
+    "wall_action_delta_pp": 1.3498119088405258,
+    "wall_action_delta_interval95_pp": [
+      -3.5868349927533196,
+      6.477512443459578
+    ],
+    "repeated_wall_action_delta_pp": 1.4792711929901392,
+    "repeated_wall_action_delta_interval95_pp": [
+      -3.339500024244137,
+      6.477867303097826
+    ]
+  },
+  {
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "success_delta_pp": -3.703125,
+    "success_delta_interval95_pp": [
+      -7.484375,
+      0.0
+    ],
+    "wall_action_delta_pp": -1.678019510690576,
+    "wall_action_delta_interval95_pp": [
+      -6.820716388530034,
+      3.3180297326012576
+    ],
+    "repeated_wall_action_delta_pp": -1.6195414132861075,
+    "repeated_wall_action_delta_interval95_pp": [
+      -6.690978470908191,
+      3.313297721496602
+    ]
+  },
+  {
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "success_delta_pp": 2.78125,
+    "success_delta_interval95_pp": [
+      -2.0320312499999997,
+      7.640624999999999
+    ],
+    "wall_action_delta_pp": -3.211444617507242,
+    "wall_action_delta_interval95_pp": [
+      -7.918421271183298,
+      1.3349364970742759
+    ],
+    "repeated_wall_action_delta_pp": -3.17714655845468,
+    "repeated_wall_action_delta_interval95_pp": [
+      -7.771928200430938,
+      1.2549446319321242
+    ]
+  }
+]

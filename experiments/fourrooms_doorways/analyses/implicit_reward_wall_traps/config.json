@@ -1,0 +1,250 @@
+{
+  "checkpoint_sha256": "e9afd60e504da094738f38c0d91d4231770d94fb4903955f8c64dfada5e42415",
+  "run": "C:\\Users\\13fel\\PycharmProjects\\dab2\\experiments\\fourrooms_doorways\\runs\\width2_replay_continuing_threshold025_seed0",
+  "rollouts": 256,
+  "horizons": [
+    150,
+    500,
+    1000,
+    1500
+  ],
+  "gamma": 0.99,
+  "temperature": 200.0,
+  "seed": 63018,
+  "policies": [
+    "greedy",
+    "softmax200",
+    "wall_masked"
+  ],
+  "device": "cpu",
+  "jax": "0.12.0.1",
+  "reward": "online B(s_t) dot online B(goal), no normalization, current-state timing",
+  "continuing": true,
+  "stop_at_goal": false,
+  "seed_shared_across_initial_actions": true,
+  "script_sha256": "a830ba1a44d904feb0132cbdbf2270692e28b1f7dffbcb7b723082bd9613d76a",
+  "probes": [
+    {
+      "trial": 2316,
+      "pair": 472,
+      "replica": 12,
+      "state": [
+        0.6516557335853577,
+        0.3485700488090515
+      ],
+      "goal": [
+        0.5249999761581421,
+        0.2750000059604645
+      ],
+      "recorded_step": 66,
+      "recorded_q": [
+        2400.775390625,
+        2282.134521484375,
+        2308.681396484375,
+        2397.0712890625
+      ],
+      "recorded_collisions": 137,
+      "recorded_longest_stationary_run": 85,
+      "reward_at_trap": 0.5730942487716675,
+      "reward_at_goal": 3.580890655517578,
+      "q": [
+        2400.7744140625,
+        2282.13330078125,
+        2308.68017578125,
+        2397.070556640625
+      ],
+      "fb_action": "LEFT",
+      "nominal_blocked": [
+        true,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "trial": 387,
+      "pair": 412,
+      "replica": 3,
+      "state": [
+        0.6417058706283569,
+        1.0
+      ],
+      "goal": [
+        0.7250000238418579,
+        0.925000011920929
+      ],
+      "recorded_step": 71,
+      "recorded_q": [
+        2969.439208984375,
+        2934.167724609375,
+        2946.17138671875,
+        2906.10888671875
+      ],
+      "recorded_collisions": 125,
+      "recorded_longest_stationary_run": 80,
+      "reward_at_trap": 4.456990718841553,
+      "reward_at_goal": 3.112395763397217,
+      "q": [
+        2969.43896484375,
+        2934.16748046875,
+        2946.1708984375,
+        2906.1083984375
+      ],
+      "fb_action": "LEFT",
+      "nominal_blocked": [
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "trial": 454,
+      "pair": 414,
+      "replica": 6,
+      "state": [
+        0.5119307041168213,
+        0.0
+      ],
+      "goal": [
+        0.5249999761581421,
+        0.125
+      ],
+      "recorded_step": 71,
+      "recorded_q": [
+        1031.7972412109375,
+        1103.305908203125,
+        1090.9573974609375,
+        1097.8961181640625
+      ],
+      "recorded_collisions": 128,
+      "recorded_longest_stationary_run": 80,
+      "reward_at_trap": 2.6998023986816406,
+      "reward_at_goal": 2.157258987426758,
+      "q": [
+        1031.7972412109375,
+        1103.30615234375,
+        1090.95751953125,
+        1097.8961181640625
+      ],
+      "fb_action": "RIGHT",
+      "nominal_blocked": [
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "trial": 561,
+      "pair": 417,
+      "replica": 17,
+      "state": [
+        0.6594939827919006,
+        0.25297635793685913
+      ],
+      "goal": [
+        0.07500000298023224,
+        0.125
+      ],
+      "recorded_step": 49,
+      "recorded_q": [
+        435.47381591796875,
+        377.3483581542969,
+        375.8490905761719,
+        434.0753479003906
+      ],
+      "recorded_collisions": 117,
+      "recorded_longest_stationary_run": 80,
+      "reward_at_trap": 0.482960969209671,
+      "reward_at_goal": 2.3261044025421143,
+      "q": [
+        435.47369384765625,
+        377.3482360839844,
+        375.84893798828125,
+        434.07513427734375
+      ],
+      "fb_action": "LEFT",
+      "nominal_blocked": [
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "trial": 778,
+      "pair": 424,
+      "replica": 10,
+      "state": [
+        0.7469576597213745,
+        0.49330824613571167
+      ],
+      "goal": [
+        0.824999988079071,
+        0.02500000037252903
+      ],
+      "recorded_step": 71,
+      "recorded_q": [
+        711.3301391601562,
+        782.6493530273438,
+        701.3648681640625,
+        783.8509521484375
+      ],
+      "recorded_collisions": 125,
+      "recorded_longest_stationary_run": 80,
+      "reward_at_trap": 0.5705575942993164,
+      "reward_at_goal": 2.551403045654297,
+      "q": [
+        711.330078125,
+        782.6494750976562,
+        701.3648071289062,
+        783.8509521484375
+      ],
+      "fb_action": "DOWN",
+      "nominal_blocked": [
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "trial": 844,
+      "pair": 426,
+      "replica": 12,
+      "state": [
+        0.5436128377914429,
+        0.2638242840766907
+      ],
+      "goal": [
+        0.7250000238418579,
+        0.17499999701976776
+      ],
+      "recorded_step": 71,
+      "recorded_q": [
+        492.66021728515625,
+        565.3605346679688,
+        488.5259094238281,
+        564.3453979492188
+      ],
+      "recorded_collisions": 134,
+      "recorded_longest_stationary_run": 80,
+      "reward_at_trap": 0.7332139015197754,
+      "reward_at_goal": 1.9164831638336182,
+      "q": [
+        492.6602478027344,
+        565.3604736328125,
+        488.52587890625,
+        564.3453979492188
+      ],
+      "fb_action": "RIGHT",
+      "nominal_blocked": [
+        false,
+        true,
+        false,
+        false
+      ]
+    }
+  ]
+}

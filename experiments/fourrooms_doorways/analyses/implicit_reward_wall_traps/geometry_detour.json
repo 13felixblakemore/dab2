@@ -1,0 +1,42 @@
+{
+  "policy": "geometry-only shortest-path potential on 20x20 graph with visible-neighbor interpolation; native noisy movement; no goal termination; continue closest-goal moves after entry",
+  "goal_hit_rate_by_probe_action": [
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  ],
+  "no_change_to_FB_or_training": true
+}

@@ -12,10 +12,15 @@ fourrooms_doorways/
     width2_seed0/                 Original Cauchy, continuing FB; epochs 200/400/600/800
     width2_replay_stopped_seed0/  Replay tasks + goal-entry bootstrap mask; same epochs
     width2_replay_continuing_seed0/ Replay tasks, unchanged continuing objective
+    width2_replay_continuing_threshold025_seed0/ Completed stricter-tolerance run
   analyses/
     goal_reaching/               NEW: fresh matched-goal tests, results and success.png
     replay_continuing_comparison/ Latest replay-continuing analysis and three-model comparison
     replay_continuing_failures/   Recorded diagonal wall traps, animation and collision maps
+    replay_threshold025_comparison/ Matched old/new success, wall hits and learning curves at tolerance 0.025
+    replay_threshold025_failures/ New-model diagonal failure recordings
+    replay_threshold025_old_failures/ Old-model failure recordings evaluated at the same 0.025 tolerance
+    implicit_reward_wall_traps/   Learned-reward maps, per-action MC/Q comparisons and geometry detour controls
     advantage_stability/         Fixed doorway advantages and action-conditioned MC
     decline_analysis/            Late decline, wall loops and oracle-mask diagnostics
     stage_analysis/              First approach / crossing / second-door comparisons
@@ -31,7 +36,7 @@ fourrooms_doorways/
 Reports in this folder: `RESULTS.md` (original-width comparison),
 `ADVANTAGE_STABILITY.md`, `GOAL_VALIDITY.md`. Detailed stage/decline reports remain
 beside their corresponding analysis outputs. The newest goal-reaching report is
-`analyses/goal_reaching/REPORT.md`.
+`analyses/replay_threshold025_comparison/REPORT.md`.
 
 Checkpoint, recovery, config, evaluation and archived-source filenames inside
 each full run are unchanged. Old manifests/source snapshots retain historical
@@ -51,7 +56,9 @@ python evaluate_width2_goals.py
 python evaluate_width2_goals.py --device cuda --output experiments/fourrooms_doorways/analyses/goal_reaching_gpu
 ```
 
-This evaluates both final checkpoints, not new training. Source modules and
-notebook imports remain at the repository root to preserve compatibility.
+This evaluates both final checkpoints, not new training. Implementations are in
+`fb_navigation/`; root training/evaluation launchers and legacy learner/environment
+imports remain compatible. The notebook is in `notebooks/`. See the repository
+`README.md` and `docs/PROJECT_LAYOUT.md` for the organized layout.
 Python caches are ignored and removed from Git tracking; checkpoint ignores
 remain in place. Smoke data and old reports are not used as final performance.

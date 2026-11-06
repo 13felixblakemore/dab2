@@ -14,7 +14,7 @@ and Continuous Maze sources/configuration were not modified for this experiment.
 Get-Content experiments/fourrooms_reference/runs/seed0.stdout.log -Tail 2
 Get-Content experiments/fourrooms_reference/runs/seed0.stderr.log -Tail 10
 # Validation:
-& ./.venv/Scripts/python.exe -m unittest test_fourrooms_reference -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_fourrooms_reference -v
 ```
 
 Configuration is `config.json`: 800 epochs × 25 cycles × 40 updates = **800,000

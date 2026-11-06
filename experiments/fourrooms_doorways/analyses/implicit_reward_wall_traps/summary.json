@@ -1,0 +1,906 @@
+[
+  {
+    "trap": 1,
+    "pair": 472,
+    "fb_action": "LEFT",
+    "raw_reward_trap": 0.5730942487716675,
+    "raw_reward_goal": 3.580890655517578,
+    "adjusted_reward_trap": 0.8039155006408691,
+    "adjusted_reward_goal": 63.60029220581055,
+    "raw_greedy": {
+      "trap": 1,
+      "pair": 472,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        57.309452056884766,
+        59.17305801808834,
+        57.309452056884766,
+        65.36299708485603
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        1.8636059612035751,
+        0.0,
+        8.053545027971268
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.007908721153937849,
+          0.007908721153937849
+        ],
+        [
+          1.344265003989137,
+          2.4683947893579834
+        ],
+        [
+          -0.007908721153937849,
+          0.007908721153937849
+        ],
+        [
+          7.759615954125918,
+          8.330345294882855
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "raw_target_softmax": {
+      "trap": 1,
+      "pair": 472,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        270.3833586871624,
+        270.06095653772354,
+        270.3833586871624,
+        281.2662920355797
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -0.32240214943885803,
+        0.0,
+        10.882933348417282
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.007908721153937849,
+          0.007908721153937849
+        ],
+        [
+          -4.555032426004612,
+          3.890336909775937
+        ],
+        [
+          -0.007908721153937849,
+          0.007908721153937849
+        ],
+        [
+          5.9198760518083935,
+          16.10219291362664
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "adjusted_target_softmax": {
+      "trap": 1,
+      "pair": 472,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        4254.336994886398,
+        4251.38818693161,
+        4254.336994886398,
+        4467.575424671173
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -2.948807954788208,
+        0.0,
+        213.23842978477478
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.2688410308339976,
+          0.2688410308339976
+        ],
+        [
+          -96.42411241197375,
+          89.31538583898356
+        ],
+        [
+          -0.2688410308339976,
+          0.2688410308339976
+        ],
+        [
+          106.1620166513941,
+          324.4180543329695
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "greedy_return_after_fb_action": 57.309452056884766,
+    "geometry_detour_return_after_fb_action": 323.4175442457199,
+    "geometry_goal_rate": 1.0
+  },
+  {
+    "trap": 2,
+    "pair": 412,
+    "fb_action": "LEFT",
+    "raw_reward_trap": 4.456990718841553,
+    "raw_reward_goal": 3.112395763397217,
+    "adjusted_reward_trap": 41.98624801635742,
+    "adjusted_reward_goal": 32.33769989013672,
+    "raw_greedy": {
+      "trap": 2,
+      "pair": 412,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "LEFT",
+      "mean_returns": [
+        445.69940185546875,
+        442.12725722789764,
+        445.24512100219727,
+        443.03018450737
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -3.572144627571106,
+        -0.4542808532714844,
+        -2.669217348098755
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.010296883588366229,
+          0.010296883588366229
+        ],
+        [
+          -4.154344418054156,
+          -3.066560716027684
+        ],
+        [
+          -0.5894723320060298,
+          -0.3351265138334706
+        ],
+        [
+          -3.221983393436007,
+          -2.1632063454336596
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [],
+      "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+    },
+    "raw_target_softmax": {
+      "trap": 2,
+      "pair": 412,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "UP",
+      "mean_returns": [
+        337.8244397640228,
+        334.87048602104187,
+        337.82507449388504,
+        336.04269671440125
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -2.953953742980957,
+        0.0006347298622131348,
+        -1.781743049621582
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.010296883588366229,
+          0.010296883588366229
+        ],
+        [
+          -4.505685489779048,
+          -1.4232977068371246
+        ],
+        [
+          -1.1124147111230418,
+          1.0384553188138532
+        ],
+        [
+          -3.055575554972224,
+          -0.5571085101313065
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [],
+      "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+    },
+    "adjusted_target_softmax": {
+      "trap": 2,
+      "pair": 412,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "LEFT",
+      "mc_best_action": "LEFT",
+      "mean_returns": [
+        3175.6208839416504,
+        3139.6900572776794,
+        3175.3484683036804,
+        3165.9289655685425
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -35.93082666397095,
+        -0.2724156379699707,
+        -9.69191837310791
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.18745868194972845,
+          0.18745868194972845
+        ],
+        [
+          -53.135300242790336,
+          -18.731332540622596
+        ],
+        [
+          -12.7693438886491,
+          11.28893011797345
+        ],
+        [
+          -23.513903617748372,
+          4.058509492763646
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "DOWN"
+      ],
+      "better_moving_actions": [],
+      "finding": "not_resolved_by_simultaneous_MC_intervals"
+    },
+    "greedy_return_after_fb_action": 445.69940185546875,
+    "geometry_detour_return_after_fb_action": 312.43039524555206,
+    "geometry_goal_rate": 1.0
+  },
+  {
+    "trap": 3,
+    "pair": 414,
+    "fb_action": "RIGHT",
+    "raw_reward_trap": 2.6998023986816406,
+    "raw_reward_goal": 2.157258987426758,
+    "adjusted_reward_trap": 16.55459213256836,
+    "adjusted_reward_goal": 31.65471839904785,
+    "raw_greedy": {
+      "trap": 3,
+      "pair": 414,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "RIGHT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        270.0956426858902,
+        270.1938763856888,
+        258.5863801240921,
+        271.089777469635
+      ],
+      "gaps_vs_fb_wall": [
+        -0.09823369979858398,
+        0.0,
+        -11.60749626159668,
+        0.895901083946228
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.5521841745979403,
+          0.34676188045807826
+        ],
+        [
+          -0.007662318289956843,
+          0.007662318289956843
+        ],
+        [
+          -12.782957784474572,
+          -10.45882525032691
+        ],
+        [
+          0.590094207584181,
+          1.2254695456630806
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP"
+      ],
+      "better_moving_actions": [],
+      "finding": "not_resolved_by_simultaneous_MC_intervals"
+    },
+    "raw_target_softmax": {
+      "trap": 3,
+      "pair": 414,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "RIGHT",
+      "mc_best_action": "RIGHT",
+      "mean_returns": [
+        174.2587147653103,
+        177.2356297671795,
+        175.11685854196548,
+        176.66506606340408
+      ],
+      "gaps_vs_fb_wall": [
+        -2.9769150018692017,
+        0.0,
+        -2.1187712252140045,
+        -0.5705637037754059
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -4.318850863367996,
+          -1.6849476817839517
+        ],
+        [
+          -0.007662318289956843,
+          0.007662318289956843
+        ],
+        [
+          -3.6941064845926377,
+          -0.6171976376169109
+        ],
+        [
+          -1.6749515991813753,
+          0.549959370136941
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP"
+      ],
+      "better_moving_actions": [],
+      "finding": "FB_wall_action_better_than_all_tested_moving_initial_actions"
+    },
+    "adjusted_target_softmax": {
+      "trap": 3,
+      "pair": 414,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "RIGHT",
+      "mc_best_action": "UP",
+      "mean_returns": [
+        1591.8071584701538,
+        1647.7726196050644,
+        1669.6863615512848,
+        1645.7121419906616
+      ],
+      "gaps_vs_fb_wall": [
+        -55.96546113491058,
+        0.0,
+        21.913741946220398,
+        -2.060477614402771
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -81.93725101233377,
+          -31.344159601322268
+        ],
+        [
+          -0.23111843646421598,
+          0.23111843646421598
+        ],
+        [
+          -6.661871661552335,
+          49.77004585743799
+        ],
+        [
+          -21.621048184045698,
+          16.17552332759754
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP"
+      ],
+      "better_moving_actions": [],
+      "finding": "not_resolved_by_simultaneous_MC_intervals"
+    },
+    "greedy_return_after_fb_action": 270.1938763856888,
+    "geometry_detour_return_after_fb_action": 213.16023117303848,
+    "geometry_goal_rate": 1.0
+  },
+  {
+    "trap": 4,
+    "pair": 417,
+    "fb_action": "LEFT",
+    "raw_reward_trap": 0.482960969209671,
+    "raw_reward_goal": 2.3261044025421143,
+    "adjusted_reward_trap": 1.0081828832626343,
+    "adjusted_reward_goal": 39.89640808105469,
+    "raw_greedy": {
+      "trap": 4,
+      "pair": 417,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        48.29611587524414,
+        113.17850115895271,
+        113.12693563103676,
+        238.81803053617477
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        64.88238528370857,
+        64.83081975579262,
+        190.52191466093063
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.009799751737461938,
+          0.009799751737461938
+        ],
+        [
+          51.726607627323524,
+          78.02160422662769
+        ],
+        [
+          51.67483793338265,
+          77.96979634175574
+        ],
+        [
+          190.36433071782315,
+          190.68452785620963
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "RIGHT",
+        "UP",
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "raw_target_softmax": {
+      "trap": 4,
+      "pair": 417,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        116.07251486182213,
+        111.03670321404934,
+        109.11703777313232,
+        126.4504888355732
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -5.035811647772789,
+        -6.955477088689804,
+        10.377973973751068
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.009799751737461938,
+          0.009799751737461938
+        ],
+        [
+          -7.030185791948186,
+          -3.0396650030227974
+        ],
+        [
+          -9.538242034712182,
+          -4.474198898574961
+        ],
+        [
+          7.370925674116863,
+          13.491423672908303
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "adjusted_target_softmax": {
+      "trap": 4,
+      "pair": 417,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "LEFT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        1022.9193624416366,
+        941.7495532222092,
+        924.4162270901725,
+        1183.0359675474465
+      ],
+      "gaps_vs_fb_wall": [
+        0.0,
+        -81.1698092194274,
+        -98.50313535146415,
+        160.11660510580987
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -0.3211078285249627,
+          0.3211078285249627
+        ],
+        [
+          -116.86176795670862,
+          -46.35794367147508
+        ],
+        [
+          -140.85419375440205,
+          -58.17109215771675
+        ],
+        [
+          108.01638144305808,
+          215.36816110797326
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "RIGHT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "greedy_return_after_fb_action": 48.29611587524414,
+    "geometry_detour_return_after_fb_action": 203.85897666215897,
+    "geometry_goal_rate": 1.0
+  },
+  {
+    "trap": 5,
+    "pair": 424,
+    "fb_action": "DOWN",
+    "raw_reward_trap": 0.5705575942993164,
+    "raw_reward_goal": 2.551403045654297,
+    "adjusted_reward_trap": 0.81340491771698,
+    "adjusted_reward_goal": 64.09739685058594,
+    "raw_greedy": {
+      "trap": 5,
+      "pair": 424,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "DOWN",
+      "mc_best_action": "RIGHT",
+      "mean_returns": [
+        126.25064198672771,
+        251.17405927181244,
+        126.1779580116272,
+        61.594116270542145
+      ],
+      "gaps_vs_fb_wall": [
+        64.65652571618557,
+        189.5799430012703,
+        64.58384174108505,
+        0.0
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          50.812412749118316,
+          78.59616298463276
+        ],
+        [
+          185.81511767830622,
+          192.25178975846697
+        ],
+        [
+          50.74107600364756,
+          78.52267288167108
+        ],
+        [
+          -0.01015643637705626,
+          0.01015643637705626
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "better_moving_actions": [
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "raw_target_softmax": {
+      "trap": 5,
+      "pair": 424,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "DOWN",
+      "mc_best_action": "RIGHT",
+      "mean_returns": [
+        135.82628318667412,
+        152.75541977584362,
+        137.06587193906307,
+        142.3886061012745
+      ],
+      "gaps_vs_fb_wall": [
+        -6.562322914600372,
+        10.36681367456913,
+        -5.322734162211418,
+        0.0
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -9.66311928343106,
+          -3.6725475731111676
+        ],
+        [
+          7.124473181626908,
+          13.850700828173052
+        ],
+        [
+          -7.832826978825816,
+          -2.935690284035317
+        ],
+        [
+          -0.01015643637705626,
+          0.01015643637705626
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "better_moving_actions": [
+        "RIGHT"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "adjusted_target_softmax": {
+      "trap": 5,
+      "pair": 424,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "DOWN",
+      "mc_best_action": "RIGHT",
+      "mean_returns": [
+        2202.8609486222267,
+        2657.867691129446,
+        2261.190194070339,
+        2389.1581920981407
+      ],
+      "gaps_vs_fb_wall": [
+        -186.297243475914,
+        268.7094990313053,
+        -127.96799802780151,
+        0.0
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -270.47450604763554,
+          -107.92971712771126
+        ],
+        [
+          182.86823672849013,
+          360.96937908184464
+        ],
+        [
+          -196.0303977000408,
+          -62.22565934631298
+        ],
+        [
+          -0.42744055417106025,
+          0.42744055417106025
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "better_moving_actions": [
+        "RIGHT"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "greedy_return_after_fb_action": 61.594116270542145,
+    "geometry_detour_return_after_fb_action": 234.859306037426,
+    "geometry_goal_rate": 1.0
+  },
+  {
+    "trap": 6,
+    "pair": 426,
+    "fb_action": "RIGHT",
+    "raw_reward_trap": 0.7332139015197754,
+    "raw_reward_goal": 1.9164831638336182,
+    "adjusted_reward_trap": -4.843264579772949,
+    "adjusted_reward_goal": 36.677616119384766,
+    "raw_greedy": {
+      "trap": 6,
+      "pair": 426,
+      "policy": "greedy",
+      "reward": "raw",
+      "fb_action": "RIGHT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        121.71093708276749,
+        73.32142639160156,
+        102.24935746192932,
+        149.98878419399261
+      ],
+      "gaps_vs_fb_wall": [
+        48.389510691165924,
+        0.0,
+        28.92793107032776,
+        76.66735780239105
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          40.54652569263227,
+          56.59579466686601
+        ],
+        [
+          -0.007518217275069912,
+          0.007518217275069912
+        ],
+        [
+          21.58384089439161,
+          35.91565370590442
+        ],
+        [
+          68.63797986327656,
+          84.30731906474583
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "LEFT",
+        "UP",
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "raw_target_softmax": {
+      "trap": 6,
+      "pair": 426,
+      "policy": "target_softmax200",
+      "reward": "raw",
+      "fb_action": "RIGHT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        114.27683508396149,
+        116.79064445197582,
+        115.07907611131668,
+        123.52699571847916
+      ],
+      "gaps_vs_fb_wall": [
+        -2.5138093680143356,
+        0.0,
+        -1.7115683406591415,
+        6.736351266503334
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -4.55897634134643,
+          -0.4618512880707512
+        ],
+        [
+          -0.007518217275069912,
+          0.007518217275069912
+        ],
+        [
+          -3.3267246901338567,
+          -0.257924869349074
+        ],
+        [
+          4.420442318236304,
+          9.131554214591313
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "adjusted_target_softmax": {
+      "trap": 6,
+      "pair": 426,
+      "policy": "target_softmax200",
+      "reward": "covariance_adjusted",
+      "fb_action": "RIGHT",
+      "mc_best_action": "DOWN",
+      "mean_returns": [
+        1004.9989524520934,
+        1053.4825364723802,
+        1010.2648833496496,
+        1204.7232461571693
+      ],
+      "gaps_vs_fb_wall": [
+        -48.4835840202868,
+        0.0,
+        -43.21765312273055,
+        151.24070968478918
+      ],
+      "simultaneous95_gap_intervals_with_tail": [
+        [
+          -96.83717963967298,
+          -1.0163710370490908
+        ],
+        [
+          -0.29584945414041475,
+          0.29584945414041475
+        ],
+        [
+          -84.13509094330308,
+          -6.917742944352198
+        ],
+        [
+          97.71038938302722,
+          206.27653494767682
+        ]
+      ],
+      "genuinely_moving_nominal_actions": [
+        "LEFT",
+        "UP",
+        "DOWN"
+      ],
+      "better_moving_actions": [
+        "DOWN"
+      ],
+      "finding": "moving_initial_action_better_than_FB_wall_action"
+    },
+    "greedy_return_after_fb_action": 73.32142639160156,
+    "geometry_detour_return_after_fb_action": 180.75693809986115,
+    "geometry_goal_rate": 1.0
+  }
+]

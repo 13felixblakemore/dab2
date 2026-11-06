@@ -1,0 +1,56 @@
+{
+  "checkpoint_sha256": "e9afd60e504da094738f38c0d91d4231770d94fb4903955f8c64dfada5e42415",
+  "trajectories": 6400,
+  "diagonal_goal_pairs": 200,
+  "repetitions": 32,
+  "epsilon": 0.02,
+  "goal_threshold": 0.025,
+  "exact_mc_replay": true,
+  "horizons": {
+    "30": {
+      "failures": 4696,
+      "successes": 1704,
+      "failed_with_any_wall_hit": 3862,
+      "failed_with_10_stationary_hits": 3094,
+      "failed_with_20_stationary_hits": 1741,
+      "failed_with_10_identical_action_wall_hits": 3087,
+      "median_longest_stationary_run": 15.0,
+      "median_dominant_neighborhood_fraction_among_colliding_failures": 1.0,
+      "failed_with_80pct_collisions_in_primary_neighborhood": 3286,
+      "wall_fraction_failed": 0.5314877910278251,
+      "repeat_wall_action_fraction_failed": 0.4900624645088018
+    },
+    "150": {
+      "failures": 3319,
+      "successes": 3081,
+      "failed_with_any_wall_hit": 2934,
+      "failed_with_10_stationary_hits": 2795,
+      "failed_with_20_stationary_hits": 2771,
+      "failed_with_10_identical_action_wall_hits": 2794,
+      "median_longest_stationary_run": 81.0,
+      "median_dominant_neighborhood_fraction_among_colliding_failures": 0.9290780141843972,
+      "failed_with_80pct_collisions_in_primary_neighborhood": 1894,
+      "wall_fraction_failed": 0.7468153058150045,
+      "repeat_wall_action_fraction_failed": 0.7257768404137792
+    }
+  },
+  "recorded_example": {
+    "index": 2316,
+    "room_crossings": 1,
+    "collisions": 137,
+    "longest_stationary_collision_run": 85,
+    "longest_same_action_collision_run": 85,
+    "repeated_same_action_collisions": 133,
+    "dominant_exact_fraction": 0.6204379562043796,
+    "dominant_neighborhood_fraction": 0.6204379562043796,
+    "anchor": [
+      0.6516557335853577,
+      0.3485700488090515
+    ],
+    "trial": 2316,
+    "pair": 472,
+    "replica": 12,
+    "steps": 150,
+    "success": false
+  }
+}

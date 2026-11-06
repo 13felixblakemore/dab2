@@ -147,7 +147,7 @@ frequency, use this new runner with `--doorway-scale 1` and a fresh output path.
 Validation:
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest test_adjustable_four_rooms test_fourrooms_reference -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_adjustable_four_rooms tests.test_fourrooms_reference -v
 ```
 
 Eight tests cover exact scale-1 compatibility, expanded openings allowing formerly

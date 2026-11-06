@@ -1,0 +1,14 @@
+{
+  "legacy_imports_match_canonical": true,
+  "checkpoint_reload": true,
+  "max_prediction_difference": 0.0,
+  "cli_help_checks": 7,
+  "notebook_setup_cell": "STOPPED_OK",
+  "baseline_tests": 82,
+  "organized_tests": 82,
+  "training_smoke": "2 epochs; finite losses; checkpoint reload passed",
+  "source_snapshots": "canonical implementations and paths.py verified",
+  "source_snapshot_files": 10,
+  "protected_files_unchanged": 2303,
+  "legacy_torch_checkpoint": "loaded; finite B and F predictions"
+}

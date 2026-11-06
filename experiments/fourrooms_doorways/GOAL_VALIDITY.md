@@ -65,7 +65,7 @@ distribution; no such change was made here.
 The training sampler also rejects wall points, but historical training goals are
 not stored in replay and were not individually inspected by this saved-data audit.
 
-Reproduce with `python audit_doorway_goals.py`. Two unit tests passed, including
+Reproduce with `python -m fb_navigation.diagnostics.audit_doorway_goals`. Two unit tests passed, including
 deliberately invalid wall/outside points and a disconnected graph. Raw audit:
 `goal_validity_audit.json`; filtered results:
 `goal_validity_feasible_performance.json`; reference lengths:
