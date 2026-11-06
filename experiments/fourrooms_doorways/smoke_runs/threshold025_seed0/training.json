@@ -1,0 +1,24 @@
+[
+  {
+    "epoch": 1,
+    "updates": 2,
+    "transitions": 16,
+    "loss_mean": 0.253330796957016,
+    "train_seconds": 2.32809719999932,
+    "checkpoint_seconds": 0.003118900000117719,
+    "evaluation_seconds": 1.7751615999986825,
+    "recovery_seconds": 0.0028696000008494593,
+    "seconds": 4.1095027000010305
+  },
+  {
+    "epoch": 2,
+    "updates": 4,
+    "transitions": 32,
+    "loss_mean": 0.01146300882101059,
+    "train_seconds": 2.1098017000003892,
+    "checkpoint_seconds": 0.0027565000018512364,
+    "evaluation_seconds": 1.700839699999051,
+    "recovery_seconds": 0.002980000001116423,
+    "seconds": 3.816530700001749
+  }
+]

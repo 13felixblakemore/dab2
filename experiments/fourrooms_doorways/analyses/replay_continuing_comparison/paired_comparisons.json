@@ -1,0 +1,92 @@
+{
+  "30_same_room": {
+    "replay400": 0.9909375,
+    "replay800": 0.990625,
+    "cauchy800": 0.94890625,
+    "late_change": -0.0003125,
+    "late_change_interval": [
+      -0.01546875,
+      0.014222656250000014
+    ],
+    "sampling_change": 0.04171875,
+    "sampling_change_interval": [
+      0.014210937500000003,
+      0.07296875
+    ]
+  },
+  "30_adjacent_rooms": {
+    "replay400": 0.68578125,
+    "replay800": 0.72140625,
+    "cauchy800": 0.57359375,
+    "late_change": 0.035625,
+    "late_change_interval": [
+      0.0059375,
+      0.06594140625000001
+    ],
+    "sampling_change": 0.1478125,
+    "sampling_change_interval": [
+      0.09515625,
+      0.19984375
+    ]
+  },
+  "30_diagonal_rooms": {
+    "replay400": 0.3190625,
+    "replay800": 0.36828125,
+    "cauchy800": 0.2178125,
+    "late_change": 0.04921875,
+    "late_change_interval": [
+      0.0059375,
+      0.0928125
+    ],
+    "sampling_change": 0.15046875,
+    "sampling_change_interval": [
+      0.10046875,
+      0.20140625
+    ]
+  },
+  "150_same_room": {
+    "replay400": 0.99765625,
+    "replay800": 0.99671875,
+    "cauchy800": 0.96828125,
+    "late_change": -0.0009375,
+    "late_change_interval": [
+      -0.006097656249999999,
+      0.00453125
+    ],
+    "sampling_change": 0.0284375,
+    "sampling_change_interval": [
+      0.010625,
+      0.05078125
+    ]
+  },
+  "150_adjacent_rooms": {
+    "replay400": 0.8184375,
+    "replay800": 0.841875,
+    "cauchy800": 0.7215625,
+    "late_change": 0.0234375,
+    "late_change_interval": [
+      -0.00140625,
+      0.04890625
+    ],
+    "sampling_change": 0.1203125,
+    "sampling_change_interval": [
+      0.0740625,
+      0.166875
+    ]
+  },
+  "150_diagonal_rooms": {
+    "replay400": 0.48375,
+    "replay800": 0.55390625,
+    "cauchy800": 0.3546875,
+    "late_change": 0.07015625,
+    "late_change_interval": [
+      0.0253125,
+      0.11437890625000002
+    ],
+    "sampling_change": 0.19921875,
+    "sampling_change_interval": [
+      0.14062109375,
+      0.25625
+    ]
+  }
+}

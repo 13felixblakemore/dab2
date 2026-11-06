@@ -41,6 +41,35 @@ class DoorwayTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 AdjustableFourRooms(doorway_scale=scale)
 
+    def test_smaller_threshold_rejects_success_across_full_wall(self):
+        goal = Point(.638, .55)
+        for threshold, expected in [(.1, True), (.025, False)]:
+            env = AdjustableFourRooms(doorway_scale=2, threshold_distance=threshold,
+                                      include_stay_action=False, movement_noise=0.)
+            env.reset(state=Point(.543, .50), goal=goal)
+            _, reward, done, info = env.step(2)  # UP, alongside the wall.
+            self.assertFalse(bool(info['goes_through_wall']))
+            self.assertFalse(bool(env._check_on_wall(env._current_position)))
+            self.assertFalse(bool(env._check_on_wall(goal)))
+            self.assertTrue(bool(env._check_goes_through_wall(env._current_position, goal)))
+            self.assertEqual(bool(done), expected)
+            self.assertEqual(float(reward), float(expected))
+
+    def test_threshold_preserves_dynamics_and_fixed_endpoints(self):
+        original = AdjustableFourRooms(doorway_scale=2, include_stay_action=False)
+        strict = AdjustableFourRooms(doorway_scale=2, threshold_distance=.025, include_stay_action=False)
+        self.assertEqual(original.wall_blocks, strict.wall_blocks)
+        self.assertEqual(original.actions, strict.actions)
+        self.assertEqual(original._noise, strict._noise)
+        a, b = fixed_pairs(original, 10, 271828), fixed_pairs(strict, 10, 271828)
+        for key in ['starts', 'goals', 'categories', 'start_rooms', 'goal_rooms']:
+            np.testing.assert_array_equal(a[key], b[key])
+        self.assertTrue(np.all(b['bfs_lengths'] >= a['bfs_lengths']))
+        self.assertTrue(np.any(b['bfs_lengths'] > a['bfs_lengths']))
+        for threshold in [0, -1, np.nan, np.inf]:
+            with self.assertRaises(ValueError):
+                AdjustableFourRooms(threshold_distance=threshold)
+
 
 if __name__ == '__main__':
     unittest.main()

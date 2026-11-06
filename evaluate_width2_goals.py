@@ -1,4 +1,4 @@
-"""Fresh matched goal-reaching test for width-2 Cauchy and replay-stopped models."""
+"""Fresh matched goal-reaching test for width-2 Cauchy and replay variants."""
 import argparse
 import hashlib
 import json
@@ -42,24 +42,29 @@ def main():
     parser.add_argument('--batch-size',type=int,default=512)
     parser.add_argument('--seed',type=int,default=20261107)
     parser.add_argument('--device',default='cpu')
+    parser.add_argument('--goal-threshold',type=float,default=.1,
+        help='Common coordinate-wise success tolerance for all models (default: 0.1)')
+    parser.add_argument('--models',nargs='+',default=['width2_seed0','width2_replay_stopped_seed0'])
     args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=True)
     if min(args.pairs_per_category,args.rollouts,args.batch_size)<1:parser.error('Counts must be positive')
-    env=AdjustableFourRooms(doorway_scale=2,include_stay_action=False)
+    env=AdjustableFourRooms(doorway_scale=2,include_stay_action=False,threshold_distance=args.goal_threshold)
     pairs=fixed_pairs(env,args.pairs_per_category,args.seed)
     validity=dict(starts=point_status(pairs['starts'],env),goals=point_status(pairs['goals'],env))
     if validity['starts']['bad_indices'] or validity['goals']['bad_indices']:raise ValueError('Invalid endpoints')
     settings=dict(seed=args.seed,rollouts=args.rollouts,pairs_per_category=args.pairs_per_category,
-        jax=jax.__version__,device=args.device,script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),validity=validity)
+        jax=jax.__version__,device=args.device,models=args.models,
+        goal_threshold=env.threshold_distance,goal_norm='linf',
+        script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),validity=validity)
     manifest=args.output/'config.json'
     if manifest.exists() and json.loads(manifest.read_text())!=settings:raise ValueError('Use a fresh output directory')
     manifest.write_text(json.dumps(settings,indent=2));np.savez_compressed(args.output/'pairs.npz',**pairs)
     results=[];n=len(pairs['starts']);ids=np.repeat(np.arange(n),args.rollouts)
-    for label in ('width2_seed0','width2_replay_stopped_seed0'):
+    for label in args.models:
         path=args.root/'runs'/label/'epoch_0800.pkl'
         learner=FBLearner.from_checkpoint(path,device=args.device)
         if learner.n_actions!=4 or int(learner.state['optim'][0])!=800000:raise ValueError('Unexpected checkpoint')
         for policy,epsilon in [('epsilon002',.02),('greedy',0.),('random',1.)]:
-            if policy=='random' and label!='width2_seed0':continue
+            if policy=='random' and label!=args.models[0]:continue
             name=f'{label}_{policy}';cache=args.output/f'{name}.npz';sha=hashlib.sha256(path.read_bytes()).hexdigest()
             if cache.exists():
                 record=dict(np.load(cache))
@@ -80,10 +85,12 @@ def main():
     (args.output/'results.json').write_text(json.dumps(results,indent=2))
     fig,axes=plt.subplots(1,2,figsize=(12,4))
     for ax,h in zip(axes,(30,150)):
-        for k,label in enumerate(('width2_seed0','width2_replay_stopped_seed0','random')):
+        labels=[*args.models,'random'];width=.8/len(labels)
+        for k,label in enumerate(labels):
             rows=[r for r in results if r['horizon']==h and ((r['model']==label and r['policy']=='epsilon002') or (label=='random' and r['policy']=='random'))]
-            ax.bar(np.arange(3)+(k-1)*.25,[r['success_rate'] for r in rows],width=.25,label=label)
+            ax.bar(np.arange(3)+(k-(len(labels)-1)/2)*width,[r['success_rate'] for r in rows],width=width,label=label)
         ax.set_xticks(range(3),CATEGORIES,rotation=12);ax.set(ylim=(0,1),ylabel='Goal success',title=f'{h} steps');ax.legend(fontsize=7)
+    fig.suptitle(f'Width 2: common coordinate-wise goal tolerance {env.threshold_distance:g}')
     fig.tight_layout();fig.savefig(args.output/'success.png',dpi=160);plt.close(fig)
 
 if __name__=='__main__':main()

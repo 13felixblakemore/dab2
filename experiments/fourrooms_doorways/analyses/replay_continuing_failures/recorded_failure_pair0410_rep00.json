@@ -1,0 +1,26 @@
+{
+  "trial": 320,
+  "pair": 410,
+  "replica": 0,
+  "checkpoint_sha256": "04fde123ba3ad5be8ac417b4589311c11d45ba9140297260f53d63ae1b85376f",
+  "epsilon": 0.02,
+  "horizon": 150,
+  "start": [
+    0.7250000238418579,
+    0.824999988079071
+  ],
+  "goal": [
+    0.32499998807907104,
+    0.125
+  ],
+  "collisions": 135,
+  "longest_stationary_collision_run": 74,
+  "longest_same_action_collision_run": 67,
+  "repeated_same_action_collisions": 127,
+  "dominant_exact_fraction": 0.5481481481481482,
+  "dominant_neighborhood_fraction": 0.6370370370370371,
+  "anchor": [
+    0.5330859422683716,
+    0.45551055669784546
+  ]
+}

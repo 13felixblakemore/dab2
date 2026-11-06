@@ -11,8 +11,11 @@ fourrooms_doorways/
   runs/
     width2_seed0/                 Original Cauchy, continuing FB; epochs 200/400/600/800
     width2_replay_stopped_seed0/  Replay tasks + goal-entry bootstrap mask; same epochs
+    width2_replay_continuing_seed0/ Replay tasks, unchanged continuing objective
   analyses/
     goal_reaching/               NEW: fresh matched-goal tests, results and success.png
+    replay_continuing_comparison/ Latest replay-continuing analysis and three-model comparison
+    replay_continuing_failures/   Recorded diagonal wall traps, animation and collision maps
     advantage_stability/         Fixed doorway advantages and action-conditioned MC
     decline_analysis/            Late decline, wall loops and oracle-mask diagnostics
     stage_analysis/              First approach / crossing / second-door comparisons
@@ -20,6 +23,8 @@ fourrooms_doorways/
   smoke_runs/                    Small validation runs, separate from full experiments
   archive/import_conflicts/      Differing versions found in repeated uploads
   replay_goal_terminated.json    Runnable 800-epoch variant config
+  replay_continuing_threshold025.json  Replay-continuing run with stricter goal tolerance
+  THRESHOLD025.md                GPU training and matched comparison commands
   README.md                     Training commands and experiment settings
 ```
 

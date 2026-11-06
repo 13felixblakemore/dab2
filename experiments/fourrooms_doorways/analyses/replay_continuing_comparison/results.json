@@ -1,0 +1,758 @@
+[
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.94890625,
+    "success_interval95": [
+      0.92078125,
+      0.97328125
+    ],
+    "mean_success_steps": 4.986332949119052,
+    "wall_action_percent": 7.03881073530879,
+    "repeated_wall_action_percent": 6.467624463733413,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.57359375,
+    "success_interval95": [
+      0.52125,
+      0.62875390625
+    ],
+    "mean_success_steps": 13.175429038409153,
+    "wall_action_percent": 44.41594938458349,
+    "repeated_wall_action_percent": 41.078188226080144,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.2178125,
+    "success_interval95": [
+      0.17515625,
+      0.2637578125
+    ],
+    "mean_success_steps": 21.79770444763271,
+    "wall_action_percent": 50.96197512266983,
+    "repeated_wall_action_percent": 47.00995757783858,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.96828125,
+    "success_interval95": [
+      0.9475,
+      0.98546875
+    ],
+    "mean_success_steps": 6.440697111505568,
+    "wall_action_percent": 18.5154129300911,
+    "repeated_wall_action_percent": 17.7749669570655,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.7215625,
+    "success_interval95": [
+      0.67484375,
+      0.7693867187500001
+    ],
+    "mean_success_steps": 27.05781723689909,
+    "wall_action_percent": 68.76990105875545,
+    "repeated_wall_action_percent": 66.73116585469073,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.3546875,
+    "success_interval95": [
+      0.30140625,
+      0.40984375
+    ],
+    "mean_success_steps": 44.606167400881056,
+    "wall_action_percent": 72.9915533134653,
+    "repeated_wall_action_percent": 70.8216095322134,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.94609375,
+    "success_interval95": [
+      0.9165625,
+      0.9715625
+    ],
+    "mean_success_steps": 4.850701899256813,
+    "wall_action_percent": 7.796883260743687,
+    "repeated_wall_action_percent": 7.343722464187709,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.54578125,
+    "success_interval95": [
+      0.4909375,
+      0.60296875
+    ],
+    "mean_success_steps": 12.566561694818208,
+    "wall_action_percent": 47.412379390564816,
+    "repeated_wall_action_percent": 44.556653064337745,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.21265625,
+    "success_interval95": [
+      0.16968359375,
+      0.25906640625
+    ],
+    "mean_success_steps": 21.471711976487878,
+    "wall_action_percent": 53.62957542698442,
+    "repeated_wall_action_percent": 50.36669937303554,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.95484375,
+    "success_interval95": [
+      0.929375,
+      0.9768789062500001
+    ],
+    "mean_success_steps": 5.534282441498936,
+    "wall_action_percent": 23.910846183750163,
+    "repeated_wall_action_percent": 23.52209407800959,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.571875,
+    "success_interval95": [
+      0.5159375,
+      0.62781640625
+    ],
+    "mean_success_steps": 15.162295081967214,
+    "wall_action_percent": 76.47793969482994,
+    "repeated_wall_action_percent": 75.55959990910922,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.23921875,
+    "success_interval95": [
+      0.19359375,
+      0.28828125
+    ],
+    "mean_success_steps": 25.573481384715873,
+    "wall_action_percent": 78.58838756963911,
+    "repeated_wall_action_percent": 77.69391412379159,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.335625,
+    "success_interval95": [
+      0.29812109374999995,
+      0.3740625
+    ],
+    "mean_success_steps": 11.615921787709498,
+    "wall_action_percent": 4.421976119755296,
+    "repeated_wall_action_percent": 0.9855026850522257,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.030625,
+    "success_interval95": [
+      0.020625,
+      0.041875
+    ],
+    "mean_success_steps": 16.122448979591837,
+    "wall_action_percent": 4.138841927303465,
+    "repeated_wall_action_percent": 0.9625950972104819,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.0003125,
+    "success_interval95": [
+      0.0,
+      0.00078125
+    ],
+    "mean_success_steps": 27.0,
+    "wall_action_percent": 4.442326322697585,
+    "repeated_wall_action_percent": 0.9172161630050939,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.6540625,
+    "success_interval95": [
+      0.62515234375,
+      0.68297265625
+    ],
+    "mean_success_steps": 42.80148112756808,
+    "wall_action_percent": 4.308903175835718,
+    "repeated_wall_action_percent": 0.9640755221831254,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.1515625,
+    "success_interval95": [
+      0.1325,
+      0.1721875
+    ],
+    "mean_success_steps": 75.55257731958763,
+    "wall_action_percent": 4.351386482778508,
+    "repeated_wall_action_percent": 0.9766993397057399,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_seed0",
+    "policy": "random",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.02078125,
+    "success_interval95": [
+      0.016875,
+      0.025
+    ],
+    "mean_success_steps": 108.33082706766918,
+    "wall_action_percent": 4.375991400354966,
+    "repeated_wall_action_percent": 0.955306571897349,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.990625,
+    "success_interval95": [
+      0.97765625,
+      0.99890625
+    ],
+    "mean_success_steps": 4.911829652996845,
+    "wall_action_percent": 1.2507209860052821,
+    "repeated_wall_action_percent": 1.1323274946115782,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.72140625,
+    "success_interval95": [
+      0.6753125,
+      0.76890625
+    ],
+    "mean_success_steps": 13.1895170023825,
+    "wall_action_percent": 39.71290192855769,
+    "repeated_wall_action_percent": 36.691553162100256,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.36828125,
+    "success_interval95": [
+      0.3171875,
+      0.42156640625
+    ],
+    "mean_success_steps": 21.20534577853203,
+    "wall_action_percent": 46.727116674743534,
+    "repeated_wall_action_percent": 43.087854919980614,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.99671875,
+    "success_interval95": [
+      0.99234375,
+      1.0
+    ],
+    "mean_success_steps": 5.322777864869102,
+    "wall_action_percent": 3.33117723156533,
+    "repeated_wall_action_percent": 3.2072013799051313,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.841875,
+    "success_interval95": [
+      0.8053046875,
+      0.8770351562500001
+    ],
+    "mean_success_steps": 22.5460282108389,
+    "wall_action_percent": 69.32354598613865,
+    "repeated_wall_action_percent": 67.27837586633392,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.55390625,
+    "success_interval95": [
+      0.5018710937499999,
+      0.60515625
+    ],
+    "mean_success_steps": 39.65444287729196,
+    "wall_action_percent": 73.55425658154968,
+    "repeated_wall_action_percent": 71.4217905331165,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.98984375,
+    "success_interval95": [
+      0.97640625,
+      0.99875
+    ],
+    "mean_success_steps": 4.8041041831097075,
+    "wall_action_percent": 1.3123764822134387,
+    "repeated_wall_action_percent": 1.2413537549407114,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.6978125,
+    "success_interval95": [
+      0.648125,
+      0.7492265625000001
+    ],
+    "mean_success_steps": 12.640618002686969,
+    "wall_action_percent": 42.77253151398146,
+    "repeated_wall_action_percent": 40.165803289858744,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.35125,
+    "success_interval95": [
+      0.2996875,
+      0.40484375
+    ],
+    "mean_success_steps": 20.647686832740213,
+    "wall_action_percent": 49.898816208122774,
+    "repeated_wall_action_percent": 46.8521897810219,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.99265625,
+    "success_interval95": [
+      0.9840625,
+      0.99890625
+    ],
+    "mean_success_steps": 5.013694317645207,
+    "wall_action_percent": 5.740064778160506,
+    "repeated_wall_action_percent": 5.68094185388926,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.725625,
+    "success_interval95": [
+      0.6778125,
+      0.77562890625
+    ],
+    "mean_success_steps": 14.621662360034453,
+    "wall_action_percent": 77.34973724958724,
+    "repeated_wall_action_percent": 76.37872280057832,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_continuing_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.399375,
+    "success_interval95": [
+      0.34546484375,
+      0.4540625
+    ],
+    "mean_success_steps": 25.41001564945227,
+    "wall_action_percent": 79.7549053227506,
+    "repeated_wall_action_percent": 78.8573886911034,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.13328125,
+    "success_interval95": [
+      0.09484375,
+      0.17484765625
+    ],
+    "mean_success_steps": 7.301289566236811,
+    "wall_action_percent": 27.693207752638468,
+    "repeated_wall_action_percent": 25.894067354811803,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.03453125,
+    "success_interval95": [
+      0.017339843750000004,
+      0.054375
+    ],
+    "mean_success_steps": 13.212669683257918,
+    "wall_action_percent": 31.267725317329653,
+    "repeated_wall_action_percent": 28.66163896117691,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.01828125,
+    "success_interval95": [
+      0.00609375,
+      0.0340625
+    ],
+    "mean_success_steps": 18.923076923076923,
+    "wall_action_percent": 31.79692088262438,
+    "repeated_wall_action_percent": 29.288845540733284,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.1803125,
+    "success_interval95": [
+      0.13468359375,
+      0.22922265625000002
+    ],
+    "mean_success_steps": 24.88214904679376,
+    "wall_action_percent": 34.394210987060056,
+    "repeated_wall_action_percent": 33.35364522923834,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.07515625,
+    "success_interval95": [
+      0.04702734375,
+      0.10546875
+    ],
+    "mean_success_steps": 48.69022869022869,
+    "wall_action_percent": 44.46815982090928,
+    "repeated_wall_action_percent": 43.039713806007,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "epsilon002",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.0440625,
+    "success_interval95": [
+      0.02515625,
+      0.06562890625000002
+    ],
+    "mean_success_steps": 54.95390070921986,
+    "wall_action_percent": 42.242206093675826,
+    "repeated_wall_action_percent": 40.80081697647978,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.1271875,
+    "success_interval95": [
+      0.08843359375,
+      0.16953125
+    ],
+    "mean_success_steps": 7.0,
+    "wall_action_percent": 28.739366797862395,
+    "repeated_wall_action_percent": 27.342767114117198,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.03359375,
+    "success_interval95": [
+      0.01609375,
+      0.05390625
+    ],
+    "mean_success_steps": 12.786046511627907,
+    "wall_action_percent": 32.560980143282755,
+    "repeated_wall_action_percent": 30.3958066691804,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 30,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.01765625,
+    "success_interval95": [
+      0.00515625,
+      0.033753906250000014
+    ],
+    "mean_success_steps": 18.424778761061948,
+    "wall_action_percent": 33.53260755563946,
+    "repeated_wall_action_percent": 31.460680049503914,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "same_room",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.1628125,
+    "success_interval95": [
+      0.1171875,
+      0.21171875
+    ],
+    "mean_success_steps": 20.822456813819578,
+    "wall_action_percent": 36.24171156425332,
+    "repeated_wall_action_percent": 35.79780396584916,
+    "mean_bfs_steps": 4.28,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "adjacent_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.06234375,
+    "success_interval95": [
+      0.03515625,
+      0.09203515625000001
+    ],
+    "mean_success_steps": 42.3609022556391,
+    "wall_action_percent": 47.56142508821746,
+    "repeated_wall_action_percent": 46.911625513057054,
+    "mean_bfs_steps": 12.01,
+    "bfs_feasible_fraction": 1.0
+  },
+  {
+    "model": "width2_replay_stopped_seed0",
+    "policy": "greedy",
+    "horizon": 150,
+    "category": "diagonal_rooms",
+    "pairs": 200,
+    "rollouts_per_pair": 32,
+    "success_rate": 0.02953125,
+    "success_interval95": [
+      0.01328125,
+      0.049375
+    ],
+    "mean_success_steps": 39.39153439153439,
+    "wall_action_percent": 46.152945122697915,
+    "repeated_wall_action_percent": 45.49113774431767,
+    "mean_bfs_steps": 19.68,
+    "bfs_feasible_fraction": 1.0
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "wall_thickness": 0.09090909090909091,
+  "old_threshold": 0.1,
+  "new_threshold": 0.025,
+  "sample": "existing 6400 diagonal rollouts; audit of original stopping positions, not strict-threshold reevaluation",
+  "horizons": {
+    "30": {
+      "successes": 2357,
+      "success_with_wall_between_stopping_position_and_goal": 42
+    },
+    "150": {
+      "successes": 3545,
+      "success_with_wall_between_stopping_position_and_goal": 62
+    }
+  }
+}

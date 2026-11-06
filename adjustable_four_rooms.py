@@ -7,10 +7,13 @@ from fourrooms_reference_diagnostics import make_pairs
 
 
 class AdjustableFourRooms(ContinuousFourRooms):
-    def __init__(self, doorway_scale=1.0, **kwargs):
+    def __init__(self, doorway_scale=1.0, threshold_distance=0.1, **kwargs):
         if not math.isfinite(doorway_scale) or not 0 < doorway_scale < 3:
             raise ValueError('doorway_scale must be finite and strictly between 0 and 3')
+        if not math.isfinite(threshold_distance) or threshold_distance <= 0:
+            raise ValueError('threshold_distance must be finite and positive')
         super().__init__(**kwargs)
+        self.threshold_distance = float(threshold_distance)
         self.doorway_scale = float(doorway_scale)
         half = self.doorway_scale/2
         bottom = (1.5-half, 1.5+half)

@@ -58,6 +58,9 @@ predicate. Twelve regression/parity tests passed, including the new square-mask
 case, and a two-epoch compiled smoke run exercises replay sampling plus the mask.
 Recovery every 200 epochs can lose up to 199 epochs after interruption.
 
+For the stricter goal-tolerance experiment (0.025), GPU training command and
+matched old/new evaluation, see [THRESHOLD025.md](THRESHOLD025.md).
+
 ## Cluster I/O and timing
 
 The runner prints only once per epoch in its original form, but its original

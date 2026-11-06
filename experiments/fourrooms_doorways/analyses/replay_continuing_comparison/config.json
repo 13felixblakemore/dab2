@@ -1,0 +1,33 @@
+{
+  "seed": 20261107,
+  "rollouts": 32,
+  "pairs_per_category": 200,
+  "jax": "0.12.0.1",
+  "device": "cpu",
+  "models": [
+    "width2_seed0",
+    "width2_replay_continuing_seed0",
+    "width2_replay_stopped_seed0"
+  ],
+  "script_sha256": "4038f0598a4fa8a7e533109bd91756c4ec0979afaf08cc44010bd7cb7ccc00f9",
+  "validity": {
+    "starts": {
+      "count": 600,
+      "inside_wall": 0,
+      "native_float32_inside_wall": 0,
+      "outside_world": 0,
+      "bad_indices": [],
+      "minimum_wall_clearance": 0.020454539494080937,
+      "success_square_overlaps_wall": 258
+    },
+    "goals": {
+      "count": 600,
+      "inside_wall": 0,
+      "native_float32_inside_wall": 0,
+      "outside_world": 0,
+      "bad_indices": [],
+      "minimum_wall_clearance": 0.020454539494080937,
+      "success_square_overlaps_wall": 244
+    }
+  }
+}
