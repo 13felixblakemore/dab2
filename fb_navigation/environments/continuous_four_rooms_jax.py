@@ -11,8 +11,10 @@ from functools import partial
 import jax
 import jax.numpy as jnp
 
-import matplotlib.pyplot as plt
-from matplotlib import patches
+from fb_navigation.environments.continuous_four_rooms import (
+    get_classic_four_rooms_blocks as _classic_blocks,
+    visualize_environment,
+)
 
 
 @partial(jax.tree_util.register_dataclass, data_fields=["x", "y"], meta_fields=[])
@@ -92,36 +94,9 @@ class WallBlock:
 
 
 def get_classic_four_rooms_blocks(size: float = 11.0) -> list[WallBlock]:
-    """Returns the 7 wall blocks forming the classic 11x11 Four Rooms layout.
-
-    Layout breakdown (11x11 grid):
-      - Rooms: Top-Left (6x6), Top-Right (4x6), Bottom-Left (6x4), Bottom-Right (4x4)
-      - Vertical wall: x in [6, 7] with doors at y in [1, 2] and [8, 9]
-      - Horizontal wall: y in [4, 5] with doors at x in [2, 3] and [9, 10]
-    """
-    scale = size / 11.0
-
-    raw_blocks = [
-        # --- Vertical Wall Segments (x in [6, 7]) ---
-        (6, 0, 7, 1),  # Below bottom doorway
-        (6, 2, 7, 8),  # Middle pillar connecting intersection, between doorways
-        (6, 9, 7, 11),  # Above top doorway
-        # --- Horizontal Wall Segments (y in [4, 5]) ---
-        (0, 4, 2, 5),  # Left outer segment
-        (3, 4, 6, 5),  # Left inner segment
-        (7, 4, 9, 5),  # Right inner segment
-        (10, 4, 11, 5),  # Right outer segment
-    ]
-
-    return [
-        WallBlock(
-            xmin=b[0] * scale,
-            ymin=b[1] * scale,
-            xmax=b[2] * scale,
-            ymax=b[3] * scale,
-        )
-        for b in raw_blocks
-    ]
+    """Use the common layout while retaining JAX wall dataclasses."""
+    return [WallBlock(block.xmin, block.ymin, block.xmax, block.ymax)
+            for block in _classic_blocks(size)]
 
 
 @jax.jit
@@ -301,62 +276,3 @@ class ContinuousFourRooms(ContinuousWorld):
             explorable=explorable,
             include_stay_action=include_stay_action,
         )
-
-
-def visualize_environment(
-    world: ContinuousWorld,
-    ax: plt.Axes,
-    draw_grid: bool = True,
-    draw_initial_position: bool = True,
-    draw_goal: bool = True,
-):
-    size = world.size
-
-    # 1. Draw light cell grid lines
-    if draw_grid:
-        n_cells = int(round(size))
-        for i in range(n_cells + 1):
-            ax.axhline(i, color="#dcdcdc", linewidth=1, zorder=1)
-            ax.axvline(i, color="#dcdcdc", linewidth=1, zorder=1)
-
-    # 2. Draw solid black rectangular walls
-    for block in world.wall_blocks:
-        rect = patches.Rectangle(
-            (block.xmin, block.ymin),
-            block.xmax - block.xmin,
-            block.ymax - block.ymin,
-            facecolor="black",
-            edgecolor="black",
-            zorder=2,
-        )
-        ax.add_patch(rect)
-
-    # 3. Outer boundary border
-    border = patches.Rectangle(
-        (0, 0),
-        size,
-        size,
-        fill=False,
-        edgecolor="black",
-        linewidth=10,
-        zorder=3,
-    )
-    ax.add_patch(border)
-
-    # 4. Agent and goal markers
-    carrot = (235 / 255, 137 / 255, 33 / 255, 0.9)
-    marker_style = dict(color=carrot, markersize=12)
-
-    if draw_initial_position:
-        x, y = world.current_position
-        ax.plot(x, y, marker="o", **marker_style, zorder=4)
-
-    if draw_goal and world.goal is not None:
-        x, y = world.goal
-        ax.plot(x, y, marker="*", **marker_style, zorder=4)
-
-    ax.set_xlim(-0.3, size + 0.3)
-    ax.set_ylim(-0.3, size + 0.3)
-    ax.set_aspect("equal")
-    ax.axis("off")
-    return ax

@@ -1,4 +1,4 @@
-﻿# Vectorised goal-terminated FB bottleneck evaluation
+# Vectorised goal-terminated FB bottleneck evaluation
 
 ## Run
 
@@ -20,7 +20,7 @@ Fast smoke test:
 
 ```powershell
 python -m fb_navigation.diagnostics.estimate_fb_bottlenecks_jax --samples 16 --horizon 30 --output evaluation_fb_bottlenecks_smoke
-python -m unittest tests.test_estimate_fb_bottlenecks_jax tests.test_goal_terminated_fb_jax -v
+python -m unittest tests.test_bottlenecks tests.test_fb_training -v
 ```
 
 The short smoke run checks the pipeline, not statistical accuracy. Analytical tests independently check scalar versus vectorised FB evaluation, exact forced-motion first entry and goal exclusion, identical sampling under batch splits, region/wall geometry, and invalid-denominator handling.

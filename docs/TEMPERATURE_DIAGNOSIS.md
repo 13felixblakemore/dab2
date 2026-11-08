@@ -1,4 +1,4 @@
-﻿# Diagnosis: softmax temperature and FB navigation
+# Diagnosis: softmax temperature and FB navigation
 
 ## Setup
 
@@ -72,4 +72,4 @@ Action order LEFT/RIGHT/UP/DOWN, graph directions, all-four-action availability 
 - `metrics.json`: audits, Q distributions, entropy and full numerical results.
 - `goal_terminated_q.npz`, `continuing_q.npz`: complete Q tables for independent analysis.
 
-Run `python -m fb_navigation.diagnostics.sweep_fb_temperature`; options select checkpoints, pairs, rollout count, horizon, seed, device and output. A short pipeline check uses `--pairs evaluation_bfs_control_smoke/intermediate.npz --rollouts 1 --horizon 100 --output evaluation_temperature_sweep_smoke`. Run tests with `python -m unittest tests.test_sweep_fb_temperature tests.test_evaluate_epsilon_bottlenecks tests.test_compare_bottleneck_policies -v`.
+Run `python -m fb_navigation.diagnostics.sweep_fb_temperature`; options select checkpoints, pairs, rollout count, horizon, seed, device and output. A short pipeline check uses `--pairs evaluation_bfs_control_smoke/intermediate.npz --rollouts 1 --horizon 100 --output evaluation_temperature_sweep_smoke`. Run tests with `python -m unittest tests.test_bottlenecks -v`.

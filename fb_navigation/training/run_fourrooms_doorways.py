@@ -1,5 +1,5 @@
 """Doorway-width experiment; periodic retained models and atomic rolling recovery."""
-from fb_navigation.paths import PROJECT_ROOT, source_path
+from fb_navigation.paths import source_path
 import argparse
 import hashlib
 import json
@@ -13,7 +13,7 @@ import numpy as np
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms, fixed_pairs
 from fb_navigation.training.run_fourrooms_reference import CONFIG, ROOT, create_learner
 from fb_navigation.training.run_fb_jax import make_epoch
-from fb_navigation.evaluation.fourrooms_reference_diagnostics import evaluate_checkpoint, plot_history
+from fb_navigation.evaluation.fourrooms import evaluate_checkpoint, plot_history
 
 
 def retained_checkpoint(epoch, total, interval):
@@ -52,6 +52,7 @@ def main():
         raise ValueError('Resume config mismatch: supply the original doorway scale and options')
     sources = ['run_fourrooms_doorways.py', 'adjustable_four_rooms.py', 'run_fourrooms_reference.py',
                'fourrooms_reference_diagnostics.py', 'run_fb_jax.py', 'continuous_four_rooms_jax.py',
+               'continuous_four_rooms.py',
                'forward_backward_jax.py', 'control_bfs_bottlenecks.py', 'estimate_fb_bottlenecks_jax.py', 'paths.py']
     hashes = {s: hashlib.sha256((source_path(s)).read_bytes()).hexdigest() for s in sources}
     if args.resume:

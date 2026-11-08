@@ -189,5 +189,5 @@ deterministic free-space probes, forced first actions, and the switch comparison
 fixed-continuation definition. Run with:
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest tests.test_doorway_advantages -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_navigation_diagnostics -v
 ```

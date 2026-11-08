@@ -19,8 +19,8 @@ from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms
 from fb_navigation.diagnostics.control_bfs_bottlenecks import bfs_distances
 from fb_navigation.diagnostics.estimate_fb_bottlenecks_jax import grid_regions,eligibility
-from fb_navigation.diagnostics.compare_bottleneck_policies import estimate,door_statistics,path_statistics
-from fb_navigation.evaluation.evaluate_epsilon_bottlenecks import doorway_arrivals
+from fb_navigation.diagnostics.bottleneck_policies import estimate,door_statistics,path_statistics
+from fb_navigation.diagnostics.bottleneck_policies import doorway_arrivals
 
 TEMPERATURES=[200.,100.,50.,20.,10.,2.,.2]
 

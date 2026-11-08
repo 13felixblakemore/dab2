@@ -11,7 +11,7 @@ hyperparameters are unchanged (d=50, lr=.0005, Polyak=.95, zero-task mixing 0).
 Collection remains uniformly random, and goals at evaluation remain unchanged.
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_fourrooms_doorways.py \
+CUDA_VISIBLE_DEVICES=0 python -m fb_navigation.training.run_fourrooms_doorways \
   --config experiments/fourrooms_doorways/replay_continuing.json \
   --device cuda --doorway-scale 2 \
   --checkpoint-every 200 --recovery-every 200 --log-every 20 \
@@ -31,7 +31,7 @@ Upload the updated `forward_backward_jax.py` and
 `replay_goal_terminated.json` before running this command on the cluster:
 
 ```bash
-python run_fourrooms_doorways.py \
+python -m fb_navigation.training.run_fourrooms_doorways \
   --config experiments/fourrooms_doorways/replay_goal_terminated.json \
   --device cuda --doorway-scale 2 \
   --checkpoint-every 200 --recovery-every 200 --log-every 20 \
@@ -73,7 +73,7 @@ diagnosis.
 For fewer writes and progress messages in a new run:
 
 ```bash
-python run_fourrooms_doorways.py --device cuda --doorway-scale 2 --checkpoint-every 200 --recovery-every 200 --log-every 20 --seed 0 --output experiments/fourrooms_doorways/runs/width2_lowio_seed0
+python -m fb_navigation.training.run_fourrooms_doorways --device cuda --doorway-scale 2 --checkpoint-every 200 --recovery-every 200 --log-every 20 --seed 0 --output experiments/fourrooms_doorways/runs/width2_lowio_seed0
 ```
 
 `--log-every 0` suppresses progress prints entirely. Its default is 10.
@@ -96,7 +96,7 @@ Run from the project root (800 epochs, released B regulariser, continuing FB,
 zero-task probability 0, no gradient clipping, all other reference settings):
 
 ```powershell
-& ./.venv/Scripts/python.exe run_fourrooms_doorways.py --doorway-scale 2 --checkpoint-every 200 --seed 0 --output experiments/fourrooms_doorways/runs/width2_seed0
+& ./.venv/Scripts/python.exe -m fb_navigation.training.run_fourrooms_doorways --doorway-scale 2 --checkpoint-every 200 --seed 0 --output experiments/fourrooms_doorways/runs/width2_seed0
 ```
 
 `--doorway-scale` multiplies **all four doorway widths** around their existing
@@ -124,7 +124,7 @@ every-epoch checkpoint disk growth. Old run outputs are never deleted.
 Resume the same run using exactly the same options plus `--resume`:
 
 ```powershell
-& ./.venv/Scripts/python.exe run_fourrooms_doorways.py --doorway-scale 2 --checkpoint-every 200 --seed 0 --output experiments/fourrooms_doorways/runs/width2_seed0 --resume
+& ./.venv/Scripts/python.exe -m fb_navigation.training.run_fourrooms_doorways --doorway-scale 2 --checkpoint-every 200 --seed 0 --output experiments/fourrooms_doorways/runs/width2_seed0 --resume
 ```
 
 Evaluation is at epoch 1 plus the retained checkpoint epochs. It uses the same
@@ -147,7 +147,7 @@ frequency, use this new runner with `--doorway-scale 1` and a fresh output path.
 Validation:
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest tests.test_adjustable_four_rooms tests.test_fourrooms_reference -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_fourrooms -v
 ```
 
 Eight tests cover exact scale-1 compatibility, expanded openings allowing formerly

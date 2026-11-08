@@ -72,7 +72,7 @@ A significantly better moving initial action under the backup policy, especially
 python experiments/maintenance/diagnose_implicit_reward_traps_20261106.py --device cpu
 python experiments/maintenance/geometry_detour_implicit_reward_20261106.py
 python experiments/maintenance/summarize_implicit_reward_traps_20261106.py
-python -m unittest test_implicit_reward_rollout -v
+python -m unittest tests.test_reward_diagnostics -v
 ```
 
 No changes were made to training, learned parameters, checkpoints, or environment dynamics.

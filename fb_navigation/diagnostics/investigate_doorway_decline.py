@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
 from fb_navigation.environments.continuous_four_rooms_jax import Point, _move
-from fb_navigation.evaluation.fourrooms_reference_diagnostics import coordinate_room, CATEGORIES
+from fb_navigation.evaluation.fourrooms import coordinate_room, CATEGORIES
 from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph, bfs_distances
 from fb_navigation.agents.forward_backward_jax import FBLearner
 

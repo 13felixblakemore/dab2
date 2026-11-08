@@ -18,44 +18,45 @@ notebooks/         Interactive Four Rooms notebook
 experiments/       Configurations, saved runs, analyses, reference code, and reports
 models/            Existing standalone checkpoints
 docs/              Method notes, layout guide, and validation records
-scripts/maintenance/  Project organization tools
-archive/drafts/    Unfinished historical code, retained for reference
 ```
 
-The small Python files remaining at the root are compatibility entry points.
-Their implementations live in `fb_navigation`; the usual training commands and
-legacy learner/environment imports continue to work.
+All active Python implementations live in `fb_navigation`; the root redirects
+have been removed. Use qualified package imports and the commands below. The
+PyTorch checkpoint loader handles the old saved featuriser module name directly.
 
 ## Train and evaluate
 
 For example, train the strict-tolerance width-2 replay-continuing experiment:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_fourrooms_doorways.py \
+CUDA_VISIBLE_DEVICES=0 python -m fb_navigation.training.run_fourrooms_doorways \
   --config experiments/fourrooms_doorways/replay_continuing_threshold025.json \
   --device cuda --doorway-scale 2 \
   --checkpoint-every 200 --recovery-every 200 --log-every 20 \
   --seed 0 --output experiments/fourrooms_doorways/runs/NEW_RUN_NAME
 ```
 
-The package entry point is equivalent:
+Command help:
 
 ```bash
 python -m fb_navigation.training.run_fourrooms_doorways --help
-python -m fb_navigation.evaluation.evaluate_width2_goals --help
+python -m fb_navigation.evaluation.fourrooms width2 --help
 python -m fb_navigation.diagnostics.investigate_doorway_decline --help
 ```
 
 Experiment instructions and results:
 
+- [All experiments and results: overview](experiments/README.md)
 - [Four Rooms experiment index](experiments/fourrooms_doorways/INDEX.md)
 - [Smaller goal threshold: training and comparison](experiments/fourrooms_doorways/THRESHOLD025.md)
 - [Matched strict-threshold results](experiments/fourrooms_doorways/analyses/replay_threshold025_comparison/REPORT.md)
 - [Learned-reward versus Q-value wall-trap diagnosis](experiments/fourrooms_doorways/analyses/implicit_reward_wall_traps/REPORT.md)
-- [Continuous Maze reproduction](experiments/continuous_maze/README.md)
 - [Reference-compatible Four Rooms](experiments/fourrooms_reference/README.md)
 
 ## Tests and notebook
+
+Tests are grouped into seven topic modules; see [the test guide](tests/README.md)
+for focused commands and coverage.
 
 ```bash
 python -m unittest discover -s tests -p 'test_*.py' -v
@@ -73,5 +74,6 @@ locations have changed. Existing source-hash guards still require the original
 archived source when resuming an older run; use a fresh output directory for new
 experiments or evaluations under the organized package.
 
+See [the evaluation guide](docs/EVALUATION_TOOLS.md) for the consolidated tools.
 See [the layout guide](docs/PROJECT_LAYOUT.md) for module paths and the migration
 record. Checkpoints and Python caches remain ignored by Git.

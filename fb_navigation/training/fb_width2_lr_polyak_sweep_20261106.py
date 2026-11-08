@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = PROJECT_ROOT
 DEFAULT_OUTPUT=ROOT/'experiments/sweeps/fb_width2_lr_polyak_20261106'
 TRAINING_SOURCES=['run_fourrooms_doorways.py','adjustable_four_rooms.py','run_fourrooms_reference.py',
-    'fourrooms_reference_diagnostics.py','run_fb_jax.py','continuous_four_rooms_jax.py',
+    'fourrooms_reference_diagnostics.py','run_fb_jax.py','continuous_four_rooms_jax.py','continuous_four_rooms.py',
     'forward_backward_jax.py','control_bfs_bottlenecks.py','estimate_fb_bottlenecks_jax.py','paths.py']
 
 
@@ -57,7 +57,7 @@ def make_plan(base,lrs,polyaks,seeds,epochs=800,doorway_scale=2.,checkpoint_ever
 
 
 def command(cell,output,device,recovery_every,log_every,resume=False):
-    result=[sys.executable,'-u',str(ROOT/'run_fourrooms_doorways.py'),
+    result=[sys.executable,'-u','-m','fb_navigation.training.run_fourrooms_doorways',
         '--config',str(output/'configs'/f'{cell["name"]}.json'),
         '--doorway-scale',str(cell['config']['environment']['doorway_scale']),
         '--checkpoint-every',str(cell['config']['checkpoint_every']),

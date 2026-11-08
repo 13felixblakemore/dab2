@@ -3,7 +3,7 @@ import math
 import numpy as np
 from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, WallBlock
 from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph, bfs_distances
-from fb_navigation.evaluation.fourrooms_reference_diagnostics import make_pairs
+from fb_navigation.evaluation.fourrooms import make_pairs
 
 
 class AdjustableFourRooms(ContinuousFourRooms):

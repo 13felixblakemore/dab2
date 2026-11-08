@@ -195,7 +195,7 @@ local control without silently changing the FB training objective.
 ## Artifacts and reproduction
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest test_doorway_decline -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_navigation_diagnostics -v
 & ./.venv/Scripts/python.exe investigate_doorway_decline.py
 ```
 

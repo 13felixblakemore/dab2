@@ -33,7 +33,7 @@ or changing the objective to a goal-terminated loss.
 From the repository root, using a fresh output directory:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_fourrooms_doorways.py \
+CUDA_VISIBLE_DEVICES=0 python -m fb_navigation.training.run_fourrooms_doorways \
   --config experiments/fourrooms_doorways/replay_continuing_threshold025.json \
   --device cuda --doorway-scale 2 \
   --checkpoint-every 200 --recovery-every 200 --log-every 20 \
@@ -60,7 +60,7 @@ After training, evaluate both checkpoints at **0.025** with identical start-goal
 pairs and action/noise keys:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python evaluate_width2_goals.py \
+CUDA_VISIBLE_DEVICES=0 python -m fb_navigation.evaluation.fourrooms width2 \
   --device cuda --goal-threshold 0.025 \
   --models width2_replay_continuing_seed0 width2_replay_continuing_threshold025_seed0 \
   --pairs-per-category 200 --rollouts 32 \

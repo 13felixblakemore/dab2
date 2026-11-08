@@ -15,6 +15,7 @@ import numpy as np
 from fb_navigation.environments.continuous_maze import ContinuousMaze
 from fb_navigation.agents.forward_backward_jax import FBLearner, _cauchy_ball
 from fb_navigation.training.run_continuous_maze import evaluate
+from fb_navigation.paths import source_path
 
 
 def wilson_interval(successes, trials):
@@ -136,7 +137,7 @@ def main():
     config = dict(run=str(args.run.resolve()), goals=args.goals, seed=args.seed,
                   residual_batches=args.residual_batches, device=args.device,
                   evaluator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                  sources_sha256={p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                  sources_sha256={p: hashlib.sha256(source_path(p).read_bytes()).hexdigest()
                                   for p in ['continuous_maze.py', 'forward_backward_jax.py', 'run_continuous_maze.py']})
     manifest = args.output/'config.json'
     if manifest.exists() and json.loads(manifest.read_text()) != config:

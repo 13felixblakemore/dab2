@@ -13,7 +13,7 @@ import numpy as np
 from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms
 from fb_navigation.agents.forward_backward_jax import FBLearner, RadialBasisFunction2D
 from fb_navigation.training.run_fb_jax import make_epoch
-from fb_navigation.evaluation.fourrooms_reference_diagnostics import make_pairs, evaluate_checkpoint, plot_history
+from fb_navigation.evaluation.fourrooms import make_pairs, evaluate_checkpoint, plot_history
 
 ROOT = PROJECT_ROOT
 CONFIG = ROOT/'experiments/fourrooms_reference/config.json'
@@ -41,7 +41,8 @@ def main():
     if args.resume and json.loads(manifest.read_text()) != config:
         raise ValueError('Resume config mismatch')
     sources = ['run_fourrooms_reference.py', 'fourrooms_reference_diagnostics.py', 'run_fb_jax.py',
-               'continuous_four_rooms_jax.py', 'forward_backward_jax.py', 'control_bfs_bottlenecks.py',
+               'continuous_four_rooms_jax.py', 'continuous_four_rooms.py',
+               'forward_backward_jax.py', 'control_bfs_bottlenecks.py',
                'estimate_fb_bottlenecks_jax.py', 'paths.py']
     hashes = {s: hashlib.sha256((source_path(s)).read_bytes()).hexdigest() for s in sources}
     if args.resume and json.loads((output/'metadata.json').read_text())['sha256'] != hashes:

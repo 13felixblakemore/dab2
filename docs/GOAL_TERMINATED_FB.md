@@ -1,9 +1,9 @@
-﻿# Optional goal-terminated FB successor measures
+# Optional goal-terminated FB successor measures
 
 ## Usage and compatibility
 
 ```powershell
-python run_fb_jax.py --z-sampling replay --goal-terminated --goal-threshold 0.1 --output-dir models/goal_terminated
+python -m fb_navigation.training.run_fb_jax --z-sampling replay --goal-terminated --goal-threshold 0.1 --output-dir models/goal_terminated
 ```
 
 Or construct `FBLearner(..., z_sampling="replay", goal_terminated=True, goal_threshold=0.1)`.
@@ -41,7 +41,7 @@ The Four Rooms environment itself uses coordinate-wise closeness (a square), whi
 ## Validation
 
 ```powershell
-python -m unittest tests.test_goal_terminated_fb_jax -v
+python -m unittest tests.test_fb_training -v
 python -m fb_navigation.training.smoke_goal_terminated_fb_jax
 ```
 

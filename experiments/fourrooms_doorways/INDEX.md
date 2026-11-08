@@ -1,64 +1,43 @@
-# Four Rooms doorway experiments
+# Four Rooms doorway artifact index
 
-Start here. Uploaded `fourrooms_doorways/fourrooms_doorways/...` directories have
-been merged into the canonical layout below. All distinct checkpoint content was
-preserved. Byte-identical duplicate files were removed after SHA-256 comparison;
-differing copies were archived instead of overwritten. Exact operations and
-hashes are in `organization_manifest.json`.
+For experiment settings, numerical results and interpretation, start with the
+[experiments and results overview](../README.md).
 
-```text
-fourrooms_doorways/
-  runs/
-    width2_seed0/                 Original Cauchy, continuing FB; epochs 200/400/600/800
-    width2_replay_stopped_seed0/  Replay tasks + goal-entry bootstrap mask; same epochs
-    width2_replay_continuing_seed0/ Replay tasks, unchanged continuing objective
-    width2_replay_continuing_threshold025_seed0/ Completed stricter-tolerance run
-  analyses/
-    goal_reaching/               NEW: fresh matched-goal tests, results and success.png
-    replay_continuing_comparison/ Latest replay-continuing analysis and three-model comparison
-    replay_continuing_failures/   Recorded diagonal wall traps, animation and collision maps
-    replay_threshold025_comparison/ Matched old/new success, wall hits and learning curves at tolerance 0.025
-    replay_threshold025_failures/ New-model diagonal failure recordings
-    replay_threshold025_old_failures/ Old-model failure recordings evaluated at the same 0.025 tolerance
-    implicit_reward_wall_traps/   Learned-reward maps, per-action MC/Q comparisons and geometry detour controls
-    advantage_stability/         Fixed doorway advantages and action-conditioned MC
-    decline_analysis/            Late decline, wall loops and oracle-mask diagnostics
-    stage_analysis/              First approach / crossing / second-door comparisons
-    goal_validity/               Goal/state wall and connectivity audits
-  smoke_runs/                    Small validation runs, separate from full experiments
-  archive/import_conflicts/      Differing versions found in repeated uploads
-  replay_goal_terminated.json    Runnable 800-epoch variant config
-  replay_continuing_threshold025.json  Replay-continuing run with stricter goal tolerance
-  THRESHOLD025.md                GPU training and matched comparison commands
-  README.md                     Training commands and experiment settings
-```
+## Full runs
 
-Reports in this folder: `RESULTS.md` (original-width comparison),
-`ADVANTAGE_STABILITY.md`, `GOAL_VALIDITY.md`. Detailed stage/decline reports remain
-beside their corresponding analysis outputs. The newest goal-reaching report is
-`analyses/replay_threshold025_comparison/REPORT.md`.
+All four runs completed 800 epochs, with retained model checkpoints at epochs
+200, 400, 600 and 800. The original-width reference is stored separately in
+`../fourrooms_reference/runs/seed0/`.
 
-Checkpoint, recovery, config, evaluation and archived-source filenames inside
-each full run are unchanged. Old manifests/source snapshots retain historical
-paths as provenance; use the organization manifest to resolve moved artifacts.
-Root analysis scripts now default to the canonical paths. The path-only changes
-to stage/advantage analysis manifests are recorded in `analysis_path_migrations.json`;
-their untouched previous manifests are `config.before_organization.json` beside
-each analysis. Mathematical settings and checkpoint hashes are unchanged. Other
-suite changes still require a fresh output directory. Training resume also
-requires its matching archived source, as before.
+| Run folder under `runs/` | Condition |
+| --- | --- |
+| `width2_seed0` | Cauchy tasks, continuing objective |
+| `width2_replay_continuing_seed0` | Replay-goal tasks, continuing objective |
+| `width2_replay_stopped_seed0` | Replay-goal tasks, stopped bootstrap |
+| `width2_replay_continuing_threshold025_seed0` | Replay-goal tasks, continuing objective, goal tolerance 0.025 |
 
-Reproduce the new goal-reaching test:
+## Saved analyses
 
-```bash
-python evaluate_width2_goals.py
-# Optional GPU execution in a fresh analysis output:
-python evaluate_width2_goals.py --device cuda --output experiments/fourrooms_doorways/analyses/goal_reaching_gpu
-```
+| Folder under `analyses/` | Contents |
+| --- | --- |
+| [goal_reaching](analyses/goal_reaching/REPORT.md) | Initial matched Cauchy/stopped/random comparison |
+| [replay_continuing_comparison](analyses/replay_continuing_comparison/REPORT.md) | Three-model comparison and replay-continuing learning curves |
+| [replay_continuing_failures](analyses/replay_continuing_failures/REPORT.md) | Diagonal failure recordings, animations and collision maps |
+| [replay_threshold025_comparison](analyses/replay_threshold025_comparison/REPORT.md) | Both replay-continuing models evaluated at tolerance 0.025 |
+| [replay_threshold025_failures](analyses/replay_threshold025_failures/) | Strict-model diagonal failure recordings |
+| [replay_threshold025_old_failures](analyses/replay_threshold025_old_failures/) | Original model's failures under the same strict tolerance |
+| [implicit_reward_wall_traps](analyses/implicit_reward_wall_traps/REPORT.md) | Reward maps, Q/MC comparisons, covariance audit and detour controls |
+| [advantage_stability](ADVANTAGE_STABILITY.md) | Fixed-doorway action ranks and forced-action Monte Carlo |
+| [decline_analysis](analyses/decline_analysis/REPORT.md) | Cauchy late decline, wall loops and action-ranking diagnostics |
+| [stage_analysis](analyses/stage_analysis/REPORT.md) | Matched approach, crossing and second-door probes |
+| [goal_validity](GOAL_VALIDITY.md) | Goal/state geometry, connectivity and budget audits |
+| threshold025_validation | Acceptance-region audit, validation config and small evaluator checks |
 
-This evaluates both final checkpoints, not new training. Implementations are in
-`fb_navigation/`; root training/evaluation launchers and legacy learner/environment
-imports remain compatible. The notebook is in `notebooks/`. See the repository
-`README.md` and `docs/PROJECT_LAYOUT.md` for the organized layout.
-Python caches are ignored and removed from Git tracking; checkpoint ignores
-remain in place. Smoke data and old reports are not used as final performance.
+[README.md](README.md) and [THRESHOLD025.md](THRESHOLD025.md) contain the original
+experiment setup notes. Historical reports may describe removed launchers or
+smoke-run folders. The [current evaluation guide](../../docs/EVALUATION_TOOLS.md)
+lists supported package commands. Smoke-run outputs and redundant import-conflict
+archives were removed; real run outputs and their source snapshots remain.
+
+`organization_manifest.json` and `analysis_path_migrations.json` describe earlier
+file moves. Their historical paths are provenance, not a current file inventory.

@@ -178,7 +178,7 @@ experienced behavior, not a state-distribution-independent collision probability
 ## Reproduction and artifacts
 
 ```powershell
-& ./.venv/Scripts/python.exe -m unittest test_navigation_stages -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_navigation_diagnostics -v
 & ./.venv/Scripts/python.exe compare_navigation_stages.py
 ```
 

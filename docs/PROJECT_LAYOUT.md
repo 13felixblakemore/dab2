@@ -16,28 +16,28 @@ source hashes before/after relocation, and hashes of protected experiment files.
 | Reward, wall, doorway, and bottleneck diagnostics | `fb_navigation/diagnostics/` |
 | Test modules | `tests/` |
 | Notebook | `notebooks/forward_backwards_4rooms.ipynb` |
-| Historical unfinished DAB draft | `archive/drafts/dab.py` |
 
 ## Compatibility
 
-The root learner/environment modules forward imports to the canonical package,
-including private helpers and class definitions used by older scripts and
-checkpoints. Root training entry points and `evaluate_width2_goals.py` forward
-execution and imports as well. Both forms work:
+All root learner, environment and command redirects have been removed. Use
+qualified package imports and package commands. The PyTorch checkpoint loader
+maps the old `forward_backward` class location to the package implementation;
+saved model files do not need to be rewritten. Historical archived scripts still
+describe their original layout and need that layout restored to run unchanged.
 
 ```bash
-python run_fourrooms_doorways.py --help
 python -m fb_navigation.training.run_fourrooms_doorways --help
 ```
 
-The dated analysis commands under `experiments/maintenance/` and the existing
-`experiments/fb_width2_lr_polyak_sweep_20261106.py` path are compatibility
-launchers. Their implementations are in the package. Other diagnostics now run
-as modules, for example:
+The obsolete launchers under `experiments/maintenance/` and
+`experiments/fb_width2_lr_polyak_sweep_20261106.py` have been removed.
+The dated report generators have also been removed; saved experiment results
+remain in place. See [evaluation tools](EVALUATION_TOOLS.md) for the consolidated
+evaluators and reusable diagnostics. Run tools as modules, for example:
 
 ```bash
 python -m fb_navigation.diagnostics.diagnose_fb_walls --help
-python -m fb_navigation.diagnostics.record_replay_failures_20261106 --help
+python -m fb_navigation.diagnostics.bottleneck_policies epsilon --help
 python -m fb_navigation.training.fb_width2_lr_polyak_sweep_20261106 --help
 ```
 
@@ -45,6 +45,10 @@ Use qualified package imports in new code. `fb_navigation.paths.PROJECT_ROOT`
 locates configuration/data files independently of module location;
 `source_path(name)` resolves historical source basenames to the active source
 used for new run snapshots. Existing archived source files are not rewritten.
+
+The two Four Rooms backends share layout generation and plotting from
+`environments/continuous_four_rooms.py`. New Four Rooms run/sweep manifests include
+that shared source alongside the JAX environment.
 
 ## Results and source-hash guards
 

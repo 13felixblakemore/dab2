@@ -1,13 +1,29 @@
 import os
+import pickle
 import random
 from collections.abc import Hashable
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
 from torch.distributions.cauchy import Cauchy
+
+
+class _CheckpointUnpickler(pickle.Unpickler):
+    """Resolve feature classes saved before the package reorganization."""
+
+    def find_class(self, module, name):
+        if module == "forward_backward":
+            module = __name__
+        return super().find_class(module, name)
+
+
+_CHECKPOINT_PICKLE = SimpleNamespace(
+    __name__="pickle", Unpickler=_CheckpointUnpickler, load=pickle.load
+)
 
 
 class RadialBasisFunction2D:
@@ -469,7 +485,10 @@ class FBLearner:
         ):
             os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-        checkpoint = torch.load(Path(path), map_location=device, weights_only=False)
+        checkpoint = torch.load(
+            Path(path), map_location=device, weights_only=False,
+            pickle_module=_CHECKPOINT_PICKLE,
+        )
         learner = cls(
             **checkpoint["config"], device=device, buffer_device=buffer_device
         )

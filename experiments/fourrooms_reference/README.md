@@ -1,20 +1,20 @@
 # Four Rooms with released-code FB configuration
 
-The full seed-0 experiment is running separately from Continuous Maze. Launch
+The full seed-0 experiment completed all 800 epochs. Launch
 metadata: `runs/seed0.process.json`. Live logs: `runs/seed0.stdout.log` and
 `runs/seed0.stderr.log`. The older `run_fb_jax.py`, environment files, saved models
 and Continuous Maze sources/configuration were not modified for this experiment.
 
 ```powershell
-# Already launched; do not start another process in the same directory.
-& ./.venv/Scripts/python.exe run_fourrooms_reference.py --seed 0
+# Start a new run in a fresh output directory.
+& ./.venv/Scripts/python.exe -m fb_navigation.training.run_fourrooms_reference --seed 0 --output experiments/fourrooms_reference/runs/NEW_RUN_NAME
 # After an interruption, with unchanged source/config:
-& ./.venv/Scripts/python.exe run_fourrooms_reference.py --seed 0 --resume
+& ./.venv/Scripts/python.exe -m fb_navigation.training.run_fourrooms_reference --seed 0 --resume
 # Live status:
 Get-Content experiments/fourrooms_reference/runs/seed0.stdout.log -Tail 2
 Get-Content experiments/fourrooms_reference/runs/seed0.stderr.log -Tail 10
 # Validation:
-& ./.venv/Scripts/python.exe -m unittest tests.test_fourrooms_reference -v
+& ./.venv/Scripts/python.exe -m unittest tests.test_fourrooms -v
 ```
 
 Configuration is `config.json`: 800 epochs × 25 cycles × 40 updates = **800,000
@@ -97,8 +97,9 @@ persistent navigation failure without changing training or the 30-step result.
 Four automated tests passed: config/dynamics/action preservation, F shape and
 objective mode, deterministic stratified pairs/BFS, native-motion doorway and wall
 counts, and denominator/BFS-feasibility handling. A two-epoch, 80-update/240-
-transition smoke run completed with finite losses at `runs/smoke_seed0`. Its tiny
-four-pair-per-category evaluation is only validation, not a performance estimate.
+transition smoke run completed with finite losses. Its tiny four-pair-per-category
+evaluation was only validation, not a performance estimate. Generated smoke-run
+folders were removed during cleanup; `smoke.json` retains the validation config.
 
 ## Interpreting the comparison
 
