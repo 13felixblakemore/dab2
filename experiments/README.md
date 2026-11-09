@@ -228,6 +228,10 @@ locates the analysis folders. Smoke-run outputs, redundant import-conflict archi
 and dated one-off report generators were removed during cleanup. Historical
 reports retain their original command descriptions; some no longer run unchanged.
 
+The completed original-width reference run retains epoch 1, every 100th model
+checkpoint through epoch 800, and its recovery snapshot. Other intermediate
+reference models were removed; saved metrics and evaluation outputs are unchanged.
+
 Current commands are documented in [the evaluation guide](../docs/EVALUATION_TOOLS.md).
 For example, rerun the three-model comparison into a **fresh** directory:
 

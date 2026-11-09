@@ -40,7 +40,7 @@ and wall rejection. **STAY is not added** and goal tolerance is not changed to t
 maze's .05. This is an environment/configuration comparison, not the paper's
 continuous-maze experiment on a different wall layout alone.
 
-Every epoch writes a separate model checkpoint and all 1,000 scalar losses to
+The original runner writes a separate model checkpoint every epoch and all 1,000 scalar losses to
 `losses.npy`. Unfinished entries in that file are NaN sentinels, not training
 failures. `training.json` and stdout report completed epochs, losses, update and
 transition counts. The latest atomic `resume.pkl` retains replay, collection keys,
@@ -49,6 +49,12 @@ optimizer moments and target weights. Source snapshots/hashes and software
 versions are archived under each run. Restarts resume at the latest completed
 epoch, and preserve historical model checkpoints. Avoid concurrent writers to the
 same output directory. Pickle artifacts should only be loaded when trusted.
+
+The completed `runs/seed0` archive was thinned after training: it retains
+`epoch_0001.pkl`, every 100th checkpoint from `epoch_0100.pkl` through
+`epoch_0800.pkl`, and `resume.pkl`. Intermediate model files were removed;
+training records, losses and evaluation outputs remain intact. The runner's
+future save cadence is unchanged.
 
 ## Fixed-pair navigation diagnostics
 
