@@ -5,7 +5,7 @@ For experiment settings, numerical results and interpretation, start with the
 
 ## Full runs
 
-All four runs completed 800 epochs, with retained model checkpoints at epochs
+All five runs completed 800 epochs, with retained model checkpoints at epochs
 200, 400, 600 and 800. The original-width reference is stored separately in
 `../fourrooms_reference/runs/seed0/`.
 
@@ -15,6 +15,7 @@ All four runs completed 800 epochs, with retained model checkpoints at epochs
 | `width2_replay_continuing_seed0` | Replay-goal tasks, continuing objective |
 | `width2_replay_stopped_seed0` | Replay-goal tasks, stopped bootstrap |
 | `width2_replay_continuing_threshold025_seed0` | Replay-goal tasks, continuing objective, goal tolerance 0.025 |
+| `width2_replay_continuing_orthonormal_seed0_20261109_084240` | Replay-goal tasks, continuing objective, orthonormal B regularizer, goal tolerance 0.1 |
 
 ## Saved analyses
 
@@ -22,6 +23,8 @@ All four runs completed 800 epochs, with retained model checkpoints at epochs
 | --- | --- |
 | [goal_reaching](analyses/goal_reaching/REPORT.md) | Initial matched Cauchy/stopped/random comparison |
 | [replay_continuing_comparison](analyses/replay_continuing_comparison/REPORT.md) | Three-model comparison and replay-continuing learning curves |
+| [replay_orthonormal_comparison](analyses/replay_orthonormal_comparison/REPORT.md) | Matched saved-monitor comparison of orthonormal/released replay and Cauchy, paired intervals, source validation and learning curves |
+| [orthonormal_epsilon010](analyses/orthonormal_epsilon010/REPORT.md) | Orthonormal epoch-800 monitor evaluation at epsilon 0.1 versus reproduced epsilon 0.02, with paired intervals |
 | [replay_continuing_failures](analyses/replay_continuing_failures/REPORT.md) | Diagonal failure recordings, animations and collision maps |
 | [replay_threshold025_comparison](analyses/replay_threshold025_comparison/REPORT.md) | Both replay-continuing models evaluated at tolerance 0.025 |
 | [replay_threshold025_failures](analyses/replay_threshold025_failures/) | Strict-model diagonal failure recordings |

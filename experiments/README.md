@@ -4,9 +4,11 @@ This is the results overview for the experiments retained in this repository.
 Numbers below come from saved evaluation JSON files and analysis reports; no
 training or evaluation was rerun to produce this summary.
 
-The strongest observed width-2 result is **replay-goal sampling with the continuing
-FB objective**. It improves cross-room navigation over Cauchy task sampling on the
-matched evaluation. Adding the tested stopped-bootstrap modification performs
+The strongest observed width-2 results use **replay-goal sampling with the continuing
+FB objective**. Replay improves cross-room navigation over Cauchy task sampling on the
+matched evaluation. The new orthonormal-regularizer run modestly improves diagonal
+monitor point estimates over released-regularizer replay, but has mixed overall
+results and paired intervals that include zero. Adding the tested stopped-bootstrap modification performs
 poorly. Reducing goal tolerance from 0.1 to 0.025 addresses an overly permissive
 success region, but does not resolve wall trapping. Selected wall-trap studies
 find evidence of both inaccurate action rankings and problematic learned rewards.
@@ -16,12 +18,13 @@ training seeds. Repeated rollouts measure task/noise variability for fixed model
 
 ## Completed training runs
 
-All five retained full runs completed **800 epochs, 800,000 gradient updates and
+All six retained full runs completed **800 epochs, 800,000 gradient updates and
 2.4 million collected transitions**. Each uses training seed 0. The shared setup
 uses four movement actions, step 0.05, movement noise 0.005, RBF features on a
 21-by-21 grid, embedding dimension 50, learning rate 0.0005, discount 0.99,
-temperature 200, Polyak coefficient 0.95, the released B regularizer, no gradient
-clipping and no zero-task mixing. Collection uses uniformly random actions.
+temperature 200, Polyak coefficient 0.95, no gradient clipping and no zero-task
+mixing. Collection uses uniformly random actions. Five use the released B
+regularizer; the new replay run uses `b_regularization="orthonormal"`, coefficient 1.
 
 | Saved run | Doorway scale | Task sampling | FB objective | Coordinate-wise environment goal tolerance |
 | --- | ---: | --- | --- | ---: |
@@ -30,6 +33,7 @@ clipping and no zero-task mixing. Collection uses uniformly random actions.
 | [Width-2 replay continuing](fourrooms_doorways/runs/width2_replay_continuing_seed0/config.json) | 2 | Independent replay goals, z = B(goal) | Continuing | 0.1 |
 | [Width-2 replay stopped](fourrooms_doorways/runs/width2_replay_stopped_seed0/config.json) | 2 | Independent replay goals, z = B(goal) | Bootstrap stops on next-state goal entry | 0.1 |
 | [Width-2 replay continuing, strict tolerance](fourrooms_doorways/runs/width2_replay_continuing_threshold025_seed0/config.json) | 2 | Independent replay goals, z = B(goal) | Continuing | 0.025 |
+| [Width-2 replay continuing, orthonormal regularizer](fourrooms_doorways/runs/width2_replay_continuing_orthonormal_seed0_20261109_084240/config.json) | 2 | Independent replay goals, z = B(goal) | Continuing | 0.1 |
 
 Scale 1 has doorway width 1/11; scale 2 doubles all four openings to 2/11.
 The width-2 stopped run explicitly uses the square goal predicate (`goal_norm=linf`).
@@ -204,9 +208,71 @@ all failures. [Per-action results](fourrooms_doorways/analyses/implicit_reward_w
 and [comparison intervals](fourrooms_doorways/analyses/implicit_reward_wall_traps/action_comparisons.json)
 are retained alongside reward maps and trajectories.
 
+## 7. Does orthonormal B regularization improve replay continuing?
+
+The new run changes only the resolved `b_regularization` setting from
+`touati_continuous` to `orthonormal` relative to the original replay-continuing
+run. It completed 800 epochs with all 800,000 stored losses finite. Both runs use
+training seed 0 and identical recorded Python/JAX/NumPy versions. Archived
+learner sources are identical; checks confirm unchanged evaluation, movement,
+environment classes and compiled training-epoch functions across the package
+reorganization.
+
+The comparison below uses **the matched training monitor: 200 pairs per category,
+one noisy rollout per pair**, endpoint seed 271828, online F/B, epsilon 0.02,
+goal tolerance 0.1. These are not the different 32-rollout tasks in section 2.
+
+| Category | Released H=30 | Orthonormal H=30 | Released H=150 | Orthonormal H=150 |
+| --- | ---: | ---: | ---: | ---: |
+| Same room | 99.5% | 99.5% | 99.5% | 99.5% |
+| Adjacent rooms | 66.5% | 64.0% | 81.0% | 79.5% |
+| Diagonal rooms | 29.0% | 34.0% | 50.0% | 53.5% |
+
+Diagonal improvements are **5.0 pp** at H=30 and **3.5 pp** at H=150; paired
+endpoint-bootstrap 95% intervals are **[-2.0, 12.0]** and **[-4.5, 11.5]** pp.
+All six category/horizon intervals include zero. Equal-category overall success
+increases by only 0.83 and 0.67 pp. These intervals do not measure training-seed
+uncertainty.
+
+Orthonormal diagonal success at epochs 200/400/600/800 is 16/24.5/33/34% at H=30
+and 29/47/51/53.5% at H=150: no late diagonal deterioration is observed at saved
+checkpoints. Wall trapping remains unresolved: final diagonal wall-action rates
+are 48.18% / 75.31%, versus 49.78% / 76.83% for released replay. Selecting this
+regularizer alone does not demonstrate empirical feature orthonormality; no new
+feature-covariance or repeated-rollout diagnostic was run.
+
+The result supports a modest diagonal point-estimate gain in one seed, with mixed
+category results, rather than an established overall improvement. See the
+[full analysis and learning curves](fourrooms_doorways/analyses/replay_orthonormal_comparison/REPORT.md)
+and [validated numerical comparisons](fourrooms_doorways/analyses/replay_orthonormal_comparison/results.json).
+
+### Evaluation exploration: epsilon 0.1
+
+Reevaluating the same orthonormal epoch-800 checkpoint on these 600 monitor
+pairs with epsilon **0.1**, keeping all other settings fixed, improves success:
+
+| Category | Epsilon .02 H=30 | Epsilon .10 H=30 | Epsilon .02 H=150 | Epsilon .10 H=150 |
+| --- | ---: | ---: | ---: | ---: |
+| Same room | 99.5% | 100.0% | 99.5% | 100.0% |
+| Adjacent rooms | 64.0% | 70.5% | 79.5% | 93.5% |
+| Diagonal rooms | 34.0% | 40.0% | 53.5% | 82.0% |
+
+The diagonal H=150 gain is **28.5 pp**, paired endpoint-bootstrap 95% interval
+**[22.0, 35.0]** pp (58 gained successes, one lost). Diagonal wall-action rates
+fall from 48.18% to 37.53% at H=30 and from 75.31% to 55.48% at H=150. These
+results are consistent with random actions helping escape policy traps, but
+do not identify the cause of those traps. Wall hitting remains substantial.
+
+The local CPU epsilon-.02 rerun exactly reproduces every saved hit, collision
+and doorway-crossing array from the cluster evaluation. Both epsilon settings
+use the same per-trial random seeds. This is one rollout per pair and one
+trained model, not a repeated-rollout or training-seed robustness study. Only
+evaluation changed; training collection remains uniformly random. See the
+[evaluation report](fourrooms_doorways/analyses/orthonormal_epsilon010/REPORT.md).
+
 ## Earlier studies and work without a retained full result set
 
-These studies are separate from the five-run comparison above. Their surviving
+These studies are separate from the six completed runs above. Their surviving
 notes document results or methods, but the historical `evaluation_*` output
 directories and Continuous Maze experiment directory are absent from this checkout.
 

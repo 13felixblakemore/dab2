@@ -1,0 +1,24 @@
+{
+  "run": "experiments\\fourrooms_doorways\\runs\\width2_replay_continuing_orthonormal_seed0_20261109_084240",
+  "epoch": 800,
+  "device": "cpu",
+  "jax": "0.12.0.1",
+  "numpy": "2.5.4",
+  "epsilons": [
+    0.02,
+    0.1
+  ],
+  "pairs": 600,
+  "rollouts_per_pair": 1,
+  "horizons": [
+    30,
+    150
+  ],
+  "endpoint_and_rollout_seed": 271828,
+  "goal_threshold": 0.1,
+  "parameters": "online F/B",
+  "checkpoint_sha256": "e4b1e0b4ccec799b99b65f8cdff2c502aae46e02ebda42fc95c746588882aa5f",
+  "pair_file_sha256": "830ed1149486319d2fc02c4a32d73695462881acc97eee3ac7fb5b63f9041814",
+  "evaluator_sha256": "071bbc5094a7af55f0fb52eddf2466327c59805bde238bb4b4d7fe9c2d964554",
+  "script_sha256": "d8b410eb6ed3db28e80d4b6c33a116390fac9258f8d004384d83bed6c8238806"
+}
