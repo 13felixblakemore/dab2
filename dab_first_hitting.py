@@ -30,7 +30,7 @@ import numpy as np
 def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", required=True, help="Path to a trained FB checkpoint")
-    parser.add_argument("--doorway-scale", type=float, default=2.0,
+    parser.add_argument("--doorway-scale", type=float, default=1.5,
                         help="Must match the geometry used in training")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--pairs", type=int, default=1000)
@@ -235,6 +235,59 @@ def main():
     )
 
     m_us, m_vs, m_uv, m_vv, m_ss, m_sv = densities
+
+    tol = args.probability_tolerance
+
+    # Failure masks for each estimated probability
+    checks = {
+        "P_us": results["P_us"],
+        "P_vs": results["P_vs"],
+        "P_sv": results["P_sv"],
+        "first_hit": results["raw"],
+    }
+
+    for name, p in checks.items():
+        failed = (
+                ~np.isfinite(p)
+                | (p < -tol)
+                | (p > 1 + tol)
+        )
+
+        failure_rate = np.mean(failed, axis=0)
+
+        print(name, "failure fraction:", np.mean(failed))
+
+        save_heatmap(
+            failure_rate, X, Y, valid_mask, env,
+            output_dir / f"failures_{name}.png",
+            f"Failure rate: {name}",
+            "Fraction rejected"
+        )
+
+    # Also check the numerical stability conditions
+    for name, failed in {
+        "small_self_density": m_ss <= args.min_self_density,
+        "small_gap": results["gap"] <= args.min_gap,
+    }.items():
+        save_heatmap(
+            np.mean(failed, axis=0),
+            X, Y, valid_mask, env,
+            output_dir / f"failures_{name}.png",
+            f"Failure rate: {name}",
+            "Fraction rejected"
+        )
+    tol = 0.05
+
+    for name in ["P_us", "P_vs", "P_sv"]:
+        p = results[name]
+
+        print(
+            name,
+            "Below zero:", np.mean(p < -tol),
+            "Above one:", np.mean(p > 1 + tol)
+        )
+
+    m_us, m_vs, m_uv, m_vv, m_ss, m_sv = densities
     print("Negative m_us fraction:", np.mean(m_us < 0))
     print("Negative m_ss fraction:", np.mean(m_ss < 0))
     print("Negative m_vv fraction:", np.mean(m_vv < 0))
@@ -246,13 +299,48 @@ def main():
     print("Plausible ratio fraction:", np.mean(results["plausible_mask"]))
 
     stable_mean = nanmean_no_warning(results["stable"])
+    # Keep all finite estimates, including values outside [0, 1], without
+    # applying the self-density, gap, or plausibility filters.
+    raw_finite = np.where(np.isfinite(results["raw"]), results["raw"], np.nan)
+    raw_mean = nanmean_no_warning(raw_finite)
+    finite_counts = np.sum(np.isfinite(results["raw"]), axis=0)
+    negative_counts = np.sum(np.isfinite(results["raw"]) & (results["raw"] < 0), axis=0)
+    negative_percent = np.where(
+        finite_counts > 0,
+        100.0 * negative_counts / np.maximum(finite_counts, 1),
+        np.nan,
+    )
+    above_105_counts = np.sum(
+        np.isfinite(results["raw"]) & (results["raw"] > 1.05), axis=0
+    )
+    above_105_percent = np.where(
+        finite_counts > 0,
+        100.0 * above_105_counts / np.maximum(finite_counts, 1),
+        np.nan,
+    )
     plausible_mean = nanmean_no_warning(results["plausible"])
     coverage = np.mean(results["plausible_mask"], axis=0)
+    clipped_hit = np.where(
+        results["stable_mask"],
+        np.clip(results["raw"], 0.0, 1.0),
+        np.nan
+    )
+
+    mean_clipped = np.nanmean(clipped_hit, axis=0)
     for scores, filename, title, cb_label in [
+        (above_105_percent, "first_hit_above_1p05_percent.png", "First-hit estimates above 1.05 among finite pairs", "Finite estimates above 1.05 (%)"),
+        (negative_percent, "first_hit_negative_percent.png", "Negative first-hit estimates among finite pairs", "Finite estimates below zero (%)"),
+        (raw_mean, "first_hit_raw_mean.png", "Post-hoc first-hit: all finite estimates", "Unclipped first-hit estimate"),
         (stable_mean, "first_hit_stable_mean.png", "Post-hoc first-hit: numerically stable mean", "Discounted first-hit estimate"),
         (plausible_mean, "first_hit_plausible_mean.png", "Post-hoc first-hit: plausible-only diagnostic", "Filtered first-hit estimate"),
         (coverage, "first_hit_coverage.png", "Fraction of pairs passing plausibility checks", "Valid fraction"),
         (nanmean_no_warning(m_us), "mean_successor_density.png", "Mean FB successor density from u", "Mean successor density"),
+        (
+                mean_clipped,
+                "first_hit_clipped_mean.png",
+                "Post-hoc first-hit: clipped mean",
+                "Clipped first-hit estimate"
+        ),
     ]:
         save_heatmap(scores, X, Y, valid_mask, env, output_dir / filename, title, cb_label)
 
@@ -260,7 +348,9 @@ def main():
         output_dir / "first_hitting_results.npz",
         X=X, Y=Y, valid_mask=valid_mask,
         states=np.asarray(states), u=np.asarray(u), v=np.asarray(v),
-        stable_mean=stable_mean, plausible_mean=plausible_mean,
+        raw_mean=raw_mean, stable_mean=stable_mean, plausible_mean=plausible_mean,
+        negative_percent=negative_percent, finite_counts=finite_counts,
+        above_105_percent=above_105_percent,
         coverage=coverage,
         # Pairwise arrays facilitate diagnostic analysis and convergence tests.
         first_hit_stable=results["stable"],
