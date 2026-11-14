@@ -2,8 +2,6 @@
 import math
 import numpy as np
 from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, WallBlock
-from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph, bfs_distances
-from fb_navigation.evaluation.fourrooms import make_pairs
 
 
 class AdjustableFourRooms(ContinuousFourRooms):
@@ -29,6 +27,11 @@ class AdjustableFourRooms(ContinuousFourRooms):
 
 def fixed_pairs(env, per_category, seed):
     """Keep baseline endpoints identical across widths; recompute geometry-specific BFS."""
+    # Evaluation helpers select a headless plotting backend; keep that side
+    # effect out of imports used only to construct an interactive environment.
+    from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph, bfs_distances
+    from fb_navigation.evaluation.fourrooms import make_pairs
+
     baseline = ContinuousFourRooms(size=env.size, include_stay_action=False)
     pairs = make_pairs(baseline, per_category, seed)
     nodes, graph = build_graph(env, 20)

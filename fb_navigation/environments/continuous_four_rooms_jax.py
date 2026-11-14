@@ -194,6 +194,17 @@ class ContinuousWorld:
         self._rng, key = jax.random.split(self._rng)
         return _sample_point(key, self._size, tuple(self._wall_blocks))
 
+    def sample_points(self, n: int) -> jax.Array:
+        self._rng, key = jax.random.split(self._rng)
+        keys = jax.random.split(key, n)
+
+        points = jax.vmap(
+            _sample_point,
+            in_axes=(0, None, None)
+        )(keys, self._size, tuple(self._wall_blocks))
+
+        return jnp.stack([points.x, points.y], axis=-1)
+
     def reset(self, state: Point | None = None, goal: Point | None = None):
         self._current_position = state if state is not None else self.sample_point()
         if self.explorable:
