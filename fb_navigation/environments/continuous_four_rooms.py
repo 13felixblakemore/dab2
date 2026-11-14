@@ -89,25 +89,16 @@ class WallBlock:
 
 
 def get_classic_four_rooms_blocks(size: float = 11.0) -> list[WallBlock]:
-    """Returns the 7 wall blocks forming the classic 11x11 Four Rooms layout.
+    """Return a symmetric layout: four 5x5 rooms on an 11x11 grid.
 
-    Layout breakdown (11x11 grid):
-      - Rooms: Top-Left (6x6), Top-Right (4x6), Bottom-Left (6x4), Bottom-Right (4x4)
-      - Vertical wall: x in [6, 7] with doors at y in [1, 2] and [8, 9]
-      - Horizontal wall: y in [4, 5] with doors at x in [2, 3] and [9, 10]
+    Both walls span [5, 6]; unit-width doors are centered at 2.5 and 8.5.
+    Coordinates scale uniformly with ``size``.
     """
     scale = size / 11.0
-
     raw_blocks = [
-        # --- Vertical Wall Segments (x in [6, 7]) ---
-        (6, 0, 7, 1),  # Below bottom doorway
-        (6, 2, 7, 8),  # Middle pillar connecting intersection, between doorways
-        (6, 9, 7, 11),  # Above top doorway
-        # --- Horizontal Wall Segments (y in [4, 5]) ---
-        (0, 4, 2, 5),  # Left outer segment
-        (3, 4, 6, 5),  # Left inner segment
-        (7, 4, 9, 5),  # Right inner segment
-        (10, 4, 11, 5),  # Right outer segment
+        (5, 0, 6, 2), (5, 3, 6, 8), (5, 9, 6, 11),
+        (0, 5, 2, 6), (3, 5, 5, 6),
+        (6, 5, 8, 6), (9, 5, 11, 6),
     ]
 
     return [

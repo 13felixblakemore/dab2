@@ -14,13 +14,13 @@ class AdjustableFourRooms(ContinuousFourRooms):
         self.threshold_distance = float(threshold_distance)
         self.doorway_scale = float(doorway_scale)
         half = self.doorway_scale/2
-        bottom = (1.5-half, 1.5+half)
+        bottom = (2.5-half, 2.5+half)
         top = (8.5-half, 8.5+half)
         left = (2.5-half, 2.5+half)
-        right = (9.5-half, 9.5+half)
-        blocks = [(6, 0, 7, bottom[0]), (6, bottom[1], 7, top[0]), (6, top[1], 7, 11),
-                  (0, 4, left[0], 5), (left[1], 4, 6, 5),
-                  (7, 4, right[0], 5), (right[1], 4, 11, 5)]
+        right = (8.5-half, 8.5+half)
+        blocks = [(5, 0, 6, bottom[0]), (5, bottom[1], 6, top[0]), (5, top[1], 6, 11),
+                  (0, 5, left[0], 6), (left[1], 5, 5, 6),
+                  (6, 5, right[0], 6), (right[1], 5, 11, 6)]
         scale = self.size/11
         self._wall_blocks = [WallBlock(*(value*scale for value in b)) for b in blocks]
 

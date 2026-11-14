@@ -15,14 +15,14 @@ from fb_navigation.environments.continuous_four_rooms import visualize_environme
 
 config= {
     "seed": 0,
-    "path": "experiments/fourrooms_doorways/runs/width2_replay_continuing_orthonormal_seed0_20261109_084240/epoch_0800.pkl",
+    "path": "experiments/fourrooms_doorways/runs/width0.8_replay_stopped_new/epoch_0800.pkl",
 }
 
 # Instantiate environment and FB
 env = AdjustableFourRooms(
-    doorway_scale=2.0,
+    doorway_scale=0.8,
     include_stay_action=False,
-    seed=int(config["seed"]+3),
+    seed=int(config["seed"]+4),
 )
 learner = FBLearner.from_checkpoint(config["path"])
 
@@ -84,11 +84,38 @@ densities_denom = jnp.einsum(
 # Both arrays have shape (1000, 2205)
 dab = densities_num / densities_denom
 
-# Average across the 1000 start-goal pairs
-mean_dab = jnp.mean(dab, axis=0)  # (2205,)
+# Diagnostic filtering
+valid = (
+    jnp.isfinite(dab)
+    & (densities_num >= 0)
+    & (densities_denom > 50)
+    & (dab <= 2)
+)
+
+dab_filtered = jnp.where(valid, dab, jnp.nan)
+mean_num = jnp.mean(densities_num, axis=0)
+median_dab = jnp.nanmedian(dab_filtered, axis=0)
+
+mean_dab = jnp.nanmean(dab_filtered, axis=0)
+
+print("Fraction of valid ratios:", jnp.mean(valid))
+print("Mean valid pairs per state:", jnp.mean(jnp.sum(valid, axis=0)))
 
 full_dab = np.full(X.size, np.nan)
 full_dab[np.asarray(valid_mask)] = np.asarray(mean_dab)
+
+
+print("Negative numerator:", jnp.mean(densities_num < 0))
+print("Negative denominator:", jnp.mean(densities_denom < 0))
+
+print("Denominator percentiles:",
+      jnp.percentile(densities_denom, jnp.array([0, 1, 10, 50, 90, 99, 100])))
+
+print("Ratio percentiles:",
+      jnp.percentile(dab, jnp.array([0, 1, 10, 50, 90, 99, 100])))
+
+print("Nonfinite ratios:", jnp.mean(~jnp.isfinite(dab)))
+
 
 # Plot using your existing function
 visualise_dab(

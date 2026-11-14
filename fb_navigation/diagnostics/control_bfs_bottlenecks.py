@@ -24,7 +24,7 @@ ROOMS=['bottom_left','top_left','bottom_right','top_right']
 def room_ids(points,size):
     x,y=(points/size*11).T
     result=np.full(len(points),-1,int)
-    for i,mask in enumerate(((x<6)&(y<4),(x<6)&(y>5),(x>7)&(y<4),(x>7)&(y>5))):result[mask]=i
+    for i,mask in enumerate(((x<5)&(y<5),(x<5)&(y>6),(x>6)&(y<5),(x>6)&(y>6))):result[mask]=i
     return result
 
 
@@ -143,8 +143,8 @@ def run(args):
     se=np.sqrt(np.divide(np.where(eligible,(pair_hits-beta)**2,0).sum(axis=0),count,
                        out=np.zeros(len(count)),where=count>0))/np.sqrt(np.maximum(count-1,1))
     p=points[keep]/env.size*11;x,y=p.T
-    doors=dict(bottom=(x>=6)&(x<=7)&(y>=1)&(y<=2),top=(x>=6)&(x<=7)&(y>=8)&(y<=9),
-               left=(x>=2)&(x<=3)&(y>=4)&(y<=5),right=(x>=9)&(x<=10)&(y>=4)&(y<=5))
+    doors=dict(bottom=(x>=5)&(x<=6)&(y>=2)&(y<=3),top=(x>=5)&(x<=6)&(y>=8)&(y<=9),
+               left=(x>=2)&(x<=3)&(y>=5)&(y<=6),right=(x>=8)&(x<=9)&(y>=5)&(y<=6))
     # Door statistics refer to fully wall-free cells whose centers lie in doors.
     door_stats={}
     door_union=np.zeros(len(beta),bool)

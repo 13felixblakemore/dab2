@@ -1,0 +1,79 @@
+{
+  "seed": 0,
+  "sha256": {
+    "run_fourrooms_doorways.py": "5a7f8da3b15be662a55b144c7e499e9cb81b8e8ceb374f66891e8d542c71856d",
+    "adjustable_four_rooms.py": "debf8bb342cb92aa6e5749593fe2450bc338e9d243701da663a84e2cc57033ef",
+    "run_fourrooms_reference.py": "0a7d2df61034ba99ecb27a8825434488a5282edd77f519b0d5feb58b5b5b6705",
+    "fourrooms_reference_diagnostics.py": "3f51d55bda0108dda5a1b5c39bac58292487a57e7640a006ec6e53229601e8ee",
+    "run_fb_jax.py": "b929af420d102e11dc16fee78f59bd9b2561b4840efdba5e32c966a3b61a1a10",
+    "continuous_four_rooms_jax.py": "61c97d279c931b4129c2500bad614245637806db9a126f949c01c3cafcfd9c0a",
+    "continuous_four_rooms.py": "88f1222f9d3f23c4be1fd6076145682c2b64af65ed1669082e0a96e149a0d536",
+    "forward_backward_jax.py": "bc98d863d1c8091100a116a25097b95c1ec8aa622cfe88e4ff8aa56dc0c044f7",
+    "control_bfs_bottlenecks.py": "e060af0926267349ec6661316cb8739f9c698dfa0e8c536b501765783f4b8527",
+    "estimate_fb_bottlenecks_jax.py": "ab1d54534484e215d1d53b7692f727d8fe1683da14908c727f41af004ac6a1ab",
+    "paths.py": "021d61335f16698faf6fae8aa5f15681350b4c02f512577c39df57c7c94e4603"
+  },
+  "source_paths": {
+    "run_fourrooms_doorways.py": "fb_navigation/training/run_fourrooms_doorways.py",
+    "adjustable_four_rooms.py": "fb_navigation/environments/adjustable_four_rooms.py",
+    "run_fourrooms_reference.py": "fb_navigation/training/run_fourrooms_reference.py",
+    "fourrooms_reference_diagnostics.py": "fb_navigation/evaluation/fourrooms.py",
+    "run_fb_jax.py": "fb_navigation/training/run_fb_jax.py",
+    "continuous_four_rooms_jax.py": "fb_navigation/environments/continuous_four_rooms_jax.py",
+    "continuous_four_rooms.py": "fb_navigation/environments/continuous_four_rooms.py",
+    "forward_backward_jax.py": "fb_navigation/agents/forward_backward_jax.py",
+    "control_bfs_bottlenecks.py": "fb_navigation/diagnostics/control_bfs_bottlenecks.py",
+    "estimate_fb_bottlenecks_jax.py": "fb_navigation/diagnostics/estimate_fb_bottlenecks_jax.py",
+    "paths.py": "fb_navigation/paths.py"
+  },
+  "recovery_every": 200,
+  "log_every": 20,
+  "python": "3.12.3",
+  "jax": "0.5.2",
+  "numpy": "2.2.3",
+  "doorway_width": 0.07272727272727274,
+  "wall_blocks": [
+    [
+      0.5454545454545454,
+      0.0,
+      0.6363636363636364,
+      0.1
+    ],
+    [
+      0.5454545454545454,
+      0.17272727272727273,
+      0.6363636363636364,
+      0.7363636363636363
+    ],
+    [
+      0.5454545454545454,
+      0.8090909090909092,
+      0.6363636363636364,
+      1.0
+    ],
+    [
+      0.0,
+      0.36363636363636365,
+      0.19090909090909092,
+      0.4545454545454546
+    ],
+    [
+      0.2636363636363636,
+      0.36363636363636365,
+      0.5454545454545454,
+      0.4545454545454546
+    ],
+    [
+      0.6363636363636364,
+      0.36363636363636365,
+      0.8272727272727273,
+      0.4545454545454546
+    ],
+    [
+      0.9,
+      0.36363636363636365,
+      1.0,
+      0.4545454545454546
+    ]
+  ]
+}

@@ -68,8 +68,8 @@ def traces(learner, env, pairs, mask_wall_actions=False):
 
 def door_rectangles(scale):
     h = scale/2
-    return np.array([[6, 1.5-h, 7, 1.5+h], [6, 8.5-h, 7, 8.5+h],
-                     [2.5-h, 4, 2.5+h, 5], [9.5-h, 4, 9.5+h, 5]])/11
+    return np.array([[5, 2.5-h, 6, 2.5+h], [5, 8.5-h, 6, 8.5+h],
+                     [2.5-h, 5, 2.5+h, 6], [8.5-h, 5, 8.5+h, 6]])/11
 
 
 def room_distance(a, b):

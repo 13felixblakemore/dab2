@@ -43,8 +43,8 @@ def make_pairs(env, per_category=200, seed=271828):
 
 def coordinate_room(points):
     x, y = points[:, 0]*11, points[:, 1]*11
-    return jnp.where((x < 6)&(y < 4), 0, jnp.where((x < 6)&(y > 5), 1,
-           jnp.where((x > 7)&(y < 4), 2, jnp.where((x > 7)&(y > 5), 3, -1))))
+    return jnp.where((x < 5)&(y < 5), 0, jnp.where((x < 5)&(y > 6), 1,
+           jnp.where((x > 6)&(y < 5), 2, jnp.where((x > 6)&(y > 6), 3, -1))))
 
 
 def make_rollout(learner, env, horizon, epsilon=.02):
