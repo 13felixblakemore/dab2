@@ -1,0 +1,8 @@
+{
+  "checkpoint": "experiments/fourrooms_doorways/runs/symmetric_width1.5_replay_continuing_seed0/epoch_0800.pkl",
+  "doorway_scale": 1.5,
+  "environment_seed": 4,
+  "policy": "greedy",
+  "grid_size": 80,
+  "sampling": "six different-room pairs: two per room XOR category"
+}

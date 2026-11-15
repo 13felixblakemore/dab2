@@ -1,0 +1,112 @@
+{
+  "checkpoint": "experiments\\fourrooms_doorways\\runs\\symmetric_width1.5_replay_continuing_seed0\\epoch_0800.pkl",
+  "wall_blocks": [
+    [
+      0.4545454545454546,
+      0.0,
+      0.5454545454545454,
+      0.1590909090909091
+    ],
+    [
+      0.4545454545454546,
+      0.29545454545454547,
+      0.5454545454545454,
+      0.7045454545454546
+    ],
+    [
+      0.4545454545454546,
+      0.8409090909090909,
+      0.5454545454545454,
+      1.0
+    ],
+    [
+      0.0,
+      0.4545454545454546,
+      0.1590909090909091,
+      0.5454545454545454
+    ],
+    [
+      0.29545454545454547,
+      0.4545454545454546,
+      0.4545454545454546,
+      0.5454545454545454
+    ],
+    [
+      0.5454545454545454,
+      0.4545454545454546,
+      0.7045454545454546,
+      0.5454545454545454
+    ],
+    [
+      0.8409090909090909,
+      0.4545454545454546,
+      1.0,
+      0.5454545454545454
+    ]
+  ],
+  "environment_seed": 20261116,
+  "grid_size": 80,
+  "policy": "softmax",
+  "temperature": 200.0,
+  "first_example": 7,
+  "last_example": 18,
+  "sampling": "first independently sampled pair found for each of 12 directed different-room combinations; no density-based selection",
+  "room_names": [
+    "bottom-left",
+    "bottom-right",
+    "top-left",
+    "top-right"
+  ],
+  "room_pairs": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      3,
+      2
+    ]
+  ],
+  "preprocessing": "unclipped successor density; not DAB or first-hit ratios",
+  "previous_examples": "Original examples 1\u20136 use greedy initial action and learned softmax continuation; preserved unchanged."
+}

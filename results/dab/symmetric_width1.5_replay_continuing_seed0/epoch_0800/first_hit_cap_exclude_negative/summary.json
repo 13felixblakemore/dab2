@@ -1,0 +1,20 @@
+{
+  "sequence": [
+    "upper-cap each estimate",
+    "exclude negative and nonfinite estimates",
+    "mean across retained pairs"
+  ],
+  "caps": [
+    1,
+    1.5,
+    2,
+    3,
+    5,
+    10
+  ],
+  "input": "parent pairwise_estimates.npz (float32 values, float64 aggregation)",
+  "rescaling": null,
+  "pairs": 1000,
+  "mean_retained_count": 768.4789048473967,
+  "minimum_retained_count": 557
+}

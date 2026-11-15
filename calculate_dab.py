@@ -75,8 +75,7 @@ f_pi_denom = jnp.take_along_axis(
     f_denom, a_denom[:, :, None, None], axis=-1
 ).squeeze(-1)                                               # (1000, s, 50)
 
-# 3. Calculate successor densities at every destination state
-densities_num = f_pi @ embedded_states.T    # (1000, 2500)
+densities_num = f_pi @ embedded_states.T
 densities_denom = jnp.einsum(
     "nsd,sd->ns", f_pi_denom, embedded_states
 )
@@ -84,7 +83,6 @@ densities_denom = jnp.einsum(
 # Both arrays have shape (1000, 2205)
 dab = densities_num / densities_denom
 
-# Diagnostic filtering
 valid = (
     jnp.isfinite(dab)
     & (densities_num >= 0)
@@ -116,8 +114,6 @@ print("Ratio percentiles:",
 
 print("Nonfinite ratios:", jnp.mean(~jnp.isfinite(dab)))
 
-
-# Plot using your existing function
 visualise_dab(
     full_dab.reshape(X.shape),
     X, Y, env,
@@ -127,7 +123,7 @@ visualise_dab(
 plt.show()
 
 
-pair_idx = 2  # Choose any start-goal pair
+pair_idx = 2
 
 density_grid = np.full(X.size, np.nan)
 density_grid[np.asarray(valid_mask)] = np.asarray(densities_num[pair_idx])

@@ -327,7 +327,13 @@ def main():
     )
 
     mean_clipped = np.nanmean(clipped_hit, axis=0)
+    mean_clipped_1p5 = nanmean_no_warning(np.where(
+        results["stable_mask"],
+        np.clip(results["raw"], 0.0, 1.5),
+        np.nan,
+    ))
     for scores, filename, title, cb_label in [
+        (mean_clipped_1p5, "first_hit_clipped_1p5_mean.png", "Post-hoc first-hit: mean after clipping to [0, 1.5]", "Clipped first-hit estimate"),
         (above_105_percent, "first_hit_above_1p05_percent.png", "First-hit estimates above 1.05 among finite pairs", "Finite estimates above 1.05 (%)"),
         (negative_percent, "first_hit_negative_percent.png", "Negative first-hit estimates among finite pairs", "Finite estimates below zero (%)"),
         (raw_mean, "first_hit_raw_mean.png", "Post-hoc first-hit: all finite estimates", "Unclipped first-hit estimate"),
@@ -351,6 +357,7 @@ def main():
         raw_mean=raw_mean, stable_mean=stable_mean, plausible_mean=plausible_mean,
         negative_percent=negative_percent, finite_counts=finite_counts,
         above_105_percent=above_105_percent,
+        mean_clipped_1p5=mean_clipped_1p5,
         coverage=coverage,
         # Pairwise arrays facilitate diagnostic analysis and convergence tests.
         first_hit_stable=results["stable"],
