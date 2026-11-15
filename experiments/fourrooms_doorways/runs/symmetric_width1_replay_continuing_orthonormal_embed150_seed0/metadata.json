@@ -1,0 +1,77 @@
+{
+  "seed": 0,
+  "sha256": {
+    "run_fourrooms_doorways.py": "42b3949c0f4804bb8ae549d963b511451dcc49f9dc0d1ee56772bcf53b45a8e2",
+    "adjustable_four_rooms.py": "fb650250ba0390506c1ff6d56c5790e5249463a71f3631c9e451681fdc5f08e7",
+    "fourrooms_reference_diagnostics.py": "ffef338ccaaf87229e674a25735683edd093bf58303b9d0b7a2da65bd1707c7b",
+    "run_fb_jax.py": "b929af420d102e11dc16fee78f59bd9b2561b4840efdba5e32c966a3b61a1a10",
+    "continuous_four_rooms_jax.py": "61c97d279c931b4129c2500bad614245637806db9a126f949c01c3cafcfd9c0a",
+    "continuous_four_rooms.py": "5858984a2c68b9f25ae121d99dbfe91c284df743a62c9814b7c63635a99ef6c1",
+    "forward_backward_jax.py": "bc98d863d1c8091100a116a25097b95c1ec8aa622cfe88e4ff8aa56dc0c044f7",
+    "control_bfs_bottlenecks.py": "cbdbd07df82a3775cb7c9414b7de49853bddf8ae2a01bfa457df584a1a11f773",
+    "estimate_fb_bottlenecks_jax.py": "ab1d54534484e215d1d53b7692f727d8fe1683da14908c727f41af004ac6a1ab",
+    "paths.py": "398e63cc809d8d67eaa81f8ca00edc243315046141fa35a86036cc74a49da886"
+  },
+  "source_paths": {
+    "run_fourrooms_doorways.py": "fb_navigation/training/run_fourrooms_doorways.py",
+    "adjustable_four_rooms.py": "fb_navigation/environments/adjustable_four_rooms.py",
+    "fourrooms_reference_diagnostics.py": "fb_navigation/evaluation/fourrooms.py",
+    "run_fb_jax.py": "fb_navigation/training/run_fb_jax.py",
+    "continuous_four_rooms_jax.py": "fb_navigation/environments/continuous_four_rooms_jax.py",
+    "continuous_four_rooms.py": "fb_navigation/environments/continuous_four_rooms.py",
+    "forward_backward_jax.py": "fb_navigation/agents/forward_backward_jax.py",
+    "control_bfs_bottlenecks.py": "fb_navigation/diagnostics/control_bfs_bottlenecks.py",
+    "estimate_fb_bottlenecks_jax.py": "fb_navigation/diagnostics/estimate_fb_bottlenecks_jax.py",
+    "paths.py": "fb_navigation/paths.py"
+  },
+  "recovery_every": 200,
+  "log_every": 20,
+  "python": "3.12.3",
+  "jax": "0.5.2",
+  "numpy": "2.2.3",
+  "doorway_width": 0.09090909090909091,
+  "wall_blocks": [
+    [
+      0.4545454545454546,
+      0.0,
+      0.5454545454545454,
+      0.18181818181818182
+    ],
+    [
+      0.4545454545454546,
+      0.2727272727272727,
+      0.5454545454545454,
+      0.7272727272727273
+    ],
+    [
+      0.4545454545454546,
+      0.8181818181818182,
+      0.5454545454545454,
+      1.0
+    ],
+    [
+      0.0,
+      0.4545454545454546,
+      0.18181818181818182,
+      0.5454545454545454
+    ],
+    [
+      0.2727272727272727,
+      0.4545454545454546,
+      0.4545454545454546,
+      0.5454545454545454
+    ],
+    [
+      0.5454545454545454,
+      0.4545454545454546,
+      0.7272727272727273,
+      0.5454545454545454
+    ],
+    [
+      0.8181818181818182,
+      0.4545454545454546,
+      1.0,
+      0.5454545454545454
+    ]
+  ]
+}
