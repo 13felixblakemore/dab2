@@ -1,5 +1,5 @@
 """Doorway-width experiment; periodic retained models and atomic rolling recovery."""
-from fb_navigation.paths import source_path
+from fb_navigation.paths import PROJECT_ROOT as ROOT, source_path
 import argparse
 import hashlib
 import json
@@ -11,9 +11,15 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms, fixed_pairs
-from fb_navigation.training.run_fourrooms_reference import CONFIG, ROOT, create_learner
+from fb_navigation.agents.forward_backward_jax import FBLearner, RadialBasisFunction2D
 from fb_navigation.training.run_fb_jax import make_epoch
 from fb_navigation.evaluation.fourrooms import evaluate_checkpoint, plot_history
+
+
+def create_learner(config, seed, device):
+    """Construct FB directly from the supplied config, without retired launchers."""
+    return FBLearner(**config['learner'], seed=seed, device=device, buffer_device=device,
+                     featuriser=RadialBasisFunction2D(**config['rbf'], device=device))
 
 
 def retained_checkpoint(epoch, total, interval):
@@ -22,7 +28,7 @@ def retained_checkpoint(epoch, total, interval):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', type=Path, default=CONFIG)
+    parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--doorway-scale', type=float, default=1.0)
     parser.add_argument('--checkpoint-every', type=int, default=200)
     parser.add_argument('--recovery-every', type=int, default=1,
@@ -50,7 +56,7 @@ def main():
         raise FileExistsError('Choose a new output directory or use --resume')
     if args.resume and json.loads(manifest.read_text()) != config:
         raise ValueError('Resume config mismatch: supply the original doorway scale and options')
-    sources = ['run_fourrooms_doorways.py', 'adjustable_four_rooms.py', 'run_fourrooms_reference.py',
+    sources = ['run_fourrooms_doorways.py', 'adjustable_four_rooms.py',
                'fourrooms_reference_diagnostics.py', 'run_fb_jax.py', 'continuous_four_rooms_jax.py',
                'continuous_four_rooms.py',
                'forward_backward_jax.py', 'control_bfs_bottlenecks.py', 'estimate_fb_bottlenecks_jax.py', 'paths.py']

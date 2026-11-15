@@ -18,8 +18,8 @@ from fb_navigation.evaluation.fourrooms import (
     make_rollout,
     summarize,
 )
-from fb_navigation.training.run_fourrooms_doorways import retained_checkpoint
-from fb_navigation.training.run_fourrooms_reference import CONFIG, create_learner
+from fb_navigation.training.run_fourrooms_doorways import retained_checkpoint, create_learner
+from fb_navigation.paths import PROJECT_ROOT
 
 
 class EvaluationCommandTests(unittest.TestCase):
@@ -115,9 +115,9 @@ class GoalAuditTests(unittest.TestCase):
 
 
 class ReferenceFourRoomsTests(unittest.TestCase):
-    def test_config_preserves_dynamics_and_uses_released_objective(self):
-        config = json.loads(CONFIG.read_text())
-        env = ContinuousFourRooms(**config['environment'])
+    def test_config_constructs_requested_replay_continuing_learner(self):
+        config = json.loads((PROJECT_ROOT/'experiments/fourrooms_doorways/replay_continuing_orthonormal_embed150.json').read_text())
+        env = AdjustableFourRooms(**config['environment'])
         self.assertEqual(len(env.actions), 4)
         self.assertEqual(float(env.actions[0].x), -.05)
         self.assertEqual(env._noise, .005)
@@ -126,11 +126,12 @@ class ReferenceFourRoomsTests(unittest.TestCase):
         self.assertEqual(len(env.wall_blocks), 7)
         config['learner']['buffer_size'] = 512
         learner = create_learner(config, 0, 'cpu')
-        self.assertEqual(learner.b_regularization, 'touati_continuous')
+        self.assertEqual(learner.b_regularization, 'orthonormal')
+        self.assertEqual(learner.z_sampling, 'replay')
         self.assertFalse(learner.goal_terminated)
         self.assertEqual(learner.zero_z_p, 0)
         self.assertIsNone(learner.max_grad_norm)
-        self.assertEqual(learner.embed_F([[.2, .2]], np.ones((1, 50))).shape, (1, 50, 4))
+        self.assertEqual(learner.embed_F([[.2, .2]], np.ones((1, 150))).shape, (1, 150, 4))
         self.assertEqual(config['epochs']*config['cycles']*config['updates'], 800000)
 
     def test_pairs_strata_deterministic_and_bfs(self):

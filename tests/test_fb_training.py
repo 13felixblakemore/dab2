@@ -1,7 +1,5 @@
-"""Goal-terminated training, checkpoint compatibility, and sweep planning."""
+"""Goal-terminated training and checkpoint compatibility."""
 from pathlib import Path
-from types import SimpleNamespace
-import json
 import pickle
 import tempfile
 import unittest
@@ -12,15 +10,11 @@ import numpy as np
 
 from fb_navigation.agents.forward_backward_jax import (
     FBLearner,
-    IdentityFeaturiser,
     RadialBasisFunction2D,
 )
-from fb_navigation.environments.continuous_four_rooms_jax import ContinuousWorld
 from fb_navigation.paths import PROJECT_ROOT
-from fb_navigation.training import fb_width2_lr_polyak_sweep_20261106 as sweep
 from fb_navigation.training.run_continuous_maze import evaluate
 from fb_navigation.training.run_fb_jax import run_fb
-from fb_navigation.training.smoke_goal_terminated_fb_jax import make_stopped_mc
 
 
 def learner(**kwargs):
@@ -161,59 +155,8 @@ class GoalTerminationTests(unittest.TestCase):
         for threshold in (0.,-1.,np.inf,np.nan):
             with self.assertRaises(ValueError):learner(goal_threshold=threshold)
 
-    def test_stopped_mc_excludes_entry_and_rejects_start_in_goal(self):
-        l=SimpleNamespace(n_actions=4,embed_dim=1,temperature=200.,
-            discount_factor=.99,goal_threshold=.06,featuriser=IdentityFeaturiser(),
-            forward_network=SimpleNamespace(apply=lambda p,x,z:
-                jnp.broadcast_to(jnp.array([0.,1e6,0.,0.])[None,None],(len(x),1,4))))
-        env=ContinuousWorld(size=1.,step_size=.1,movement_noise=0.)
-        mc=make_stopped_mc(l,env,rollouts=4,horizon=8,bins=20)
-        start=jnp.array([.2,.2]);goal=jnp.array([.55,.2])
-        hist,active=mc(None,start,1,jnp.ones(1),goal,jax.random.PRNGKey(1))
-        # Visits .2, .3, .4; the next position .5 enters the goal and is excluded.
-        np.testing.assert_allclose(np.asarray(hist).sum(axis=1),1+.99+.99**2,rtol=1e-6)
-        np.testing.assert_array_equal(active,False)
-        self.assertTrue(np.all(np.asarray(hist)[:,4*20+10]==0))
-        with self.assertRaises(ValueError):mc(None,goal,1,jnp.ones(1),goal,jax.random.PRNGKey(1))
 
 
-ROOT = PROJECT_ROOT
-
-
-class SweepTests(unittest.TestCase):
-    def test_grid_changes_only_requested_parameters(self):
-        base=json.loads((ROOT/'experiments/fourrooms_reference/config.json').read_text())
-        original=json.dumps(base,sort_keys=True)
-        cells=sweep.make_plan(base,[5e-4,1e-4,5e-5],[.9,.95,.99],[0])
-        self.assertEqual(len(cells),9);self.assertEqual(len({c['name'] for c in cells}),9)
-        self.assertEqual(json.dumps(base,sort_keys=True),original)
-        for cell in cells:
-            expected=dict(base['learner'],learning_rate=cell['learning_rate'],polyak_coef=cell['polyak'])
-            self.assertEqual(cell['config']['learner'],expected)
-            self.assertEqual(cell['config']['environment']['doorway_scale'],2)
-            self.assertEqual(cell['config']['epochs']*cell['config']['cycles']*cell['config']['updates'],800000)
-            self.assertEqual(cell['config']['evaluation_seed'],base['evaluation_seed'])
-
-    def test_classic_only_and_dimension_grid(self):
-        replay=json.loads((ROOT/'experiments/fourrooms_doorways/replay_goal_terminated.json').read_text())
-        with self.assertRaises(ValueError):sweep.make_plan(replay,[1e-4],[.99],[0])
-        base=json.loads((ROOT/'experiments/fourrooms_reference/config.json').read_text())
-        cells=sweep.make_plan(base,[1e-4],[.95],[0],dimensions=[25,50,100])
-        self.assertEqual([c['config']['learner']['embed_dim'] for c in cells],[25,50,100])
-        self.assertEqual(len({c['name'] for c in cells}),3)
-        self.assertTrue(all(c['config']['learner']['z_sampling']=='cauchy' and not c['config']['learner']['goal_terminated'] for c in cells))
-        with self.assertRaises(ValueError):sweep.make_plan(base,[1e-4],[.95],[0],dimensions=[0])
-        for lr,p in [([0],[.95]),([1e-4],[1.]),([1e-4,1e-4],[.95])]:
-            with self.assertRaises(ValueError):sweep.make_plan(base,lr,p,[0])
-
-    def test_child_command_has_distinct_config_and_resume(self):
-        base=json.loads((ROOT/'experiments/fourrooms_reference/config.json').read_text())
-        cell=sweep.make_plan(base,[1e-4],[.95],[2])[0]
-        cmd=sweep.command(cell,ROOT/'experiments/sweeps/test','cuda',200,20,True)
-        self.assertEqual(cmd[1:4], ['-u', '-m', 'fb_navigation.training.run_fourrooms_doorways'])
-        self.assertIn('--resume',cmd);self.assertEqual(cmd[cmd.index('--seed')+1],'2')
-        self.assertEqual(cmd[cmd.index('--device')+1],'cuda')
-        self.assertIn(cell['name'],cmd[cmd.index('--output')+1])
 
 
 class ContinuingLearnerTests(unittest.TestCase):

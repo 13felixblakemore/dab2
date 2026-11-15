@@ -14,9 +14,7 @@ SOURCE_FILES = {'forward_backward.py': 'fb_navigation/agents/forward_backward.py
  'run_fb.py': 'fb_navigation/training/run_fb.py',
  'run_fb_jax.py': 'fb_navigation/training/run_fb_jax.py',
  'run_continuous_maze.py': 'fb_navigation/training/run_continuous_maze.py',
- 'run_fourrooms_reference.py': 'fb_navigation/training/run_fourrooms_reference.py',
  'run_fourrooms_doorways.py': 'fb_navigation/training/run_fourrooms_doorways.py',
- 'smoke_goal_terminated_fb_jax.py': 'fb_navigation/training/smoke_goal_terminated_fb_jax.py',
  'evaluate_width2_goals.py': 'fb_navigation/evaluation/fourrooms.py',
  'evaluate_original_goals_jax.py': 'fb_navigation/evaluation/evaluate_original_goals_jax.py',
  'evaluate_torch_goals.py': 'fb_navigation/evaluation/evaluate_torch_goals.py',
@@ -35,7 +33,6 @@ SOURCE_FILES = {'forward_backward.py': 'fb_navigation/agents/forward_backward.py
  'sweep_fb_temperature.py': 'fb_navigation/diagnostics/sweep_fb_temperature.py',
  'track_doorway_advantages.py': 'fb_navigation/diagnostics/track_doorway_advantages.py',
  'diagnose_implicit_reward_traps_20261106.py': 'fb_navigation/diagnostics/learned_rewards.py',
- 'fb_width2_lr_polyak_sweep_20261106.py': 'fb_navigation/training/fb_width2_lr_polyak_sweep_20261106.py',
  'paths.py': 'fb_navigation/paths.py'}
 
 def source_path(name):
