@@ -1,0 +1,9 @@
+# Direct dependencies used by the project and its notebook.
+numpy
+scipy
+matplotlib
+jax
+torch
+tqdm
+distinctipy
+ipykernel
