@@ -1,0 +1,18 @@
+{
+  "checkpoint": "experiments/fourrooms_doorways/runs/cauchy_standard_fb_seed0/epoch_0800.pkl",
+  "seed": 0,
+  "pairs": 1000,
+  "grid_size": 50,
+  "doorway_scale": 1.0,
+  "policy": "greedy",
+  "temperature": 200.0,
+  "min_self_density": 1e-05,
+  "min_gap": 0.01,
+  "symmetry_pairs": true,
+  "total_pairs": 8000,
+  "clip_max": 2.0,
+  "clipping": "Clip each stable H(u,s;v) to [0,2] before averaging over pairs",
+  "retained_fraction": 0.8172059426229508,
+  "clipped_fraction_among_retained": 0.2860409033457192,
+  "interpretation": "Discounted post-hoc first-hit-before-goal estimate from learned continuous densities"
+}

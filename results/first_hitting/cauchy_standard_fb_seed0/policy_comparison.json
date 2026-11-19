@@ -1,0 +1,7 @@
+{
+  "identical_pairs_and_grid": true,
+  "softmax_mean": 0.16906840485583746,
+  "greedy_mean": 0.18016383657833634,
+  "mean_absolute_map_difference": 0.011318549456411578,
+  "map_correlation": 0.9955850614843926
+}
