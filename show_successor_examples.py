@@ -1,5 +1,4 @@
-"""Save six different-room successor-density examples using the DAB config."""
-import ast
+"""Save six different-room successor-density examples from a JAX FB checkpoint."""
 import argparse
 import json
 from pathlib import Path
@@ -15,23 +14,41 @@ from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
 
 
+def room_ids(points, size):
+    """Label room interiors by their horizontal and vertical halves."""
+    points = np.asarray(points)
+    return (points[:, 0] > size / 2).astype(int) + 2 * (points[:, 1] > size / 2).astype(int)
+
+
+def sample_different_room_pairs(env, n):
+    """Sample valid endpoints inside rooms, excluding the central corridors."""
+    def interior_points():
+        batches = []
+        count = 0
+        for _ in range(100):
+            points = np.asarray(env.sample_points(n))
+            scaled = points / env.size * 11
+            inside = ((scaled[:, 0] < 5) | (scaled[:, 0] > 6)) & ((scaled[:, 1] < 5) | (scaled[:, 1] > 6))
+            batches.append(points[inside])
+            count += int(inside.sum())
+            if count >= n:
+                return np.concatenate(batches)[:n]
+        raise ValueError('Could not sample enough room-interior points')
+
+    u, v = interior_points(), interior_points()
+    different = room_ids(u, env.size) != room_ids(v, env.size)
+    return u[different], v[different]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--checkpoint', help='Override the checkpoint in the DAB config')
-    parser.add_argument('--doorway-scale', type=float, help='Override the DAB doorway width')
+    parser.add_argument('--checkpoint', required=True, help='JAX FB model checkpoint (.pkl)')
+    parser.add_argument('--doorway-scale', type=float, default=1.0, help='Doorway width when recorded geometry is unavailable (default: 1.0)')
+    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--output', type=Path, help='Output directory (default: successor_examples/<run name>)')
     args = parser.parse_args()
-    # Read settings without executing the full DAB calculation.
-    tree = ast.parse(Path("calculate_dab_different_rooms.py").read_text(encoding="utf-8-sig"))
-    config = next(ast.literal_eval(node.value) for node in tree.body
-                  if isinstance(node, ast.Assign)
-                  and any(isinstance(t, ast.Name) and t.id == "config" for t in node.targets))
-    env_call = next(node.value for node in tree.body if isinstance(node, ast.Assign)
-                    and any(isinstance(t, ast.Name) and t.id == "env" for t in node.targets))
-    width = next(ast.literal_eval(k.value) for k in env_call.keywords if k.arg == "doorway_scale")
-    if args.checkpoint is not None:
-        config['path'] = args.checkpoint
-    if args.doorway_scale is not None:
-        width = args.doorway_scale
+    config = {'path': args.checkpoint, 'seed': args.seed}
+    width = args.doorway_scale
     env = AdjustableFourRooms(doorway_scale=width, include_stay_action=False,
                               seed=int(config["seed"]) + 4)
     # Archived checkpoints may predate the current symmetric wall layout.
@@ -44,14 +61,10 @@ def main():
             env._wall_blocks = [block_type(*block) for block in recorded['wall_blocks']]
             geometry_source = str(training_metadata)
     learner = FBLearner.from_checkpoint(config["path"])
-    # Use the same room-interior sampling helpers as the DAB script.
-    helpers = ast.Module(body=[n for n in tree.body if isinstance(n, ast.FunctionDef)
-                              and n.name in ("room_ids", "sample_different_room_pairs")],
-                         type_ignores=[])
-    scope = {"np": np}
-    exec(compile(helpers, "<DAB sampling helpers>", "exec"), scope)
-    u, v = scope["sample_different_room_pairs"](env, 1000)
-    difference = scope["room_ids"](u, env.size) ^ scope["room_ids"](v, env.size)
+    u, v = sample_different_room_pairs(env, 1000)
+    difference = room_ids(u, env.size) ^ room_ids(v, env.size)
+    if any(np.count_nonzero(difference == d) < 2 for d in (1, 2, 3)):
+        raise ValueError('Not enough sampled pairs in each room category; try another --seed')
     indices = np.concatenate([np.flatnonzero(difference == d)[:2] for d in (1, 2, 3)])
     u, v = u[indices], v[indices]
     X, Y = np.meshgrid(np.linspace(0, env.size, 80), np.linspace(0, env.size, 80))
@@ -64,7 +77,7 @@ def main():
     actions = jnp.argmax(jnp.einsum("nda,nd->na", f, z), axis=-1)
     f_pi = jnp.take_along_axis(f, actions[:, None, None], axis=-1).squeeze(-1)
     densities = np.asarray(f_pi @ learner.embed_B(states).T)
-    output = Path("successor_examples") / Path(config["path"]).parent.name
+    output = args.output if args.output is not None else Path("successor_examples") / Path(config["path"]).parent.name
     output.mkdir(parents=True, exist_ok=True)
     panels = []
     for i, density in enumerate(densities):

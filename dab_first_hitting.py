@@ -7,10 +7,6 @@ compute a discounted first-hit-before-goal estimate using a single policy pi_v:
 
 where P_xy = m^{pi_v}(x, y) / m^{pi_v}(y, y).
 
-WARNING: This hitting-probability identity is exact for a discrete Markov
-chain with a suitable successor-measure convention. Its use with pointwise
-continuous-state FB densities is an approximation that requires validation.
-
 Run from the project root, e.g.:
     python dab_first_hitting.py --checkpoint experiments/.../epoch_0800.pkl \
         --doorway-scale 2.0 --pairs 1000 --batch-size 8
@@ -19,6 +15,7 @@ Run from the project root, e.g.:
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import jax
@@ -34,6 +31,10 @@ def arguments():
                         help="Must match the geometry used in training")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--pairs", type=int, default=1000)
+    parser.add_argument("--symmetry-pairs", action="store_true",
+                        help="Include all eight square symmetries of each base pair")
+    parser.add_argument("--clip-max", type=float, default=1.0,
+                        help="Upper cap applied to each stable estimate before averaging")
     parser.add_argument("--grid-size", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=8,
                         help="Number of goals per batch; reduce for limited VRAM")
@@ -49,6 +50,17 @@ def arguments():
                         help="Tolerance around [0,1] for diagnostic plausibility filtering")
     parser.add_argument("--output-dir", default="results/first_hitting")
     return parser.parse_args()
+
+
+def square_symmetries(points, size):
+    """All D4 transforms, in matching order for start and goal arrays."""
+    centered = np.asarray(points, dtype=np.float64) - size / 2
+    transforms = []
+    for swap in (False, True):
+        base = centered[:, ::-1] if swap else centered
+        for sx, sy in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
+            transforms.append(base * np.array([sx, sy]) + size / 2)
+    return np.concatenate(transforms)
 
 
 def build_valid_grid(env, grid_size):
@@ -168,11 +180,21 @@ def nanmean_no_warning(values):
     return np.where(counts > 0, means, np.nan)
 
 
+def fill_grid(values, valid_mask=None):
+    """Return full-grid values, filling omitted wall cells with zeros."""
+    values = np.asarray(values)
+    if valid_mask is None or values.shape[-1] == valid_mask.size:
+        return values
+
+    full_grid = np.zeros((*values.shape[:-1], valid_mask.size), dtype=values.dtype)
+    full_grid[..., valid_mask] = values
+    return full_grid
+
+
 def save_heatmap(values, X, Y, valid_mask, env, path, title, colorbar_label):
     from fb_navigation.environments.continuous_four_rooms import visualize_environment
 
-    full_grid = np.full(X.size, np.nan)
-    full_grid[valid_mask] = np.asarray(values)
+    full_grid = fill_grid(values, valid_mask)
     masked_grid = np.ma.masked_invalid(full_grid.reshape(X.shape))
     fig, ax = plt.subplots(figsize=(7, 6))
     mesh = ax.pcolormesh(X, Y, masked_grid, shading="nearest", cmap="viridis")
@@ -204,6 +226,8 @@ def main():
         raise ValueError("batch-size and pairs must be >=1; grid-size must be >=2")
     if args.temperature <= 0:
         raise ValueError("temperature must be positive")
+    if not np.isfinite(args.clip_max) or args.clip_max <= 0:
+        raise ValueError("clip-max must be finite and positive")
 
     from fb_navigation.agents.forward_backward_jax import FBLearner
     from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
@@ -215,12 +239,31 @@ def main():
         include_stay_action=False,
         seed=args.seed + 3,
     )
+    metadata_path = Path(args.checkpoint).parent / 'metadata.json'
+    if metadata_path.exists():
+        metadata = json.loads(metadata_path.read_text())
+        if 'wall_blocks' in metadata:
+            block_type = type(env.wall_blocks[0])
+            env._wall_blocks = [block_type(*block) for block in metadata['wall_blocks']]
     learner = FBLearner.from_checkpoint(args.checkpoint)
 
     X, Y, valid_mask, states = build_valid_grid(env, args.grid_size)
     b_states = learner.embed_B(states)
     u = jnp.asarray(env.sample_points(args.pairs))
     v = jnp.asarray(env.sample_points(args.pairs))
+    if args.symmetry_pairs:
+        # Verify the recorded geometry has the symmetry being sampled.
+        for points in (np.asarray(states),):
+            transformed = square_symmetries(points, env.size)
+            for block in env.wall_blocks:
+                inside = ((transformed[:, 0] > block.xmin + 1e-7)
+                          & (transformed[:, 0] < block.xmax - 1e-7)
+                          & (transformed[:, 1] > block.ymin + 1e-7)
+                          & (transformed[:, 1] < block.ymax - 1e-7))
+                if inside.any():
+                    raise ValueError('Recorded wall geometry is not square-symmetric')
+        u = jnp.asarray(square_symmetries(u, env.size))
+        v = jnp.asarray(square_symmetries(v, env.size))
     z = learner.embed_B(v)  # Must use same z preprocessing as training.
 
     print("Grid states:", states.shape, "goals:", z.shape)
@@ -322,17 +365,19 @@ def main():
     coverage = np.mean(results["plausible_mask"], axis=0)
     clipped_hit = np.where(
         results["stable_mask"],
-        np.clip(results["raw"], 0.0, 1.0),
+        np.clip(results["raw"], 0.0, args.clip_max),
         np.nan
     )
 
-    mean_clipped = np.nanmean(clipped_hit, axis=0)
+    mean_clipped = nanmean_no_warning(clipped_hit)
+    stable_coverage = np.mean(results['stable_mask'], axis=0)
     mean_clipped_1p5 = nanmean_no_warning(np.where(
         results["stable_mask"],
         np.clip(results["raw"], 0.0, 1.5),
         np.nan,
     ))
     for scores, filename, title, cb_label in [
+        (stable_coverage, "first_hit_stable_coverage.png", "Fraction retained before clipping", "Valid fraction"),
         (mean_clipped_1p5, "first_hit_clipped_1p5_mean.png", "Post-hoc first-hit: mean after clipping to [0, 1.5]", "Clipped first-hit estimate"),
         (above_105_percent, "first_hit_above_1p05_percent.png", "First-hit estimates above 1.05 among finite pairs", "Finite estimates above 1.05 (%)"),
         (negative_percent, "first_hit_negative_percent.png", "Negative first-hit estimates among finite pairs", "Finite estimates below zero (%)"),
@@ -344,27 +389,47 @@ def main():
         (
                 mean_clipped,
                 "first_hit_clipped_mean.png",
-                "Post-hoc first-hit: clipped mean",
+                f"Post-hoc first-hit: mean clipped to [0, {args.clip_max:g}]",
                 "Clipped first-hit estimate"
         ),
     ]:
         save_heatmap(scores, X, Y, valid_mask, env, output_dir / filename, title, cb_label)
 
-    np.savez_compressed(
-        output_dir / "first_hitting_results.npz",
-        X=X, Y=Y, valid_mask=valid_mask,
-        states=np.asarray(states), u=np.asarray(u), v=np.asarray(v),
+    grid_values = dict(
         raw_mean=raw_mean, stable_mean=stable_mean, plausible_mean=plausible_mean,
         negative_percent=negative_percent, finite_counts=finite_counts,
         above_105_percent=above_105_percent,
         mean_clipped_1p5=mean_clipped_1p5,
+        mean_clipped=mean_clipped, first_hit_clipped=clipped_hit,
+        stable_mask=results['stable_mask'], stable_coverage=stable_coverage,
         coverage=coverage,
         # Pairwise arrays facilitate diagnostic analysis and convergence tests.
         first_hit_stable=results["stable"],
         first_hit_plausible=results["plausible"],
-        P_us=results["P_us"], P_uv=results["P_uv"],
+        P_us=results["P_us"],
         P_vs=results["P_vs"], P_sv=results["P_sv"],
     )
+    np.savez_compressed(
+        output_dir / "first_hitting_results.npz",
+        X=X, Y=Y, valid_mask=valid_mask,
+        states=np.stack((X.ravel(), Y.ravel()), axis=-1).astype(states.dtype),
+        u=np.asarray(u), v=np.asarray(v), P_uv=results["P_uv"],
+        **{name: fill_grid(values, valid_mask) for name, values in grid_values.items()},
+    )
+    summary = dict(
+        checkpoint=args.checkpoint, seed=args.seed, pairs=args.pairs,
+        grid_size=args.grid_size, doorway_scale=args.doorway_scale,
+        policy=args.policy, temperature=args.temperature,
+        min_self_density=args.min_self_density, min_gap=args.min_gap,
+        symmetry_pairs=args.symmetry_pairs, total_pairs=len(u), clip_max=args.clip_max,
+        clipping=f'Clip each stable H(u,s;v) to [0,{args.clip_max:g}] before averaging over pairs',
+        retained_fraction=float(np.mean(results['stable_mask'])),
+        clipped_fraction_among_retained=float(np.mean(
+            ((results['raw'] < 0) | (results['raw'] > args.clip_max))[results['stable_mask']]
+        )),
+        interpretation='Discounted post-hoc first-hit-before-goal estimate from learned continuous densities',
+    )
+    (output_dir / 'summary.json').write_text(json.dumps(summary, indent=2))
     print("Saved", output_dir / "first_hitting_results.npz")
 
 
