@@ -11,6 +11,9 @@ epoch_*.tmp
 # Generated first-hitting DAB archives
 /results/first_hitting/**/first_hitting_results.npz
 
+# Generated option evaluation archives
+/results/options/**/option_success.npz
+
 # Regenerable Python/editor caches
 __pycache__/
 *.py[cod]
