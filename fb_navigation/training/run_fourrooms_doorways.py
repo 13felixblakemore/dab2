@@ -18,7 +18,13 @@ from fb_navigation.evaluation.fourrooms import evaluate_checkpoint, plot_history
 
 def create_learner(config, seed, device):
     """Construct FB directly from the supplied config, without retired launchers."""
-    return FBLearner(**config['learner'], seed=seed, device=device, buffer_device=device,
+    learner_config = dict(config['learner'])
+    environment = config.get('environment', {})
+    if environment.get('action_space') == 'continuous':
+        learner_config.update(n_actions=None, action_space='continuous',
+                              action_limit=environment.get('step_size', 0.05))
+        learner_config.setdefault('goal_threshold', environment.get('threshold_distance', 0.1))
+    return FBLearner(**learner_config, seed=seed, device=device, buffer_device=device,
                      featuriser=RadialBasisFunction2D(**config['rbf'], device=device))
 
 
@@ -26,10 +32,40 @@ def retained_checkpoint(epoch, total, interval):
     return epoch % interval == 0 or epoch == total
 
 
+def resume_sources_match(previous, current, source_dir, *, discrete):
+    if previous == current:
+        return True
+    if not discrete or previous.keys() != current.keys():
+        return False
+
+    # Recognize only the verified pre-continuous source snapshot. Its discrete
+    # optimizer, replay, and RNG streams can resume with this source upgrade.
+    def fingerprint(contents):
+        return hashlib.sha256(contents.replace(b'\r\n', b'\n')).hexdigest()
+
+    def bundle(contents):
+        return hashlib.sha256(''.join(map(fingerprint, contents)).encode('ascii')).hexdigest()
+
+    runner = 'run_fourrooms_doorways.py'
+    try:
+        archived = {name: (source_dir/name).read_bytes() for name in current}
+    except OSError:
+        return False
+    if any(hashlib.sha256(data).hexdigest() != previous[name] for name, data in archived.items()):
+        return False
+    return (
+        fingerprint(archived[runner]) == '42b3949c0f4804bb8ae549d963b511451dcc49f9dc0d1ee56772bcf53b45a8e2'
+        and bundle(data for name, data in archived.items() if name != runner)
+        == 'e3ca50384f6f5dc51b55115d5243ea7d8c54dc6a8bc715ac18dfcd1f38599309'
+        and bundle(source_path(name).read_bytes() for name in current if name != runner)
+        == '645a301aa14e85fead2e07c95f046cb8cae9466cbeba819af1fb2ebb46f8bf32'
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
-    parser.add_argument('--doorway-scale', type=float, default=1.0)
+    parser.add_argument('--doorway-scale', type=float)
     parser.add_argument('--checkpoint-every', type=int, default=200)
     parser.add_argument('--recovery-every', type=int, default=1,
                         help='Overwrite full replay/RNG recovery snapshot every N epochs')
@@ -45,6 +81,9 @@ def main():
     if args.recovery_every < 1 or args.log_every < 0:
         parser.error('--recovery-every must be positive and --log-every nonnegative')
     config = json.loads(args.config.read_text())
+    if args.doorway_scale is None:
+        args.doorway_scale = (config['environment'].get('doorway_scale', 1.0)
+                              if config['environment'].get('action_space') == 'continuous' else 1.0)
     config['environment']['doorway_scale'] = args.doorway_scale
     config['checkpoint_every'] = args.checkpoint_every
     config['evaluation_epochs'] = sorted({1, config['epochs'], *range(args.checkpoint_every, config['epochs']+1, args.checkpoint_every)})
@@ -63,7 +102,8 @@ def main():
     hashes = {s: hashlib.sha256((source_path(s)).read_bytes()).hexdigest() for s in sources}
     if args.resume:
         previous = json.loads((output/'metadata.json').read_text())
-        if previous['sha256'] != hashes or previous['seed'] != args.seed:
+        if previous['seed'] != args.seed or not resume_sources_match(
+                previous['sha256'], hashes, output/'source', discrete=env.action_space == 'discrete'):
             raise ValueError('Resume source/seed mismatch')
     else:
         manifest.write_text(json.dumps(config, indent=2))

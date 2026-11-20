@@ -14,7 +14,9 @@ import jax.numpy as jnp
 import numpy as np
 from tqdm import trange
 
-from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, Point, _move, _sample_point
+from fb_navigation.environments.continuous_four_rooms_jax import (
+    ContinuousFourRooms, Point, _move, _sample_point, sample_displacements,
+)
 from fb_navigation.agents.forward_backward_jax import FBLearner, RadialBasisFunction2D
 
 
@@ -22,6 +24,7 @@ def make_collector(env, episodes=4, steps=30):
     """Pure, sequential rollouts for the original epsilon=1 exploration policy."""
     walls = tuple(env.wall_blocks)
     actions = jnp.asarray([(a.x, a.y) for a in env.actions], dtype=jnp.float32)
+    continuous = getattr(env, "action_space", "discrete") == "continuous"
 
     def reset(key):
         key, position_key = jax.random.split(key)
@@ -43,9 +46,12 @@ def make_collector(env, episodes=4, steps=30):
             def step(carry, _):
                 env_key, action_key, position, goal = carry
                 action_key, draw_key = jax.random.split(action_key)
-                action = jax.random.randint(draw_key, (), 0, len(env.actions))
+                if continuous:
+                    action = delta = sample_displacements(draw_key, env.step_size)
+                else:
+                    action = jax.random.randint(draw_key, (), 0, len(env.actions))
+                    delta = actions[action]
                 env_key, move_key = jax.random.split(env_key)
-                delta = actions[action]
                 next_position, _, _ = _move(
                     position, Point(delta[0], delta[1]), move_key,
                     env._noise, env.size, walls,
@@ -55,8 +61,9 @@ def make_collector(env, episodes=4, steps=30):
                 transition = dict(
                     obs=jnp.asarray((position.x, position.y)), action=action,
                     obs_next=jnp.asarray((next_position.x, next_position.y)),
-                    next_actions=jnp.ones((len(env.actions),), dtype=bool),
                 )
+                if not continuous:
+                    transition["next_actions"] = jnp.ones((len(env.actions),), dtype=bool)
                 # Save the pre-reset transition, including a terminal next_obs.
                 env_key, position, goal = jax.lax.cond(
                     done, reset, lambda key: (key, next_position, goal), env_key,
@@ -79,6 +86,13 @@ def make_collector(env, episodes=4, steps=30):
 
 def make_epoch(env, learner, cycles=25, episodes=4, steps=30, updates=40):
     """Compile a full epoch; replay donation allows storage reuse in place."""
+    continuous = getattr(env, "action_space", "discrete") == "continuous"
+    if continuous != learner.continuous:
+        raise ValueError("Learner and environment action spaces must agree")
+    if continuous:
+        if not np.isclose(learner.action_limit, env.step_size, rtol=1e-7, atol=0):
+            raise ValueError("Continuous learner action_limit must match environment step_size")
+        learner.environment_config = env.movement_config()
     collect = make_collector(env, episodes, steps)
     capacity = learner.buffer.max_size
     count = episodes * steps
@@ -109,7 +123,7 @@ def make_epoch(env, learner, cycles=25, episodes=4, steps=30, updates=40):
 def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
            cycles=25, episodes=4, steps=30, updates=40, env=None, learner=None,
            progress=True, z_sampling="cauchy", goal_terminated=False,
-           goal_threshold=None):
+           goal_threshold=None, action_space="discrete", continuous_action_samples=32):
     """Train and save all per-update losses plus a reloadable JAX checkpoint.
 
     Optional schedule/environment/learner arguments allow small validation runs.
@@ -117,10 +131,14 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
     """
     if min(epochs, cycles, episodes, steps, updates) < 1:
         raise ValueError("Training counts must all be positive")
-    env = ContinuousFourRooms(include_stay_action=False, seed=seed) if env is None else env
+    env = ContinuousFourRooms(include_stay_action=False, seed=seed, action_space=action_space) if env is None else env
+    continuous = getattr(env, "action_space", "discrete") == "continuous"
     if learner is None:
         learner = FBLearner(
-            obs_dim=2, n_actions=len(env.get_action_space()), embed_dim=50,
+            obs_dim=2, n_actions=None if continuous else len(env.get_action_space()), embed_dim=50,
+            action_space="continuous" if continuous else "discrete",
+            action_limit=env.step_size if continuous else 0.05,
+            continuous_action_samples=continuous_action_samples,
             learning_rate=5e-4, discount_factor=0.99, reg_coef=1,
             polyak_coef=0.95, batch_size=128, hidden_dim=256, num_layers=2,
             buffer_size=1_000_000, device=device, buffer_device=device,
@@ -132,7 +150,7 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
                 sigma=0.05, device=device,
             ),
         )
-    if learner.n_actions != len(env.actions):
+    if not continuous and learner.n_actions != len(env.actions):
         raise ValueError("Learner and environment action counts must agree")
     if learner.buffer.device != learner.device:
         raise ValueError("Compiled runner requires replay on the learner device")
@@ -167,12 +185,14 @@ def run_fb(epochs=800, device="cuda", output_dir=".", seed=1, *,
     reference_rng = np.random.default_rng(seed + 104729)
     indices = reference_rng.integers(learner.buffer.size, size=100_000)
     reference = jax.device_get(learner.buffer.obs[indices])
+    action_metadata = (dict(action_space="continuous", action_limit=env.step_size) if continuous
+                       else dict(actions=np.asarray([(a.x, a.y) for a in env.actions])))
     np.savez_compressed(
         output_dir / "fb_fourrooms_jax_reference.npz", observations=reference,
         source="sampled_final_replay", seed=seed, replay_size=learner.buffer.size,
         training_updates=int(learner.state["optim"][0]),
         size=env.size, movement_noise=env._noise,
-        actions=np.asarray([(a.x, a.y) for a in env.actions]),
+        **action_metadata,
         checkpoint_sha256=hashlib.sha256((output_dir / "fb_fourrooms_jax.pkl").read_bytes()).hexdigest(),
         wall_blocks=np.asarray([(b.xmin,b.ymin,b.xmax,b.ymax) for b in env.wall_blocks]),
     )
@@ -185,6 +205,8 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=800)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--output-dir", default=".")
+    parser.add_argument("--action-space", choices=("discrete", "continuous"), default="discrete")
+    parser.add_argument("--continuous-action-samples", type=int, default=32)
     parser.add_argument("--z-sampling", choices=("cauchy", "replay"), default="cauchy")
     parser.add_argument("--goal-terminated", action="store_true",
                         help="Stop replay-goal bootstraps on goal entry; zero/Cauchy tasks continue")

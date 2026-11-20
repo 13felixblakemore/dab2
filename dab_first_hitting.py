@@ -27,6 +27,7 @@ import numpy as np
 def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", required=True, help="Path to a trained FB checkpoint")
+    parser.add_argument("--device", default="cpu")
     parser.add_argument("--doorway-scale", type=float, default=1.5,
                         help="Must match the geometry used in training")
     parser.add_argument("--seed", type=int, default=0)
@@ -77,7 +78,7 @@ def build_valid_grid(env, grid_size):
     return X, Y, valid_mask, jnp.asarray(all_states[valid_mask])
 
 
-def compute_density_terms(learner, states, b_states, u, v, z, policy, temperature, batch_size):
+def compute_density_terms(learner, states, b_states, u, v, z, policy, temperature, batch_size, seed=0):
     """Return all six density terms for the same policy pi_{z_i}.
 
     u, v: (G, 2); z: (G, D); states: (S, 2); b_states: (S, D)
@@ -85,8 +86,18 @@ def compute_density_terms(learner, states, b_states, u, v, z, policy, temperatur
              m_ss (G,S), m_sv (G,S).
     """
     count_states, latent_dim = b_states.shape
+    continuous = getattr(learner, "continuous", False)
+    if continuous:
+        params = learner.state["params"]["f"]
+        policy_params = learner.state["target"]["f"] if policy == "softmax" else params
+        proposal_key = jax.device_put(jax.random.PRNGKey(seed), learner.device)
 
     def chosen_forward(obs, tasks):
+        if continuous:
+            features = learner.featuriser.transform(obs)
+            return learner.continuous_policy_embedding(
+                params, policy_params, features, tasks, proposal_key,
+                temperature=temperature if policy == "softmax" else None)
         f = learner.embed_F(obs, tasks)  # (N, D, A)
         q = jnp.einsum("nda,nd->na", f, tasks)  # (N, A)
         if policy == "greedy":
@@ -104,11 +115,10 @@ def compute_density_terms(learner, states, b_states, u, v, z, policy, temperatur
         f_v = chosen_forward(v_chunk, z_chunk)  # (G, D)
 
         # Starting at every candidate s for each of the G goal policies.
-        f_s = jax.vmap(
-            lambda zi: chosen_forward(
-                states, jnp.broadcast_to(zi, (count_states, latent_dim))
-            )
-        )(z_chunk)  # (G, S, D)
+        def from_candidates(zi):
+            return chosen_forward(states, jnp.broadcast_to(zi, (count_states, latent_dim)))
+        f_s = (jax.lax.map(from_candidates, z_chunk) if continuous
+               else jax.vmap(from_candidates)(z_chunk))  # (G, S, D)
 
         # Each *destination* B(y) is evaluated under the same pi_v.
         m_us = f_u @ b_states.T  # (G, S)
@@ -222,6 +232,13 @@ def summarise(values, name):
 
 def main():
     args = arguments()
+    from fb_navigation.agents.forward_backward_jax import _device
+
+    with jax.default_device(_device(args.device)):
+        run(args)
+
+
+def run(args):
     if args.batch_size < 1 or args.pairs < 1 or args.grid_size < 2:
         raise ValueError("batch-size and pairs must be >=1; grid-size must be >=2")
     if args.temperature <= 0:
@@ -231,21 +248,27 @@ def main():
 
     from fb_navigation.agents.forward_backward_jax import FBLearner
     from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
+    from fb_navigation.environments.continuous_four_rooms_jax import ContinuousWorld
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    env = AdjustableFourRooms(
-        doorway_scale=args.doorway_scale,
-        include_stay_action=False,
-        seed=args.seed + 3,
-    )
-    metadata_path = Path(args.checkpoint).parent / 'metadata.json'
-    if metadata_path.exists():
-        metadata = json.loads(metadata_path.read_text())
-        if 'wall_blocks' in metadata:
-            block_type = type(env.wall_blocks[0])
-            env._wall_blocks = [block_type(*block) for block in metadata['wall_blocks']]
-    learner = FBLearner.from_checkpoint(args.checkpoint)
+    learner = FBLearner.from_checkpoint(args.checkpoint, device=args.device)
+    if learner.continuous:
+        if learner.environment_config is None:
+            raise ValueError("Continuous checkpoint must contain the training environment geometry")
+        env = ContinuousWorld.from_movement_config(learner.environment_config, seed=args.seed + 3)
+    else:
+        env = AdjustableFourRooms(
+            doorway_scale=args.doorway_scale,
+            include_stay_action=False,
+            seed=args.seed + 3,
+        )
+        metadata_path = Path(args.checkpoint).parent / 'metadata.json'
+        if metadata_path.exists():
+            metadata = json.loads(metadata_path.read_text())
+            if 'wall_blocks' in metadata:
+                block_type = type(env.wall_blocks[0])
+                env._wall_blocks = [block_type(*block) for block in metadata['wall_blocks']]
 
     X, Y, valid_mask, states = build_valid_grid(env, args.grid_size)
     b_states = learner.embed_B(states)
@@ -270,7 +293,7 @@ def main():
     print("Policy:", args.policy, "temperature:", args.temperature)
     densities = compute_density_terms(
         learner, states, b_states, u, v, z,
-        args.policy, args.temperature, args.batch_size
+        args.policy, args.temperature, args.batch_size, seed=args.seed
     )
     results = evaluate_first_hitting(
         densities, args.min_self_density,
@@ -429,6 +452,10 @@ def main():
         )),
         interpretation='Discounted post-hoc first-hit-before-goal estimate from learned continuous densities',
     )
+    if learner.continuous:
+        summary.pop('doorway_scale')
+        summary.update(action_space='continuous', environment=learner.environment_config,
+                       continuous_action_samples=learner.continuous_action_samples)
     (output_dir / 'summary.json').write_text(json.dumps(summary, indent=2))
     print("Saved", output_dir / "first_hitting_results.npz")
 

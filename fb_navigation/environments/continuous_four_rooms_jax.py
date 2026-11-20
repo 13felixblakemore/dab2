@@ -6,6 +6,7 @@ The wrapper itself is stateful and should not be passed to jit or vmap.
 """
 
 import dataclasses
+import math
 from functools import partial
 
 import jax
@@ -15,6 +16,14 @@ from fb_navigation.environments.continuous_four_rooms import (
     get_classic_four_rooms_blocks as _classic_blocks,
     visualize_environment,
 )
+
+
+def sample_displacements(key, limit, shape=()):
+    """Draw uniformly from the disk of valid continuous displacements."""
+    unit = jax.random.uniform(key, (*shape, 2), dtype=jnp.float32)
+    radius = limit * jnp.sqrt(unit[..., 0])
+    angle = 2 * jnp.pi * unit[..., 1]
+    return radius[..., None] * jnp.stack((jnp.cos(angle), jnp.sin(angle)), axis=-1)
 
 
 @partial(jax.tree_util.register_dataclass, data_fields=["x", "y"], meta_fields=[])
@@ -149,7 +158,14 @@ class ContinuousWorld:
         threshold_distance: float = 0.5,
         explorable: bool = False,
         include_stay_action: bool = True,
+        action_space: str = "discrete",
     ):
+        if action_space not in ("discrete", "continuous"):
+            raise ValueError("action_space must be 'discrete' or 'continuous'")
+        if action_space == "continuous" and (not math.isfinite(step_size) or step_size <= 0):
+            raise ValueError("Continuous step_size must be finite and positive")
+        self.action_space = action_space
+        self.step_size = step_size
         self._size = size
         self._wall_blocks = wall_blocks or []
         self._noise = movement_noise
@@ -213,10 +229,18 @@ class ContinuousWorld:
             self._goal = goal if goal is not None else self.sample_point()
         return self.current_position
 
-    def step(self, id_action: int):
+    def step(self, id_action):
+        if self.action_space == "continuous":
+            delta = jnp.asarray(id_action, dtype=jnp.float32)
+            if (delta.shape != (2,) or not bool(jnp.all(jnp.isfinite(delta)))
+                    or float(jnp.linalg.norm(delta)) > self.step_size * (1 + 1e-6)):
+                raise ValueError("Expected a finite (dx, dy) with length at most step_size")
+            action = Point(*delta)
         self._rng, key = jax.random.split(self._rng)
+        if self.action_space == "discrete":
+            action = self.actions[id_action]
         self._current_position, proposed_position, goes_through_wall = _move(
-            self._current_position, self.actions[id_action], key,
+            self._current_position, action, key,
             self._noise, self._size, tuple(self._wall_blocks),
         )
 
@@ -261,10 +285,25 @@ class ContinuousWorld:
         return self._wall_blocks
 
     def get_action_space(self):
+        if self.action_space == "continuous":
+            return {"shape": (2,), "max_norm": self.step_size}
         return list(range(len(self.actions)))
 
     def get_available_actions(self, state):
+        if self.action_space == "continuous":
+            return self.get_action_space()
         return list(range(len(self.actions)))
+
+    def movement_config(self):
+        return dict(size=self.size, step_size=self.step_size, movement_noise=self._noise,
+                    action_space=self.action_space, threshold_distance=self.threshold_distance,
+                    include_stay_action=self.include_stay_action,
+                    wall_blocks=[(w.xmin, w.ymin, w.xmax, w.ymax) for w in self.wall_blocks])
+
+    @classmethod
+    def from_movement_config(cls, config, *, seed=1):
+        return cls(**dict(config, wall_blocks=[WallBlock(*b) for b in config["wall_blocks"]]),
+                   seed=seed)
 
 
 class ContinuousFourRooms(ContinuousWorld):
@@ -276,6 +315,7 @@ class ContinuousFourRooms(ContinuousWorld):
         seed: int = 1,
         explorable: bool = False,
         include_stay_action: bool = True,
+        action_space: str = "discrete",
     ):
         super().__init__(
             size=size,
@@ -286,4 +326,5 @@ class ContinuousFourRooms(ContinuousWorld):
             threshold_distance=0.1,
             explorable=explorable,
             include_stay_action=include_stay_action,
+            action_space=action_space,
         )

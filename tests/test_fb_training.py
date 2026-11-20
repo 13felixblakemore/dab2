@@ -13,6 +13,8 @@ from fb_navigation.agents.forward_backward_jax import (
     RadialBasisFunction2D,
 )
 from fb_navigation.paths import PROJECT_ROOT
+from fb_navigation.diagnostics.estimate_fb_bottlenecks_jax import make_fb_estimator, make_mc_estimator
+from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, ContinuousWorld, Point
 from fb_navigation.training.run_continuous_maze import evaluate
 from fb_navigation.training.run_fb_jax import run_fb
 
@@ -69,6 +71,55 @@ class TrainingEntryPointTests(unittest.TestCase):
             )
         create_learner.assert_not_called()
         self.assertTrue(callable(namespace['main']))
+
+
+class ContinuousActionTests(unittest.TestCase):
+    def test_training_checkpoint_and_bottleneck_estimators(self):
+        model = learner(action_space='continuous', continuous_action_samples=4)
+        env = ContinuousFourRooms(action_space='continuous', include_stay_action=False)
+        with tempfile.TemporaryDirectory() as output:
+            model, losses = run_fb(epochs=1, cycles=1, episodes=1, steps=8, updates=2,
+                                   device='cpu', output_dir=output, env=env, learner=model,
+                                   progress=False)
+            self.assertTrue(np.isfinite(losses).all())
+            actions = np.asarray(model.buffer.action[:model.buffer.size])
+            self.assertEqual(actions.shape, (8, 2))
+            self.assertTrue(np.all(np.linalg.norm(actions, axis=-1) <= env.step_size))
+            self.assertTrue(np.any(np.all(actions != 0, axis=-1)))
+            model = FBLearner.from_checkpoint(Path(output) / 'fb_fourrooms_jax.pkl')
+
+        self.assertTrue(model.continuous)
+        env = ContinuousWorld.from_movement_config(model.environment_config)
+        starts = jnp.asarray([[.2, .2], [.3, .3]])
+        goals = jnp.asarray([[.7, .2], [.8, .25]])
+        tasks = model.embed_B(goals)
+        key = jax.random.PRNGKey(5)
+        moves = model.act(starts, tasks, key=key)
+        self.assertEqual(moves.shape, (2, 2))
+        np.testing.assert_array_equal(moves, model.act(starts, tasks, key=key))
+        self.assertEqual(model.embed_F(starts, tasks, moves).shape, tasks.shape)
+        features = model.featuriser.transform(starts)
+        params = model.state['params']['f']
+        candidate_embeddings = model.forward_candidates(params, features, tasks, moves)
+        np.testing.assert_allclose(candidate_embeddings[jnp.arange(2), :, jnp.arange(2)],
+                                   model.embed_F(starts, tasks, moves), atol=1e-6)
+        env.reset(Point(*starts[0]), Point(*goals[0]))
+        with self.assertRaises(ValueError):
+            env.step((env.step_size, env.step_size))
+        self.assertEqual(env.step(moves[0])[0].shape, (2,))
+
+        candidates = jnp.asarray([[.12, .12], [.32, .32], [.75, .75]])
+        estimate_fb = make_fb_estimator(model, candidates, model.embed_B(candidates))
+        numerator, denominator = estimate_fb(
+            params, model.state['target']['f'], features, tasks)
+        self.assertEqual(numerator.shape, (2, 3))
+        self.assertTrue(np.isfinite(denominator).all())
+        estimate_mc = make_mc_estimator(model, env, 10, 3)
+        first, hit = estimate_mc(model.state['target']['f'], starts, goals, tasks,
+                                 jax.random.split(key, 2))
+        self.assertEqual(first.shape, (2, 100))
+        np.testing.assert_array_equal(first[jnp.arange(2), [22, 33]], [0, 0])
+        self.assertEqual(hit.shape, (2,))
 
 
 class GoalTerminationTests(unittest.TestCase):

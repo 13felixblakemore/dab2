@@ -21,6 +21,8 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from fb_navigation.environments.continuous_four_rooms_jax import sample_displacements
+
 
 def _device(device):
     if isinstance(device, jax.Device):
@@ -100,7 +102,7 @@ def _sample(storage, key, size, batch_size):
 
 
 class ReplayBuffer:
-    def __init__(self, size, obs_dim, n_actions, device="cuda", seed=0):
+    def __init__(self, size, obs_dim, n_actions, device="cuda", seed=0, *, continuous=False):
         self.max_size, self.device = size, _device(device)
         self.ptr = self.size = 0
         self._host = self.device.platform == "cpu"
@@ -108,9 +110,12 @@ class ReplayBuffer:
         self._key = jax.device_put(jax.random.PRNGKey(seed), self.device)
         shapes = {"obs": (size, obs_dim), "action": (size,),
                   "obs_next": (size, obs_dim), "next_actions": (size, n_actions)}
+        if continuous:
+            shapes["action"] = (size, 2)
+            del shapes["next_actions"]
         self.storage = {}
         for name, shape in shapes.items():
-            dtype = np.int32 if name == "action" else np.bool_ if name == "next_actions" else np.float32
+            dtype = np.int32 if name == "action" and not continuous else np.bool_ if name == "next_actions" else np.float32
             if self._host:
                 self.storage[name] = np.zeros(shape, dtype=dtype)
             else:
@@ -118,13 +123,15 @@ class ReplayBuffer:
                     self.storage[name] = jnp.zeros(shape, dtype=dtype)
 
     def __getattr__(self, name):
-        if name in ("obs", "action", "obs_next", "next_actions"):
+        if name in self.__dict__.get("storage", {}):
             return self.storage[name]
         raise AttributeError(name)
 
-    def add(self, obs, action, obs_next, next_actions):
-        self.add_batch({"obs": [obs], "action": [action], "obs_next": [obs_next],
-                        "next_actions": [next_actions]})
+    def add(self, obs, action, obs_next, next_actions=None):
+        batch = {"obs": [obs], "action": [action], "obs_next": [obs_next]}
+        if "next_actions" in self.storage:
+            batch["next_actions"] = [next_actions]
+        self.add_batch(batch)
 
     def add_batch(self, batch):
         """Insert a batch with one dispatch/transfer rather than one per row."""
@@ -200,6 +207,29 @@ class ForwardNet:
     forward = __call__
 
 
+class ContinuousForwardNet:
+    def __init__(self, obs_dim, embed_dim, hidden_dim, num_layers, action_limit, key):
+        self.embed_dim = embed_dim
+        self.action_limit = action_limit
+        self.params = _init_mlp(key, [obs_dim + embed_dim + 2]
+                                + [hidden_dim] * (num_layers + 1) + [embed_dim])
+
+    def apply(self, params, obs, w, action):
+        w = w / jnp.sqrt(1 + jnp.sum(w**2, axis=-1, keepdims=True) / self.embed_dim)
+        return _mlp(params, jnp.concatenate((obs, w, action / self.action_limit), axis=-1))
+
+    def apply_candidates(self, params, obs, w, actions):
+        # Compute the state/task part of the first layer once per observation.
+        w = w / jnp.sqrt(1 + jnp.sum(w**2, axis=-1, keepdims=True) / self.embed_dim)
+        first = params[0]
+        state_task = jnp.matmul(jnp.concatenate((obs, w), axis=-1), first["weight"][:-2],
+                                precision=jax.lax.Precision.HIGHEST)
+        movement = jnp.matmul(actions / self.action_limit, first["weight"][-2:],
+                              precision=jax.lax.Precision.HIGHEST)
+        hidden = jax.nn.relu(state_task[:, None, :] + movement[None, :, :] + first["bias"])
+        return jnp.swapaxes(_mlp(params[1:], hidden), -1, -2)
+
+
 def _cauchy_ball(key, n, embed_dim, eps=1e-10):
     gaussian_key, cauchy_key = jax.random.split(key)
     gaussian = jax.random.normal(gaussian_key, (n, embed_dim))
@@ -232,7 +262,20 @@ class FBLearner:
                  buffer_size=1_000_000, device="cuda", buffer_device="cpu",
                  featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
                  z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1,
-                 b_regularization="orthonormal", goal_norm="l2"):
+                 b_regularization="orthonormal", goal_norm="l2",
+                 action_space="discrete", action_limit=0.05, continuous_action_samples=32):
+        if action_space not in ("discrete", "continuous"):
+            raise ValueError("action_space must be 'discrete' or 'continuous'")
+        self.continuous = action_space == "continuous"
+        self.action_limit = action_limit
+        self.continuous_action_samples = continuous_action_samples
+        self.environment_config = None
+        if self.continuous:
+            if not np.isfinite(action_limit) or action_limit <= 0:
+                raise ValueError("action_limit must be finite and positive")
+            if type(continuous_action_samples) is not int or continuous_action_samples < 2:
+                raise ValueError("continuous_action_samples must be an integer >= 2")
+            n_actions = None
         if goal_norm not in ("l2", "linf"):
             raise ValueError("goal_norm must be 'l2' or 'linf'")
         self.goal_norm = goal_norm
@@ -262,6 +305,9 @@ class FBLearner:
                            zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling,
                            goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold,
                            b_regularization=b_regularization, goal_norm=goal_norm)
+        if self.continuous:
+            self.config.update(action_space=action_space, action_limit=action_limit,
+                               continuous_action_samples=continuous_action_samples)
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -270,15 +316,21 @@ class FBLearner:
         self.feature_size = obs_dim if featuriser is None else featuriser.dim**2
         with jax.default_device(self.device):
             key, fkey, bkey = jax.random.split(jax.random.PRNGKey(seed), 3)
-            self.forward_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
+            if self.continuous:
+                self.forward_network = ContinuousForwardNet(
+                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey)
+                self.forward_target_network = ContinuousForwardNet(
+                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey)
+            else:
+                self.forward_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
+                self.forward_target_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
             self.backward_network = BackwardNet(self.feature_size, embed_dim, hidden_dim, num_layers, bkey)
-            self.forward_target_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
             self.backward_target_network = BackwardNet(self.feature_size, embed_dim, hidden_dim, num_layers, bkey)
             params = dict(f=self.forward_network.params, b=self.backward_network.params)
             zeros = jax.tree_util.tree_map(jnp.zeros_like, params)
             self.state = dict(params=params, target=params,
                               optim=(jnp.asarray(0, jnp.int32), zeros, zeros), key=key)
-        self.buffer = ReplayBuffer(buffer_size, obs_dim, n_actions, buffer_device, seed)
+        self.buffer = ReplayBuffer(buffer_size, obs_dim, n_actions, buffer_device, seed, continuous=self.continuous)
         # All changing parameters, optimizer state, RNG, and replay are explicit
         # JIT arguments, so compiled functions never capture stale model weights.
         self._train = jax.jit(self._train_impl)
@@ -286,19 +338,61 @@ class FBLearner:
         self._soft_update = jax.jit(lambda target, params: jax.tree_util.tree_map(
             lambda t, p: (1-self.polyak_coef)*p + self.polyak_coef*t, target, params))
         self._embed_b = jax.jit(lambda p, x: self.backward_network.apply(p, self.featuriser.transform(x)))
-        self._embed_f = jax.jit(lambda p, x, w: self.forward_network.apply(p, self.featuriser.transform(x), w))
+        self._embed_f = jax.jit(lambda p, x, w, *a: self.forward_network.apply(p, self.featuriser.transform(x), w, *a))
         self._draw_w = jax.jit(partial(_cauchy_ball, embed_dim=embed_dim), static_argnames=("n",))
         self._act = jax.jit(lambda p, x, w, mask: jnp.argmax(mask_action_scores(jnp.einsum(
             "sda,sd->sa", self.forward_network.apply(p, self.featuriser.transform(x), w), w), mask), axis=1))
         self._export = jax.jit(self._export_impl)
+        self._continuous_greedy = jax.jit(
+            lambda p, x, w, key: self.select_displacements(p, self.featuriser.transform(x), w, key))
 
     def _sync_networks(self):
         self.forward_network.params, self.backward_network.params = self.state["params"]["f"], self.state["params"]["b"]
         self.forward_target_network.params, self.backward_target_network.params = self.state["target"]["f"], self.state["target"]["b"]
 
-    def update(self, obs, action, next_obs, terminal, next_actions):
+    def update(self, obs, action, next_obs, terminal, next_actions=None):
         # As in the original, terminal is deliberately unused.
-        self.buffer.add(obs, action, next_obs, [a in next_actions for a in range(self.n_actions)])
+        if self.continuous:
+            action = np.asarray(action, dtype=np.float32)
+            if (action.shape != (2,) or not np.isfinite(action).all()
+                    or np.linalg.norm(action) > self.action_limit * (1 + 1e-6)):
+                raise ValueError("Expected a finite (dx, dy) within action_limit")
+            self.buffer.add(obs, action, next_obs)
+        else:
+            self.buffer.add(obs, action, next_obs, [a in next_actions for a in range(self.n_actions)])
+
+    def action_candidates(self, key):
+        return sample_displacements(key, self.action_limit, (self.continuous_action_samples,))
+
+    def forward_candidates(self, params, features, tasks, actions):
+        """Return (batch, embedding, candidates) for shared displacement proposals."""
+        return self.forward_network.apply_candidates(params, features, tasks, actions)
+
+    def select_displacements(self, params, features, tasks, key, *, softmax=False):
+        proposal_key, policy_key = jax.random.split(key)
+        actions = self.action_candidates(proposal_key)
+        f = self.forward_candidates(params, features, tasks, actions)
+        scores = jnp.einsum("bda,bd->ba", f, tasks)
+        indices = (jax.random.categorical(policy_key, scores / self.temperature)
+                   if softmax else jnp.argmax(scores, axis=-1))
+        return actions[indices]
+
+    def continuous_policy_embedding(self, params, policy_params, features, tasks, key,
+                                    *, temperature=None):
+        """Estimate the policy-averaged embedding over independent proposal sets."""
+        def average(proposal_key):
+            actions = self.action_candidates(proposal_key)
+            f = self.forward_candidates(params, features, tasks, actions)
+            policy_f = (f if params is policy_params
+                        else self.forward_candidates(policy_params, features, tasks, actions))
+            scores = jnp.einsum("bda,bd->ba", policy_f, tasks)
+            if temperature is None:
+                selected = jnp.argmax(scores, axis=-1)
+                return jnp.take_along_axis(f, selected[:, None, None], axis=-1).squeeze(-1)
+            weights = jax.nn.softmax(scores / temperature, axis=-1)
+            return jnp.einsum("bda,ba->bd", f, weights)
+
+        return jax.lax.map(average, jax.random.split(key, 4)).mean(axis=0)
 
     def _mask_goal_bootstrap(self, z_next, next_obs, goal_obs, zero):
         """Mask entire rows on next-state entry; zero tasks remain continuing.
@@ -321,22 +415,31 @@ class FBLearner:
         return z_next
 
     def _loss(self, params, target, transitions, other, w, zero, goal_obs=None,
-              return_components=False):
+              return_components=False, action_key=None):
         obs = self.featuriser.transform(transitions["obs"])
         obs_next = self.featuriser.transform(transitions["obs_next"])
         obs_other = self.featuriser.transform(other["obs"])
         stop = jax.lax.stop_gradient
-        f_next_all = self.forward_network.apply(target["f"], obs_next, w)
+        if self.continuous:
+            actions = self.action_candidates(jax.random.PRNGKey(0) if action_key is None else action_key)
+            f_next_all = self.forward_candidates(target["f"], obs_next, w, actions)
+        else:
+            f_next_all = self.forward_network.apply(target["f"], obs_next, w)
         z_policy = jnp.einsum("sda,sd->sa", f_next_all, w)
         z_policy = jnp.where(zero[:, None], 0.0, z_policy)
-        logits = jnp.where(transitions["next_actions"], z_policy/self.temperature, -jnp.inf)
+        logits = z_policy / self.temperature
+        if not self.continuous:
+            logits = jnp.where(transitions["next_actions"], logits, -jnp.inf)
         pi = jax.nn.softmax(logits, axis=-1)
         f_next = jnp.einsum("sda,sa->sd", f_next_all, pi)
         b_next = self.backward_network.apply(target["b"], obs_other)
         z_next = stop(jnp.matmul(f_next, b_next.T, precision=jax.lax.Precision.HIGHEST))
         z_next = self._mask_goal_bootstrap(z_next, transitions["obs_next"], goal_obs, zero)
-        f_all = self.forward_network.apply(params["f"], obs, w)
-        f = jnp.take_along_axis(f_all, transitions["action"][:, None, None], axis=-1).squeeze(-1)
+        if self.continuous:
+            f = self.forward_network.apply(params["f"], obs, w, transitions["action"])
+        else:
+            f_all = self.forward_network.apply(params["f"], obs, w)
+            f = jnp.take_along_axis(f_all, transitions["action"][:, None, None], axis=-1).squeeze(-1)
         b = self.backward_network.apply(params["b"], obs)
         b_other = self.backward_network.apply(params["b"], obs_other)
         z_diag = jnp.sum(f*b, axis=1)
@@ -370,11 +473,16 @@ class FBLearner:
         return _cauchy_ball(key, self.batch_size, self.embed_dim)
 
     def _train_impl(self, state, transitions, other, goal_obs=None):
-        key, wkey, zkey = jax.random.split(state["key"], 3)
+        action_key = None
+        if self.continuous:
+            key, wkey, zkey, action_key = jax.random.split(state["key"], 4)
+        else:
+            key, wkey, zkey = jax.random.split(state["key"], 3)
         w = self._training_tasks(state["params"], wkey, goal_obs)
         zero = jax.random.uniform(zkey, (self.batch_size,)) > (1-self.zero_z_p)
         w = jnp.where(zero[:, None], 0.0, w)
-        loss, grads = jax.value_and_grad(self._loss)(state["params"], state["target"], transitions, other, w, zero, goal_obs)
+        loss, grads = jax.value_and_grad(self._loss)(
+            state["params"], state["target"], transitions, other, w, zero, goal_obs, action_key=action_key)
         if self.max_grad_norm is not None:
             grads = {name: _clip(value, self.max_grad_norm) for name, value in grads.items()}
         params, optim = _adam(state["params"], grads, state["optim"], self.learning_rate)
@@ -447,6 +555,13 @@ class FBLearner:
     def embed_F(self, obs, z=None, action=None):
         obs = jnp.atleast_2d(_array(obs, self.device))
         z = _array(np.zeros((obs.shape[0], self.embed_dim)), self.device) if z is None else _array(z, self.device)
+        if self.continuous:
+            if action is None:
+                raise ValueError("Continuous embed_F requires an (x, y) displacement per observation")
+            action = jnp.atleast_2d(_array(action, self.device))
+            if action.shape != (obs.shape[0], 2):
+                raise ValueError("Expected actions of shape (batch, 2)")
+            return self._embed_f(self.state["params"]["f"], obs, z, action)
         f = self._embed_f(self.state["params"]["f"], obs, z)
         if action is None:
             return f
@@ -455,17 +570,23 @@ class FBLearner:
 
     def _export_impl(self, params, observations, available_actions):
         obs = self.featuriser.transform(observations)
-        f = self.forward_network.apply(params["f"], obs, jnp.zeros((obs.shape[0], self.embed_dim)))
-        f_mean = (f*available_actions[:, None, :]).sum(axis=2) / jnp.maximum(available_actions.sum(axis=1, keepdims=True), 1)
+        tasks = jnp.zeros((obs.shape[0], self.embed_dim))
+        if self.continuous:
+            actions = self.action_candidates(jax.random.PRNGKey(0))
+            f_mean = self.forward_candidates(params["f"], obs, tasks, actions).mean(axis=-1)
+        else:
+            f = self.forward_network.apply(params["f"], obs, tasks)
+            f_mean = (f*available_actions[:, None, :]).sum(axis=2) / jnp.maximum(available_actions.sum(axis=1, keepdims=True), 1)
         b = self.backward_network.apply(params["b"], obs)
         return jnp.maximum(jnp.matmul(f_mean, b.T, precision=jax.lax.Precision.HIGHEST), 0.0)
 
-    def export_sr(self, observations, available_actions):
+    def export_sr(self, observations, available_actions=None):
         observations = _array(observations, self.device)
         assert observations.ndim == 2, "export_sr is batch-only: expects (n, obs_dim) with n >= 2"
-        return self._export(self.state["params"], observations, _array(available_actions, self.device, jnp.bool_))
+        mask = None if self.continuous else _array(available_actions, self.device, jnp.bool_)
+        return self._export(self.state["params"], observations, mask)
 
-    def act(self, obs, w, target_network=False, available_actions=None, action_mask=None):
+    def act(self, obs, w, target_network=False, available_actions=None, action_mask=None, *, key=None):
         """Masked greedy actions; absent a mask, all actions are available.
 
         available_actions is a shared list of action IDs. action_mask accepts
@@ -474,6 +595,14 @@ class FBLearner:
         if available_actions is not None and action_mask is not None:
             raise ValueError("Supply available_actions or action_mask, not both")
         obs = jnp.atleast_2d(_array(obs, self.device))
+        if self.continuous:
+            if available_actions is not None or action_mask is not None:
+                raise ValueError("Continuous actions do not use discrete action masks")
+            if key is None:
+                key = jax.random.PRNGKey(self._python_rng.getrandbits(32))
+            params = self.state["target" if target_network else "params"]["f"]
+            tasks = jnp.atleast_2d(_array(w, self.device))
+            return self._continuous_greedy(params, obs, tasks, jax.device_put(key, self.device))
         if available_actions is not None:
             ids = np.asarray(available_actions)
             if ids.size == 0 or ids.ndim != 1 or not np.issubdtype(ids.dtype, np.integer) or np.any((ids < 0) | (ids >= self.n_actions)):
@@ -491,6 +620,13 @@ class FBLearner:
     def act_e_greedy(self, obs, g, available_actions=None, epsilon=0.2, target_network=False):
         if not 0 <= epsilon <= 1:
             raise ValueError("epsilon must lie in [0, 1]")
+        if self.continuous:
+            if available_actions is not None:
+                raise ValueError("Continuous actions do not use discrete action masks")
+            if self._python_rng.random() < epsilon:
+                key = jax.random.PRNGKey(self._python_rng.getrandbits(32))
+                return sample_displacements(key, self.action_limit)
+            return self.act(obs, g, target_network=target_network)[0]
         if available_actions is not None:
             ids = np.asarray(available_actions)
             if ids.size == 0 or ids.ndim != 1 or not np.issubdtype(ids.dtype, np.integer) or np.any((ids < 0) | (ids >= self.n_actions)):
@@ -512,6 +648,8 @@ class FBLearner:
             raise TypeError("Checkpointing supports IdentityFeaturiser and RadialBasisFunction2D")
         checkpoint = dict(format="forward_backward_jax_v1", config=self.config, featuriser=feature,
                           state=jax.device_get(self.state), python_rng=self._python_rng.getstate())
+        if self.environment_config is not None:
+            checkpoint["environment"] = self.environment_config
         with Path(path).open("wb") as stream:
             pickle.dump(checkpoint, stream, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -525,6 +663,7 @@ class FBLearner:
         learner = cls(**checkpoint["config"], device=device, buffer_device=buffer_device,
                       featuriser=None if feature is None else RadialBasisFunction2D(**feature, device=device))
         learner.state = jax.device_put(checkpoint["state"], learner.device)
+        learner.environment_config = checkpoint.get("environment")
         learner._python_rng.setstate(checkpoint["python_rng"])
         learner._sync_networks()
         return learner

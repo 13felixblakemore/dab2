@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 from matplotlib.patches import Rectangle
 
-from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, Point, _move
+from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, ContinuousWorld, Point, _move
 from fb_navigation.agents.forward_backward_jax import FBLearner, mask_action_scores
 
 
@@ -45,29 +45,37 @@ def free_points(rng,count,env):
     return np.concatenate(result)
 
 
-def sample_pairs(env,count,threshold,seed):
+def sample_pairs(env,count,threshold,seed,goal_norm='l2'):
     """Joint uniform free-space pairs, conditioned on starting outside G."""
     rng=np.random.default_rng(seed);starts=[];goals=[];left=count
     while left:
         n=max(64,left*2)
         u=free_points(rng,n,env);g=free_points(rng,n,env)
-        valid=np.sum((u-g)**2,axis=1)>threshold**2
+        valid=(np.max(abs(u-g),axis=1)>threshold if goal_norm=='linf'
+               else np.sum((u-g)**2,axis=1)>threshold**2)
         take_u=u[valid][:left];take_g=g[valid][:left]
         starts.append(take_u);goals.append(take_g);left-=len(take_u)
     return np.concatenate(starts),np.concatenate(goals)
 
 
-def eligibility(goals,lower,upper,threshold):
+def eligibility(goals,lower,upper,threshold,goal_norm='l2'):
     nearest=np.minimum(np.maximum(goals[:,None,:],lower[None]),upper[None])
+    if goal_norm=='linf':
+        return np.max(abs(goals[:,None,:]-nearest),axis=-1)>threshold
     return np.sum((goals[:,None,:]-nearest)**2,axis=-1)>threshold**2
 
 
-def make_fb_estimator(learner,candidates,backward):
+def make_fb_estimator(learner,candidates,backward,seed=0):
     """Vmap across goals, with candidate F evaluations in bounded pair batches."""
     features=learner.featuriser.transform(jnp.asarray(candidates))
-    mask=jnp.ones(learner.n_actions,bool)  # Four Rooms exposes all actions.
+    continuous=getattr(learner,'continuous',False)
+    mask=None if continuous else jnp.ones(learner.n_actions,bool)
+    policy_key=jax.random.PRNGKey(seed)
     def average(params,target,features,z):
         w=jnp.broadcast_to(z,(len(features),learner.embed_dim))
+        if continuous:
+            return learner.continuous_policy_embedding(
+                params,target,features,w,policy_key,temperature=learner.temperature)
         f=learner.forward_network.apply(params,features,w)
         pf=learner.forward_network.apply(target,features,w)
         logits=mask_action_scores(jnp.einsum('nda,d->na',pf,z)/learner.temperature,mask)
@@ -79,14 +87,21 @@ def make_fb_estimator(learner,candidates,backward):
             fu=average(params,target,start[None],z)[0]
             fc=average(params,target,features,z)
             return backward@fu,jnp.sum(fc*backward,axis=1)
+        if continuous:
+            return jax.lax.map(lambda pair: one(*pair), (start_features,tasks))
         return jax.vmap(one)(start_features,tasks)
     return estimate
 
 
 def make_mc_estimator(learner,env,resolution,horizon):
     actions=jnp.asarray([(a.x,a.y) for a in env.actions])
-    mask=jnp.zeros(learner.n_actions,bool).at[jnp.asarray(env.get_available_actions(None))].set(True)
+    continuous=getattr(learner,'continuous',False)
+    mask=None if continuous else jnp.zeros(learner.n_actions,bool).at[jnp.asarray(env.get_available_actions(None))].set(True)
     walls=tuple(env.wall_blocks)
+    def reached_goal(positions,goals):
+        if continuous and learner.goal_norm=='linf':
+            return jnp.all(abs(positions-goals)<=learner.goal_threshold,axis=1)
+        return jnp.sum((positions-goals)**2,axis=1)<=learner.goal_threshold**2
     @jax.jit
     def estimate(target,starts,goals,tasks,keys):
         n=len(starts)
@@ -95,7 +110,7 @@ def make_mc_estimator(learner,env,resolution,horizon):
         goal_hit=jnp.full(n,horizon+1,jnp.int32)
         def step(carry,t):
             positions,first,active,goal_hit,keys=carry
-            at_goal=jnp.sum((positions-goals)**2,axis=1)<=learner.goal_threshold**2
+            at_goal=reached_goal(positions,goals)
             active=active & ~at_goal
             xy=jnp.clip(jnp.floor(positions/env.size*resolution).astype(jnp.int32),0,resolution-1)
             ids=xy[:,1]*resolution+xy[:,0]
@@ -103,16 +118,22 @@ def make_mc_estimator(learner,env,resolution,horizon):
             first=first.at[jnp.arange(n),ids].set(jnp.where(active,jnp.minimum(old,t),old))
             split=jax.vmap(lambda k:jax.random.split(k,3))(keys)
             keys,ak,mk=split[:,0],split[:,1],split[:,2]
-            f=learner.forward_network.apply(target,learner.featuriser.transform(positions),tasks)
-            logits=mask_action_scores(jnp.einsum('nda,nd->na',f,tasks)/learner.temperature,mask)
-            selected=jax.vmap(lambda key,logit:jax.random.categorical(key,logit))(ak,logits)
+            features=learner.featuriser.transform(positions)
+            if continuous:
+                def choose(feature,task,key):
+                    return learner.select_displacements(target,feature[None],task[None],key,softmax=True)[0]
+                selected=jax.vmap(choose)(features,tasks,ak)
+            else:
+                f=learner.forward_network.apply(target,features,tasks)
+                logits=mask_action_scores(jnp.einsum('nda,nd->na',f,tasks)/learner.temperature,mask)
+                selected=jax.vmap(lambda key,logit:jax.random.categorical(key,logit))(ak,logits)
             def move(p,a,key):
-                delta=actions[a]
+                delta=a if continuous else actions[a]
                 nxt,_,_=_move(Point(*p),Point(*delta),key,env._noise,env.size,walls)
                 return jnp.array((nxt.x,nxt.y))
             proposed=jax.vmap(move)(positions,selected,mk)
             positions=jnp.where(active[:,None],proposed,positions)
-            reached=jnp.sum((positions-goals)**2,axis=1)<=learner.goal_threshold**2
+            reached=reached_goal(positions,goals)
             goal_hit=jnp.where(active & reached,t+1,goal_hit)
             active=active & ~reached
             return (positions,first,active,goal_hit,keys),None
@@ -145,10 +166,29 @@ def comparison(a,b):
     return dict(cells=int(valid.sum()),correlation=corr,mae=float(np.mean(abs(x-y))) if len(x) else None,top20_overlap=overlap)
 
 
-def region_summary(points,maps,size):
+def region_summary(points,maps,size,wall_blocks=None):
     p=points/size*11;x,y=p.T
     doors=dict(bottom=(x>=6)&(x<=7)&(y>=1)&(y<=2),top=(x>=6)&(x<=7)&(y>=8)&(y<=9),
                left=(x>=2)&(x<=3)&(y>=4)&(y<=5),right=(x>=9)&(x<=10)&(y>=4)&(y<=5))
+    if wall_blocks is not None:
+        doors={name:np.zeros(len(points),bool) for name in doors}
+        midpoint=size/2
+        for across,along,labels in ((0,1,('bottom','top')),(1,0,('left','right'))):
+            spans=[]
+            for wall in wall_blocks:
+                lower=(wall.xmin,wall.ymin)
+                upper=(wall.xmax,wall.ymax)
+                if lower[across]<=midpoint<=upper[across]:
+                    spans.append((lower[along],upper[along],lower[across],upper[across]))
+            spans.sort()
+            for before,after in zip(spans,spans[1:]):
+                start,end=before[1],after[0]
+                if start>=end or start<=midpoint<=end:
+                    continue
+                label=labels[int(start>midpoint)]
+                doors[label] |= ((points[:,along]>start)&(points[:,along]<end)
+                                 &(points[:,across]>=max(before[2],after[2]))
+                                 &(points[:,across]<=min(before[3],after[3])))
     summary={}
     for name,selected in doors.items():
         row=dict(cells=int(selected.sum()))
@@ -196,17 +236,23 @@ def evaluate(args):
     out=Path(args.output);out.mkdir(parents=True,exist_ok=True)
     learner=FBLearner.from_checkpoint(args.checkpoint,device=args.device,buffer_device='cpu')
     if not learner.goal_terminated or learner.z_sampling!='replay':raise ValueError('A goal-terminated replay-task checkpoint is required')
-    if learner.n_actions not in (4,5):raise ValueError('Expected Four Rooms action space')
+    if not learner.continuous and learner.n_actions not in (4,5):raise ValueError('Expected Four Rooms action space')
     with jax.default_device(learner.device):
-        env=ContinuousFourRooms(include_stay_action=learner.n_actions==5)
+        if learner.continuous:
+            if learner.environment_config is None:
+                raise ValueError('Continuous checkpoint must contain the training environment geometry')
+            env=ContinuousWorld.from_movement_config(learner.environment_config)
+        else:
+            env=ContinuousFourRooms(include_stay_action=learner.n_actions==5)
+        goal_norm=learner.goal_norm if learner.continuous else 'l2'
         all_points,lower,upper,keep=grid_regions(env,args.grid)
         points=all_points[keep];ids=np.flatnonzero(keep)
         if not len(points):raise ValueError('Grid has no wall-free whole cells; increase resolution')
-        starts,goals=sample_pairs(env,args.samples,learner.goal_threshold,args.seed)
-        eligible=eligibility(goals,lower[keep],upper[keep],learner.goal_threshold)
+        starts,goals=sample_pairs(env,args.samples,learner.goal_threshold,args.seed,goal_norm)
+        eligible=eligibility(goals,lower[keep],upper[keep],learner.goal_threshold,goal_norm)
         tasks=learner.embed_B(goals);backward=learner.embed_B(points)
         start_features=learner.featuriser.transform(jnp.asarray(starts))
-        estimate_fb=make_fb_estimator(learner,points,backward)
+        estimate_fb=make_fb_estimator(learner,points,backward,args.seed)
         nums=[];dens=[]
         for first in range(0,args.samples,args.fb_batch):
             n,d=estimate_fb(learner.state['params']['f'],learner.state['target']['f'],start_features[first:first+args.fb_batch],tasks[first:first+args.fb_batch])
@@ -239,7 +285,8 @@ def evaluate(args):
             strict_comparison=comparison(maps['fb_strict'],maps['mc']),matched_conditional_comparison=comparison(maps['fb_conditional'],maps['mc_matched']),
             conditional_fb_vs_full_mc=comparison(maps['fb_conditional'],maps['mc']),goal_reached_fraction=float(np.mean(goal_hits<=args.horizon)),
             discounted_horizon_bound=learner.discount_factor**args.horizon,
-            doorway_cells=region_summary(points,dict(fb_strict=maps['fb_strict'],fb_conditional=maps['fb_conditional'],mc=maps['mc'],mc_matched=maps['mc_matched']),env.size),
+            doorway_cells=region_summary(points,dict(fb_strict=maps['fb_strict'],fb_conditional=maps['fb_conditional'],mc=maps['mc'],mc_matched=maps['mc_matched']),
+                                         env.size, env.wall_blocks if learner.continuous else None),
             caveats=['Density ratio is a finite-region hitting-probability proxy, not an exact cell identity.',
                      'Starts/goals are jointly uniform in free space conditioned on starts outside the goal disk.',
                      'Per-candidate means condition on the whole candidate cell being disjoint from the goal disk.',
@@ -248,6 +295,13 @@ def evaluate(args):
                      'The learned policy is not proven optimal. One rollout per independently sampled pair estimates endpoint and policy randomness jointly.',
                      'Grid resolution, MC noise, near-zero diagonals, and online/target lag may affect rankings. No density/ratio clipping is used.'])
         valid_ratios=maps['ratios'][maps['valid']]
+        if learner.continuous:
+            metrics.update(action_space='continuous', action_limit=learner.action_limit,
+                           goal_norm=goal_norm, continuous_action_samples=learner.continuous_action_samples,
+                           policy='frozen target softmax over fresh uniform displacement proposals')
+            metrics['caveats'].append('FB averages over four independent proposal sets. MC draws a fresh set for every action.')
+            if goal_norm=='linf':
+                metrics['caveats']=[note.replace('goal disk','goal square') for note in metrics['caveats']]
         metrics.update(
             negative_ratio_fraction=float(np.mean(valid_ratios<0)) if len(valid_ratios) else None,
             above_one_ratio_fraction=float(np.mean(valid_ratios>1)) if len(valid_ratios) else None,

@@ -7,7 +7,7 @@ import numpy as np
 
 from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
-from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms
+from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms, ContinuousWorld
 from fb_navigation.environments.continuous_four_rooms import visualize_environment
 
 
@@ -81,6 +81,24 @@ def visualise_successor_measure(density, X, Y, env, *, start, goal, title=None):
     return fig, ax
 
 
+def continuous_dab_densities(learner, states, embedded_states, starts, tasks, seed):
+    """Compute the numerator and self-density under sampled greedy FB."""
+    params = learner.state["params"]["f"]
+    key = jax.device_put(jax.random.PRNGKey(seed), learner.device)
+    features = learner.featuriser.transform(states)
+
+    def one(pair):
+        start, task = pair
+        start_features = learner.featuriser.transform(start[None])
+        f_start = learner.continuous_policy_embedding(
+            params, params, start_features, task[None], key)[0]
+        f_grid = learner.continuous_policy_embedding(
+            params, params, features, jnp.broadcast_to(task, (len(states), len(task))), key)
+        return embedded_states @ f_start, jnp.sum(f_grid * embedded_states, axis=-1)
+
+    return jax.lax.map(one, (starts, tasks))
+
+
 def main():
     config= {
         "seed": 0,
@@ -94,6 +112,10 @@ def main():
         seed=int(config["seed"]+3),
     )
     learner = FBLearner.from_checkpoint(config["path"])
+    if learner.continuous:
+        if learner.environment_config is None:
+            raise ValueError("Continuous checkpoint must contain the training environment geometry")
+        env = ContinuousWorld.from_movement_config(learner.environment_config, seed=config["seed"] + 3)
 
     # mesh / linspace of states s (50x50)
     x = jnp.linspace(0, 1, 50)
@@ -113,38 +135,42 @@ def main():
     v = env.sample_points(1000)
 
     z = learner.embed_B(v)
-    f_num = learner.embed_F(u, z)
+    if learner.continuous:
+        densities_num, densities_denom = continuous_dab_densities(
+            learner, states, embedded_states, u, z, config["seed"])
+    else:
+        f_num = learner.embed_F(u, z)
 
-    f_denom = jax.vmap(
-        lambda task: learner.embed_F(
-            states, jnp.broadcast_to(task, (len(states), task.shape[0]))
+        f_denom = jax.vmap(
+            lambda task: learner.embed_F(
+                states, jnp.broadcast_to(task, (len(states), task.shape[0]))
+            )
+        )(z)
+        # shape: (1000, 2500, 50, 4)
+
+        q = jnp.einsum("nda,nd->na", f_num, z) # 1000, 4
+        q_denom = jnp.einsum("nsda,nd->nsa", f_denom, z) # 1000, 2500, 4
+
+        a_num = jnp.argmax(q, axis=-1)
+        a_denom = jnp.argmax(q_denom, axis=-1)
+
+        f_pi = jnp.einsum(
+            "nda,na->nd",
+            f_num,
+            jax.nn.one_hot(a_num, f_num.shape[-1])
         )
-    )(z)
-    # shape: (1000, 2500, 50, 4)
 
-    q = jnp.einsum("nda,nd->na", f_num, z) # 1000, 4
-    q_denom = jnp.einsum("nsda,nd->nsa", f_denom, z) # 1000, 2500, 4
+        f_pi_denom = jnp.einsum(
+            "nsda,nsa->nsd",
+            f_denom,
+            jax.nn.one_hot(a_denom, f_denom.shape[-1])
+        )
 
-    a_num = jnp.argmax(q, axis=-1)
-    a_denom = jnp.argmax(q_denom, axis=-1)
+        densities_num = f_pi @ embedded_states.T
 
-    f_pi = jnp.einsum(
-        "nda,na->nd",
-        f_num,
-        jax.nn.one_hot(a_num, f_num.shape[-1])
-    )
-
-    f_pi_denom = jnp.einsum(
-        "nsda,nsa->nsd",
-        f_denom,
-        jax.nn.one_hot(a_denom, f_denom.shape[-1])
-    )
-
-    densities_num = f_pi @ embedded_states.T
-
-    densities_denom = jnp.einsum(
-        "nsd,sd->ns", f_pi_denom, embedded_states
-    )                                                     # (1000, 2500)
+        densities_denom = jnp.einsum(
+            "nsd,sd->ns", f_pi_denom, embedded_states
+        )                                                     # (1000, 2500)
 
     eps = 1e-4  # Diagnostic threshold; tune to density scale
 

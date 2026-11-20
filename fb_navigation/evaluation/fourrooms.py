@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from fb_navigation.environments.continuous_four_rooms_jax import Point, _move
+from fb_navigation.environments.continuous_four_rooms_jax import Point, _move, sample_displacements
 from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph, room_ids, bfs_distances
 
 CATEGORIES = ('same_room', 'adjacent_rooms', 'diagonal_rooms')
@@ -50,6 +50,7 @@ def coordinate_room(points):
 def make_rollout(learner, env, horizon, epsilon=.02):
     walls = tuple(env.wall_blocks)
     actions = jnp.array([(a.x, a.y) for a in env.actions])
+    continuous = getattr(learner, 'continuous', False)
     @jax.jit
     def rollout(params, starts, goals, keys):
         tasks = learner.backward_network.apply(params['b'], learner.featuriser.transform(goals))
@@ -58,13 +59,24 @@ def make_rollout(learner, env, horizon, epsilon=.02):
             position, hit, collisions, committed_room, doors, keys = carry
             split = jax.vmap(lambda k: jax.random.split(k, 4))(keys)
             keys, explore_key, action_key, move_key = [split[:, i] for i in range(4)]
-            f = learner.forward_network.apply(params['f'], learner.featuriser.transform(position), tasks)
-            q = jnp.einsum('bda,bd->ba', f, tasks)
             explore = jax.vmap(lambda k: jax.random.uniform(k) < epsilon)(explore_key)
-            random_action = jax.vmap(lambda k: jax.random.randint(k, (), 0, len(actions)))(action_key)
-            selected = jnp.where(explore, random_action, jnp.argmax(q, axis=1))
+            features = learner.featuriser.transform(position)
+            if continuous:
+                def choose(feature, task, key):
+                    random_key, greedy_key = jax.random.split(key)
+                    random_action = sample_displacements(random_key, env.step_size)
+                    greedy = learner.select_displacements(params['f'], feature[None], task[None], greedy_key)[0]
+                    return random_action, greedy
+                random_action, greedy = jax.vmap(choose)(features, tasks, action_key)
+                selected = jnp.where(explore[:, None], random_action, greedy)
+            else:
+                f = learner.forward_network.apply(params['f'], features, tasks)
+                q = jnp.einsum('bda,bd->ba', f, tasks)
+                random_action = jax.vmap(lambda k: jax.random.randint(k, (), 0, len(actions)))(action_key)
+                selected = jnp.where(explore, random_action, jnp.argmax(q, axis=1))
             def move(p, a, key):
-                nxt, _, blocked = _move(Point(*p), Point(*actions[a]), key, env._noise, env.size, walls)
+                delta = a if continuous else actions[a]
+                nxt, _, blocked = _move(Point(*p), Point(*delta), key, env._noise, env.size, walls)
                 return jnp.array([nxt.x, nxt.y]), blocked
             proposed, blocked = jax.vmap(move)(position, selected, move_key)
             active = hit > horizon

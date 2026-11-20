@@ -6,10 +6,10 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import numpy as np
 
-from dab import visualise_successor_measure, visualise_dab
+from dab import continuous_dab_densities, visualise_successor_measure, visualise_dab
 from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
-from fb_navigation.environments.continuous_four_rooms_jax import ContinuousFourRooms
+from fb_navigation.environments.continuous_four_rooms_jax import ContinuousWorld
 from fb_navigation.environments.continuous_four_rooms import visualize_environment
 
 
@@ -25,6 +25,10 @@ env = AdjustableFourRooms(
     seed=int(config["seed"]+4),
 )
 learner = FBLearner.from_checkpoint(config["path"])
+if learner.continuous:
+    if learner.environment_config is None:
+        raise ValueError("Continuous checkpoint must contain the training environment geometry")
+    env = ContinuousWorld.from_movement_config(learner.environment_config, seed=config["seed"] + 4)
 
 # Create 50x50 coordinate grid
 x = jnp.linspace(0, 1, 50)
@@ -54,31 +58,35 @@ u = env.sample_points(1000)
 v = env.sample_points(1000)
 
 z = learner.embed_B(v)
-f_num = learner.embed_F(u, z) # 1000,50,4
-f_denom = jax.vmap(
-    lambda task: learner.embed_F(
-        states,
-        jnp.broadcast_to(task, (len(states), task.shape[0]))
+if learner.continuous:
+    densities_num, densities_denom = continuous_dab_densities(
+        learner, states, embedded_states, u, z, config["seed"])
+else:
+    f_num = learner.embed_F(u, z) # 1000,50,4
+    f_denom = jax.vmap(
+        lambda task: learner.embed_F(
+            states,
+            jnp.broadcast_to(task, (len(states), task.shape[0]))
+        )
+    )(z)
+
+    q = jnp.einsum("nda,nd->na", f_num, z)  # (1000, 4)
+    q_denom = jnp.einsum("nsda,nd->nsa", f_denom, z) # (1000, s, 4)
+
+    a = jnp.argmax(q, axis=-1)
+    a_denom = jnp.argmax(q_denom, axis=-1)
+
+    f_pi = jnp.take_along_axis(
+        f_num, a[:, None, None], axis=-1
+    ).squeeze(-1)                              # (1000, 50)
+    f_pi_denom = jnp.take_along_axis(
+        f_denom, a_denom[:, :, None, None], axis=-1
+    ).squeeze(-1)                                               # (1000, s, 50)
+
+    densities_num = f_pi @ embedded_states.T
+    densities_denom = jnp.einsum(
+        "nsd,sd->ns", f_pi_denom, embedded_states
     )
-)(z)
-
-q = jnp.einsum("nda,nd->na", f_num, z)  # (1000, 4)
-q_denom = jnp.einsum("nsda,nd->nsa", f_denom, z) # (1000, s, 4)
-
-a = jnp.argmax(q, axis=-1)
-a_denom = jnp.argmax(q_denom, axis=-1)
-
-f_pi = jnp.take_along_axis(
-    f_num, a[:, None, None], axis=-1
-).squeeze(-1)                              # (1000, 50)
-f_pi_denom = jnp.take_along_axis(
-    f_denom, a_denom[:, :, None, None], axis=-1
-).squeeze(-1)                                               # (1000, s, 50)
-
-densities_num = f_pi @ embedded_states.T
-densities_denom = jnp.einsum(
-    "nsd,sd->ns", f_pi_denom, embedded_states
-)
 
 # Both arrays have shape (1000, 2205)
 dab = densities_num / densities_denom

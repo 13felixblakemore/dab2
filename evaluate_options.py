@@ -37,19 +37,26 @@ def arguments():
 def rollout(learner, env, starts, goals, step_limit, threshold, key, trials_per_start=1,
             *, epsilon=0.02):
     """Return success flags indexed by (option, start, trial)."""
+    run = make_rollout(learner, env, step_limit, threshold, trials_per_start, epsilon=epsilon)
+    return run(learner.state["params"], starts, goals, key)
+
+
+def make_rollout(learner, env, step_limit, threshold, trials_per_start=1, *, epsilon=0.02):
     walls = tuple(env.wall_blocks)
     actions = jnp.asarray([(action.x, action.y) for action in env.actions])
-    shape = (len(goals), len(starts), trials_per_start)
+    continuous = getattr(learner, "continuous", False)
     agent = OptionAgent(learner, epsilon)
 
     def move(position, action, move_key):
+        delta = action if continuous else actions[action]
         next_position, _, _ = _move(
-            Point(*position), Point(*actions[action]), move_key, env._noise, env.size, walls
+            Point(*position), Point(*delta), move_key, env._noise, env.size, walls
         )
         return jnp.stack((next_position.x, next_position.y))
 
     @jax.jit
     def run(params, starts, goals, key):
+        shape = (len(goals), len(starts), trials_per_start)
         tasks = agent.embed_goals(params["b"], goals)
         tasks = jnp.repeat(tasks, shape[1] * shape[2], axis=0)
         targets = jnp.repeat(goals, shape[1] * shape[2], axis=0)
@@ -72,7 +79,7 @@ def rollout(learner, env, starts, goals, step_limit, threshold, key, trials_per_
         )
         return successes.reshape(shape)
 
-    return run(learner.state["params"], starts, goals, key)
+    return run
 
 def main(args):
     output_dir = Path(args.output_dir)
