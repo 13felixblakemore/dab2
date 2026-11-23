@@ -27,6 +27,8 @@ def arguments():
     parser.add_argument("--doorway_scale", type=float)
     parser.add_argument("--resume", action="store_true", help="Resume training in the same output directory")
     parser.add_argument("--dab_pairs", type=int, default=1000)
+    parser.add_argument("--dab_pair_sampling", choices=("uniform", "mesh"), default="uniform")
+    parser.add_argument("--dab_pair_mesh_size", type=int, default=21)
     parser.add_argument("--grid_size", type=int, default=50)
     parser.add_argument("--dab_batch_size", type=int, default=8)
     parser.add_argument("--policy", choices=("greedy", "softmax"), default="greedy",
@@ -44,6 +46,8 @@ def arguments():
     args = parser.parse_args()
     if min(args.dab_pairs, args.dab_batch_size, args.num_samples, args.trials_per_start, args.k) < 1:
         parser.error("Pair, batch, sample, trial, and neighborhood counts must be positive")
+    if args.dab_pair_sampling == "mesh" and args.dab_pair_mesh_size < 2:
+        parser.error("dab_pair_mesh_size must be at least 2")
     if args.grid_size < 2 or not 1 <= args.bottleneck_size <= args.grid_size:
         parser.error("The grid must be at least 2 by 2 and contain the bottleneck square")
     if args.step_limit < 1 or not 0 <= args.epsilon <= 1:
@@ -135,6 +139,7 @@ def main(args):
         "--checkpoint", str(checkpoint), "--output-dir", str(dab_dir),
         "--device", args.device, "--seed", str(args.seed), "--doorway-scale", str(scale),
         "--pairs", str(args.dab_pairs), "--grid-size", str(args.grid_size),
+        "--pair-sampling", args.dab_pair_sampling, "--pair-mesh-size", str(args.dab_pair_mesh_size),
         "--batch-size", str(args.dab_batch_size), "--policy", args.policy,
         "--temperature", str(config["learner"].get("temperature", 200.0)),
     ], cwd=root, check=True)

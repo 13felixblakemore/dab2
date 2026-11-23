@@ -32,6 +32,10 @@ def arguments():
                         help="Must match the geometry used in training")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--pairs", type=int, default=1000)
+    parser.add_argument("--pair-sampling", choices=("uniform", "mesh"), default="uniform",
+                        help="Draw each endpoint from continuous free space or from valid mesh states")
+    parser.add_argument("--pair-mesh-size", type=int, default=21,
+                        help="Number of points per axis for mesh endpoints, independent of --grid-size")
     parser.add_argument("--symmetry-pairs", action="store_true",
                         help="Include all eight square symmetries of each base pair")
     parser.add_argument("--clip-max", type=float, default=1.0,
@@ -76,6 +80,19 @@ def build_valid_grid(env, grid_size):
     valid_mask = ~wall_mask.ravel()
     all_states = np.stack([X.ravel(), Y.ravel()], axis=-1)
     return X, Y, valid_mask, jnp.asarray(all_states[valid_mask])
+
+
+def sample_pairs(env, count, seed, sampling, mesh_size):
+    """Draw independent start and goal states for each pair."""
+    if sampling == "uniform":
+        return jnp.asarray(env.sample_points(count)), jnp.asarray(env.sample_points(count))
+
+    _, _, _, mesh_states = build_valid_grid(env, mesh_size)
+    if len(mesh_states) == 0:
+        raise ValueError("The pair mesh contains no free states")
+    rng = np.random.default_rng(seed)
+    indices = rng.integers(len(mesh_states), size=(2, count))
+    return mesh_states[indices[0]], mesh_states[indices[1]]
 
 
 def compute_density_terms(learner, states, b_states, u, v, z, policy, temperature, batch_size, seed=0):
@@ -241,6 +258,8 @@ def main():
 def run(args):
     if args.batch_size < 1 or args.pairs < 1 or args.grid_size < 2:
         raise ValueError("batch-size and pairs must be >=1; grid-size must be >=2")
+    if args.pair_sampling == "mesh" and args.pair_mesh_size < 2:
+        raise ValueError("pair-mesh-size must be >=2")
     if args.temperature <= 0:
         raise ValueError("temperature must be positive")
     if not np.isfinite(args.clip_max) or args.clip_max <= 0:
@@ -272,8 +291,7 @@ def run(args):
 
     X, Y, valid_mask, states = build_valid_grid(env, args.grid_size)
     b_states = learner.embed_B(states)
-    u = jnp.asarray(env.sample_points(args.pairs))
-    v = jnp.asarray(env.sample_points(args.pairs))
+    u, v = sample_pairs(env, args.pairs, args.seed, args.pair_sampling, args.pair_mesh_size)
     if args.symmetry_pairs:
         # Verify the recorded geometry has the symmetry being sampled.
         for points in (np.asarray(states),):
@@ -290,6 +308,7 @@ def run(args):
     z = learner.embed_B(v)  # Must use same z preprocessing as training.
 
     print("Grid states:", states.shape, "goals:", z.shape)
+    print("Pair sampling:", args.pair_sampling)
     print("Policy:", args.policy, "temperature:", args.temperature)
     densities = compute_density_terms(
         learner, states, b_states, u, v, z,
@@ -393,6 +412,9 @@ def run(args):
     )
 
     mean_clipped = nanmean_no_warning(clipped_hit)
+    clipped_title = f"Post-hoc first-hit: mean clipped to [0, {args.clip_max:g}]"
+    if args.pair_sampling == "mesh":
+        clipped_title += f"\n{len(u):,} pairs from a {args.pair_mesh_size} × {args.pair_mesh_size} mesh"
     stable_coverage = np.mean(results['stable_mask'], axis=0)
     mean_clipped_1p5 = nanmean_no_warning(np.where(
         results["stable_mask"],
@@ -412,7 +434,7 @@ def run(args):
         (
                 mean_clipped,
                 "first_hit_clipped_mean.png",
-                f"Post-hoc first-hit: mean clipped to [0, {args.clip_max:g}]",
+                clipped_title,
                 "Clipped first-hit estimate"
         ),
     ]:
@@ -441,6 +463,7 @@ def run(args):
     )
     summary = dict(
         checkpoint=args.checkpoint, seed=args.seed, pairs=args.pairs,
+        pair_sampling=args.pair_sampling,
         grid_size=args.grid_size, doorway_scale=args.doorway_scale,
         policy=args.policy, temperature=args.temperature,
         min_self_density=args.min_self_density, min_gap=args.min_gap,
@@ -452,6 +475,8 @@ def run(args):
         )),
         interpretation='Discounted post-hoc first-hit-before-goal estimate from learned continuous densities',
     )
+    if args.pair_sampling == "mesh":
+        summary["pair_mesh_size"] = args.pair_mesh_size
     if learner.continuous:
         summary.pop('doorway_scale')
         summary.update(action_space='continuous', environment=learner.environment_config,
