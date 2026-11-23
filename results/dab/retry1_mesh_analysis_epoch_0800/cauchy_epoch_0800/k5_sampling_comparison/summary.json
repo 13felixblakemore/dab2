@@ -1,0 +1,48 @@
+{
+  "checkpoint": "experiments\\fourrooms_doorways\\runs\\symmetric_width1_cauchy_continuing_orthonormal_embed150_seed0_retry1\\epoch_0800.pkl",
+  "mesh_input": "results\\dab\\retry1_mesh_analysis_epoch_0800\\cauchy_epoch_0800\\bottlenecks_k5.png",
+  "replay_epoch": 800,
+  "replay_observations": 1000000,
+  "with_replacement": true,
+  "seed": 4,
+  "temperature": 200.0,
+  "cartesian_shape": [
+    70,
+    70
+  ],
+  "results": [
+    {
+      "method": "mesh",
+      "pairs": 5000,
+      "peaks_k5": 6,
+      "retained": 0.8247431693989071,
+      "strongest_xy": [
+        0.5918367346938775,
+        0.22448979591836732
+      ],
+      "maximum": 0.22615729383043054
+    },
+    {
+      "method": "replay_pairs",
+      "pairs": 5000,
+      "peaks_k5": 6,
+      "retained": 0.8501932604735883,
+      "strongest_xy": [
+        0.3877551020408163,
+        0.7755102040816326
+      ],
+      "maximum": 0.21352836120861907
+    },
+    {
+      "method": "replay_cartesian",
+      "pairs": 4900,
+      "peaks_k5": 6,
+      "retained": 0.843904501691387,
+      "strongest_xy": [
+        0.6122448979591836,
+        0.7755102040816326
+      ],
+      "maximum": 0.24532784504603367
+    }
+  ]
+}

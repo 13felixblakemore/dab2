@@ -1,0 +1,14 @@
+{
+  "checkpoint": "experiments\\fourrooms_doorways\\runs\\symmetric_width1_cauchy_continuing_orthonormal_embed150_seed0_retry1\\epoch_0800.pkl",
+  "peaks": "results\\dab\\retry1_mesh_analysis_epoch_0800\\cauchy_epoch_0800\\k5_sampling_comparison\\replay_pairs_peaks_k5.csv",
+  "seed": 4,
+  "shared_starts": 1000,
+  "start_sampling": "uniform free space",
+  "trials_per_start": 1,
+  "step_limit": 150,
+  "goal_norm": "linf",
+  "goal_threshold": 0.1,
+  "exclude_starts_inside_goal": true,
+  "epsilon": 0.02,
+  "boltzmann_temperature": 200.0
+}
