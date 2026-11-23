@@ -10,9 +10,9 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from choose_bottlenecks import find_local_maxima, plot_maxima
+from choose_bottlenecks import add_peak_threshold_arguments, find_local_maxima, plot_maxima
 from dab_first_hitting import fill_grid
-from evaluate_options import make_rollout
+from evaluate_options import add_option_policy_arguments, make_rollout, option_policy_settings
 from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
 from fb_navigation.environments.continuous_four_rooms_jax import ContinuousWorld
@@ -34,11 +34,13 @@ def arguments():
     parser.add_argument("--k", type=int, default=1, help="Local maximum neighborhood parameter")
     parser.add_argument("--bottleneck_size", type=int, default=1,
                         help="Side length of the square averaged at each candidate")
+    add_peak_threshold_arguments(parser)
     parser.add_argument("--num_samples", type=int, default=1000, help="Start states shared by all options")
     parser.add_argument("--step_limit", type=int, default=30)
     parser.add_argument("--trials_per_start", type=int, default=1)
     parser.add_argument("--threshold", type=float, help="Option goal tolerance (default: environment tolerance)")
     parser.add_argument("--epsilon", type=float, default=0.02)
+    add_option_policy_arguments(parser)
     args = parser.parse_args()
     if min(args.dab_pairs, args.dab_batch_size, args.num_samples, args.trials_per_start, args.k) < 1:
         parser.error("Pair, batch, sample, trial, and neighborhood counts must be positive")
@@ -51,12 +53,13 @@ def arguments():
     return args
 
 
-def bottlenecks(dab_path, env, k, size):
+def bottlenecks(dab_path, env, k, size, *, peak_tolerance=None, peak_margin=None):
     with np.load(dab_path) as data:
         X, Y, valid_mask = data["X"], data["Y"], data["valid_mask"]
         dab = fill_grid(data["mean_clipped"], valid_mask).reshape(X.shape)
     dab = np.where(valid_mask.reshape(X.shape), dab, np.nan)
-    maxima = find_local_maxima(dab, valid_mask, k=k, bottleneck_size=size)
+    maxima = find_local_maxima(dab, valid_mask, k=k, bottleneck_size=size,
+                               peak_tolerance=peak_tolerance, peak_margin=peak_margin)
     peaks = []
     for row, col in maxima:
         region = np.s_[row:row + size, col:col + size]
@@ -71,12 +74,14 @@ def bottlenecks(dab_path, env, k, size):
 
 def test_options(args, learner, env, goals, scores, output_dir):
     threshold = env.threshold_distance if args.threshold is None else args.threshold
+    policy, temperature = option_policy_settings(args, learner)
     with jax.default_device(learner.device):
         starts = env.sample_points(args.num_samples)
         targets = jnp.asarray(goals, dtype=starts.dtype)
         key = jax.random.PRNGKey(args.seed)
         run = make_rollout(learner, env, args.step_limit, threshold,
-                           args.trials_per_start, epsilon=args.epsilon)
+                           args.trials_per_start, epsilon=args.epsilon,
+                           policy=policy, temperature=temperature)
         successes = np.empty((len(goals), len(starts), args.trials_per_start), dtype=bool)
         for i in range(len(goals)):
             successes[i] = np.asarray(run(learner.state["params"], starts, targets[i:i + 1],
@@ -90,7 +95,8 @@ def test_options(args, learner, env, goals, scores, output_dir):
                       counts * args.trials_per_start, out=np.full(len(goals), np.nan), where=counts > 0)
     np.savez_compressed(output_dir / "option_success.npz", starts=starts, goals=goals,
                         successes=successes, outside_goal=outside, success_rate_by_option=rates,
-                        epsilon=args.epsilon, threshold=threshold, step_limit=args.step_limit)
+                        epsilon=args.epsilon, threshold=threshold, step_limit=args.step_limit,
+                        option_policy=policy, option_temperature=np.nan if temperature is None else temperature)
     with (output_dir / "option_success.csv").open("w", newline="") as stream:
         writer = csv.writer(stream)
         writer.writerow(["option", "x", "y", "dab", "starts_outside_goal", "success_rate"])
@@ -142,7 +148,8 @@ def main(args):
 
     print("Finding bottlenecks", flush=True)
     dab, X, Y, maxima, goals, scores = bottlenecks(
-        dab_dir / "first_hitting_results.npz", env, args.k, args.bottleneck_size
+        dab_dir / "first_hitting_results.npz", env, args.k, args.bottleneck_size,
+        peak_tolerance=args.peak_tolerance, peak_margin=args.peak_margin,
     )
     np.savez_compressed(output_dir / "bottlenecks.npz", maxima=maxima, goals=goals, dab_scores=scores,
                         bottleneck_size=args.bottleneck_size)

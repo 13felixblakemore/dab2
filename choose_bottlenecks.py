@@ -10,6 +10,20 @@ def choose_bottlenecks(mean_dab):
     print(mean_dab.shape)
 
 
+def add_peak_threshold_arguments(parser):
+    def threshold(value):
+        value = float(value)
+        if not np.isfinite(value) or value < 0:
+            raise argparse.ArgumentTypeError("expected a finite, nonnegative DAB score difference")
+        return value
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--peak-tolerance", type=threshold,
+                       help="Allow a peak to be this far below its highest neighbor (0 allows ties)")
+    group.add_argument("--peak-margin", type=threshold,
+                       help="Require a strict peak to exceed its highest neighbor by at least this much")
+
+
 def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dab_path", required=True, help="Path to a dab np array")
@@ -19,12 +33,20 @@ def arguments():
     parser.add_argument("--k", type=int, default=1)
     parser.add_argument("--bottleneck-size", type=int, default=1,
                         help="Side length of the square averaged at each candidate")
+    add_peak_threshold_arguments(parser)
     return parser.parse_args()
 
-def find_local_maxima(dab, valid_mask, k=1, bottleneck_size=1):
-    """Return top-left indices of squares whose means are strict local maxima."""
+
+def find_local_maxima(dab, valid_mask, k=1, bottleneck_size=1, *,
+                      peak_tolerance=None, peak_margin=None):
+    """Return peak indices using valid neighbors up to k cells away on each axis."""
     if not 1 <= bottleneck_size <= min(dab.shape):
         raise ValueError("bottleneck_size must be between 1 and the smaller grid dimension")
+    if peak_tolerance is not None and peak_margin is not None:
+        raise ValueError("peak_tolerance and peak_margin are mutually exclusive")
+    for threshold in (peak_tolerance, peak_margin):
+        if threshold is not None and (not np.isfinite(threshold) or threshold < 0):
+            raise ValueError("Peak thresholds must be finite and nonnegative")
 
     valid = np.asarray(valid_mask, dtype=bool).reshape(dab.shape) & np.isfinite(dab)
     scores = dab
@@ -37,12 +59,21 @@ def find_local_maxima(dab, valid_mask, k=1, bottleneck_size=1):
     rows, cols = scores.shape
     maxima = []
     for row, col in np.argwhere(valid):
-        row_start = max(0, row - 1)
-        col_start = max(0, col - 1)
+        row_start = max(0, row - k)
+        col_start = max(0, col - k)
         neighborhood = np.s_[row_start:min(rows, row + (1+k)), col_start:min(cols, col + (1+k))]
         neighbors = valid[neighborhood].copy()
         neighbors[row - row_start, col - col_start] = False
-        if np.all(scores[row, col] > scores[neighborhood][neighbors]):
+        neighbor_scores = scores[neighborhood][neighbors]
+        if neighbor_scores.size == 0:
+            maxima.append((row, col))
+            continue
+        difference = float(scores[row, col]) - float(neighbor_scores.max())
+        if peak_tolerance is not None:
+            qualifies = difference >= -peak_tolerance
+        else:
+            qualifies = difference > 0 and (peak_margin is None or difference >= peak_margin)
+        if qualifies:
             maxima.append((row, col))
     return maxima
 
@@ -78,7 +109,8 @@ def main():
         X, Y, valid_mask = data["X"], data["Y"], data["valid_mask"]
         mean_key = "mean_clipped" if "mean_clipped" in data.files else "mean_clipped_1p5"
         dab = dab_first_hitting.fill_grid(data[mean_key], valid_mask).reshape(X.shape)
-    maxima = find_local_maxima(dab, valid_mask, k=args.k, bottleneck_size=args.bottleneck_size)
+    maxima = find_local_maxima(dab, valid_mask, k=args.k, bottleneck_size=args.bottleneck_size,
+                               peak_tolerance=args.peak_tolerance, peak_margin=args.peak_margin)
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

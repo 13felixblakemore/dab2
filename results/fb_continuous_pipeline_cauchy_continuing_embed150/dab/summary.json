@@ -1,0 +1,71 @@
+{
+  "checkpoint": "/mnt/vurm/homes/homes/fb720/dab/dab2/results/fb_continuous_pipeline_cauchy_continuing_embed150/training/epoch_0800.pkl",
+  "seed": 0,
+  "pairs": 1000,
+  "grid_size": 50,
+  "policy": "greedy",
+  "temperature": 200.0,
+  "min_self_density": 1e-05,
+  "min_gap": 0.001,
+  "symmetry_pairs": false,
+  "total_pairs": 1000,
+  "clip_max": 1.0,
+  "clipping": "Clip each stable H(u,s;v) to [0,1] before averaging over pairs",
+  "retained_fraction": 0.6093114754098361,
+  "clipped_fraction_among_retained": 0.36555564523843687,
+  "interpretation": "Discounted post-hoc first-hit-before-goal estimate from learned continuous densities",
+  "action_space": "continuous",
+  "environment": {
+    "size": 1.0,
+    "step_size": 0.05,
+    "movement_noise": 0.005,
+    "action_space": "continuous",
+    "threshold_distance": 0.1,
+    "include_stay_action": false,
+    "wall_blocks": [
+      [
+        0.4545454545454546,
+        0.0,
+        0.5454545454545454,
+        0.18181818181818182
+      ],
+      [
+        0.4545454545454546,
+        0.2727272727272727,
+        0.5454545454545454,
+        0.7272727272727273
+      ],
+      [
+        0.4545454545454546,
+        0.8181818181818182,
+        0.5454545454545454,
+        1.0
+      ],
+      [
+        0.0,
+        0.4545454545454546,
+        0.18181818181818182,
+        0.5454545454545454
+      ],
+      [
+        0.2727272727272727,
+        0.4545454545454546,
+        0.4545454545454546,
+        0.5454545454545454
+      ],
+      [
+        0.5454545454545454,
+        0.4545454545454546,
+        0.7272727272727273,
+        0.5454545454545454
+      ],
+      [
+        0.8181818181818182,
+        0.4545454545454546,
+        1.0,
+        0.5454545454545454
+      ]
+    ]
+  },
+  "continuous_action_samples": 32
+}

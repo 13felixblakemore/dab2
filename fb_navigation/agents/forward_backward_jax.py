@@ -368,12 +368,13 @@ class FBLearner:
         """Return (batch, embedding, candidates) for shared displacement proposals."""
         return self.forward_network.apply_candidates(params, features, tasks, actions)
 
-    def select_displacements(self, params, features, tasks, key, *, softmax=False):
+    def select_displacements(self, params, features, tasks, key, *, softmax=False, temperature=None):
         proposal_key, policy_key = jax.random.split(key)
         actions = self.action_candidates(proposal_key)
         f = self.forward_candidates(params, features, tasks, actions)
         scores = jnp.einsum("bda,bd->ba", f, tasks)
-        indices = (jax.random.categorical(policy_key, scores / self.temperature)
+        temperature = self.temperature if temperature is None else temperature
+        indices = (jax.random.categorical(policy_key, scores / temperature)
                    if softmax else jnp.argmax(scores, axis=-1))
         return actions[indices]
 

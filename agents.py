@@ -1,3 +1,5 @@
+import math
+
 import jax
 import jax.numpy as jnp
 
@@ -5,11 +7,19 @@ from fb_navigation.environments.continuous_four_rooms_jax import sample_displace
 
 
 class OptionAgent:
-    def __init__(self, learner, epsilon):
+    def __init__(self, learner, epsilon, *, policy="epsilon-greedy", temperature=None):
         if not 0.0 <= epsilon <= 1.0:
             raise ValueError("epsilon must be between 0 and 1")
         self.learner = learner
         self.epsilon = float(epsilon)
+        if policy not in ("epsilon-greedy", "boltzmann"):
+            raise ValueError("Unknown option policy")
+        self.policy = policy
+        self.temperature = temperature
+        if policy == "boltzmann":
+            self.temperature = learner.temperature if temperature is None else temperature
+            if not math.isfinite(self.temperature) or self.temperature <= 0:
+                raise ValueError("Boltzmann temperature must be finite and positive")
 
     def embed_goals(self, backward_params, goals):
         return self.learner.backward_network.apply(
@@ -21,6 +31,11 @@ class OptionAgent:
         features = self.learner.featuriser.transform(states)
         if getattr(self.learner, "continuous", False):
             def choose(feature, task, key):
+                if self.policy == "boltzmann":
+                    return self.learner.select_displacements(
+                        forward_params, feature[None], task[None], key,
+                        softmax=True, temperature=self.temperature,
+                    )[0]
                 greedy_key, explore_key, action_key = jax.random.split(key, 3)
                 greedy = self.learner.select_displacements(
                     forward_params, feature[None], task[None], greedy_key
@@ -35,6 +50,8 @@ class OptionAgent:
 
         forward = self.learner.forward_network.apply(forward_params, features, tasks)
         scores = jnp.einsum("bda,bd->ba", forward, tasks)
+        if self.policy == "boltzmann":
+            return jax.random.categorical(key, scores / self.temperature, axis=-1)
         greedy = jnp.argmax(scores, axis=-1)
         if self.epsilon == 0.0:
             return greedy

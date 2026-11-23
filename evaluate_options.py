@@ -8,7 +8,28 @@ import numpy as np
 from agents import OptionAgent
 from fb_navigation.agents.forward_backward_jax import FBLearner
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
-from fb_navigation.environments.continuous_four_rooms_jax import Point, _move
+from fb_navigation.environments.continuous_four_rooms_jax import ContinuousWorld, Point, _move
+
+
+def add_option_policy_arguments(parser):
+    def positive_temperature(value):
+        value = float(value)
+        if not np.isfinite(value) or value <= 0:
+            raise argparse.ArgumentTypeError("temperature must be finite and positive")
+        return value
+
+    parser.add_argument("--option-policy", choices=("epsilon-greedy", "boltzmann"),
+                        default="epsilon-greedy", help="Policy for option rollouts")
+    parser.add_argument("--option-temperature", type=positive_temperature,
+                        help="Boltzmann temperature (defaults to the checkpoint temperature)")
+
+
+def option_policy_settings(args, learner):
+    policy = getattr(args, "option_policy", "epsilon-greedy")
+    if policy == "boltzmann":
+        temperature = getattr(args, "option_temperature", None)
+        return policy, learner.temperature if temperature is None else temperature
+    return policy, None
 
 
 def arguments():
@@ -26,6 +47,7 @@ def arguments():
     parser.add_argument("--trials_per_start", type=int, default=1)
     parser.add_argument("--epsilon", type=float, default=0.02,
                         help="Probability of choosing a uniformly random action (default: 0.02).")
+    add_option_policy_arguments(parser)
     args = parser.parse_args()
     if args.step_limit < 0 or args.num_samples < 1 or args.trials_per_start < 1:
         parser.error("step_limit must be nonnegative and sample and trial counts must be positive")
@@ -35,17 +57,19 @@ def arguments():
 
 
 def rollout(learner, env, starts, goals, step_limit, threshold, key, trials_per_start=1,
-            *, epsilon=0.02):
+            *, epsilon=0.02, policy="epsilon-greedy", temperature=None):
     """Return success flags indexed by (option, start, trial)."""
-    run = make_rollout(learner, env, step_limit, threshold, trials_per_start, epsilon=epsilon)
+    run = make_rollout(learner, env, step_limit, threshold, trials_per_start,
+                       epsilon=epsilon, policy=policy, temperature=temperature)
     return run(learner.state["params"], starts, goals, key)
 
 
-def make_rollout(learner, env, step_limit, threshold, trials_per_start=1, *, epsilon=0.02):
+def make_rollout(learner, env, step_limit, threshold, trials_per_start=1, *,
+                 epsilon=0.02, policy="epsilon-greedy", temperature=None):
     walls = tuple(env.wall_blocks)
     actions = jnp.asarray([(action.x, action.y) for action in env.actions])
     continuous = getattr(learner, "continuous", False)
-    agent = OptionAgent(learner, epsilon)
+    agent = OptionAgent(learner, epsilon, policy=policy, temperature=temperature)
 
     def move(position, action, move_key):
         delta = action if continuous else actions[action]
@@ -84,21 +108,25 @@ def make_rollout(learner, env, step_limit, threshold, trials_per_start=1, *, eps
 def main(args):
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    env = AdjustableFourRooms(
-        doorway_scale=args.doorway_scale,
-        threshold_distance=args.threshold,
-        include_stay_action=False,
-        seed=args.seed + 3,
-    )
-
     run = Path(args.FB_path)
     learner = FBLearner.from_checkpoint(run / "epoch_0800.pkl", device=args.device)
+    if learner.continuous:
+        env = ContinuousWorld.from_movement_config(learner.environment_config, seed=args.seed + 3)
+    else:
+        env = AdjustableFourRooms(
+            doorway_scale=args.doorway_scale,
+            threshold_distance=args.threshold,
+            include_stay_action=False,
+            seed=args.seed + 3,
+        )
 
     starts = env.sample_points(args.num_samples)
     goals = jnp.asarray(args.goal, dtype=starts.dtype)
+    policy, temperature = option_policy_settings(args, learner)
     successes = rollout(
-        learner, env, starts, goals, args.step_limit, env.threshold_distance,
+        learner, env, starts, goals, args.step_limit, args.threshold,
         jax.random.PRNGKey(args.seed), args.trials_per_start, epsilon=args.epsilon,
+        policy=policy, temperature=temperature,
     )
     goal_coordinates = np.asarray(goals)
     success_rate_by_option = np.asarray(successes.mean(axis=(1, 2)))
@@ -107,6 +135,8 @@ def main(args):
         starts=np.asarray(starts),
         goals=goal_coordinates,
         epsilon=args.epsilon,
+        option_policy=policy,
+        option_temperature=np.nan if temperature is None else temperature,
         successes=np.asarray(successes),
         success_rate_by_start=np.asarray(successes.mean(axis=2)),
         success_rate_by_option=success_rate_by_option,
