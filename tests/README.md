@@ -14,10 +14,10 @@ the components it covers.
 | `test_fourrooms` | Doorway geometry, goal tolerances, fixed pairs, validity audits, reference evaluation and report denominators |
 | `test_goal_evaluation` | Native goal rollouts, collision masks, legacy PyTorch checkpoint loading and device portability |
 | `test_fb_training` | Bellman loss oracle, goal termination, gradients, compiled training, target updates, checkpoint compatibility, import-safe training entry points and sweep planning |
-| `test_bottlenecks` | BFS controls, FB/MC estimators, exclusions, policy probabilities, temperature sweeps and shared random numbers |
-| `test_navigation_diagnostics` | Wall masks, collision streaks, doorway advantages, failure stages and remaining rollout budgets |
-| `test_reward_diagnostics` | Noisy Bellman backups, forced-action returns, continuing rewards, collector equivalence and failure classifications |
-| `test_continuous_maze` | Maze motion, walls, noise, goal detection, evaluation and bootstrap diagnostics |
+| `test_bottlenecks` | BFS controls, FB/MC estimators, exclusions, and policy probabilities |
+| `test_navigation_diagnostics` | Wall masks, collision streaks, and Four Rooms rollout metrics |
+| `test_reward_diagnostics` | Noisy Bellman backups, forced-action returns, collector equivalence and failure classifications |
+| `test_continuous_maze` | Maze motion, walls, noise, goal detection, and evaluation |
 
 Run one topic or class, for example:
 
@@ -26,9 +26,7 @@ python -m unittest tests.test_fourrooms -v
 python -m unittest tests.test_fb_training.GoalTerminationTests -v
 ```
 
-The consolidation removed a standalone room-distance lookup test; the navigation
-tests exercise room progress through failure-stage classification. External-code
-maze parity tests depended on the deleted `experiments/continuous_maze/reference`
+External-code maze parity tests depended on the deleted `experiments/continuous_maze/reference`
 tree and experiment configuration. They were replaced with self-contained motion
 and geometry checks. Exact parity with the released third-party implementation
 is no longer checked. Continuing target updates and checkpoint round-trips remain

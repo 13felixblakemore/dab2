@@ -48,9 +48,9 @@ class DoorwayTests(unittest.TestCase):
     def test_larger_door_passes_a_previously_blocked_move(self):
         narrow = AdjustableFourRooms(doorway_scale=1, include_stay_action=False)
         wide = AdjustableFourRooms(doorway_scale=2, include_stay_action=False)
-        # y=1/11 lies on the narrow doorway edge, inside the larger opening.
+        # y=1.75/11 is below the narrow opening and inside the wider one.
         for env, expected in [(narrow, True), (wide, False)]:
-            _, _, collision = _move(Point(.525, 1/11), Point(.15, 0),
+            _, _, collision = _move(Point(.425, 1.75/11), Point(.15, 0),
                                      jax.random.PRNGKey(0), 0., env.size, tuple(env.wall_blocks))
             self.assertEqual(bool(collision), expected)
         self.assertAlmostEqual(wide.wall_blocks[1].ymin-wide.wall_blocks[0].ymax, 2/11)
@@ -71,11 +71,11 @@ class DoorwayTests(unittest.TestCase):
                 AdjustableFourRooms(doorway_scale=scale)
 
     def test_smaller_threshold_rejects_success_across_full_wall(self):
-        goal = Point(.638, .55)
+        goal = Point(.547, .35)
         for threshold, expected in [(.1, True), (.025, False)]:
             env = AdjustableFourRooms(doorway_scale=2, threshold_distance=threshold,
                                       include_stay_action=False, movement_noise=0.)
-            env.reset(state=Point(.543, .50), goal=goal)
+            env.reset(state=Point(.448, .30), goal=goal)
             _, reward, done, info = env.step(2)  # UP, alongside the wall.
             self.assertFalse(bool(info['goes_through_wall']))
             self.assertFalse(bool(env._check_on_wall(env._current_position)))
@@ -103,7 +103,7 @@ class DoorwayTests(unittest.TestCase):
 class GoalAuditTests(unittest.TestCase):
     def test_detects_walls_without_confusing_doors(self):
         env=AdjustableFourRooms(doorway_scale=2,include_stay_action=False)
-        status=point_status([[.6,.3],[.05,.4],[.6,.125],[.2,.2],[1.01,.5]],env)
+        status=point_status([[.5,.35],[.05,.5],[.5,.225],[.2,.2],[1.01,.5]],env)
         self.assertEqual(status['inside_wall'],2)
         self.assertEqual(status['native_float32_inside_wall'],2)
         self.assertEqual(status['outside_world'],1)
@@ -142,7 +142,7 @@ class ReferenceFourRoomsTests(unittest.TestCase):
         np.testing.assert_array_equal(np.bincount(first['categories']), [8, 8, 8])
         self.assertTrue((first['bfs_lengths'] >= 1).all())
         self.assertTrue((np.max(abs(first['starts']-first['goals']), axis=1) > .1).all())
-        np.testing.assert_array_equal(coordinate_room(jnp.asarray([[.1, .1], [.1, .8], [.8, .1], [.8, .8], [.58, .125]])), [0, 1, 2, 3, -1])
+        np.testing.assert_array_equal(coordinate_room(jnp.asarray([[.1, .1], [.1, .8], [.8, .1], [.8, .8], [.5, .225]])), [0, 1, 2, 3, -1])
 
     def test_completed_door_crossings_and_wall_rejections(self):
         env = ContinuousFourRooms(include_stay_action=False)
@@ -153,8 +153,8 @@ class ReferenceFourRoomsTests(unittest.TestCase):
             forward_network=SimpleNamespace(apply=lambda p, x, z: jnp.tile(jnp.array([[[0., 1., 0., 0.]]]), (len(x), 1, 1))),
             backward_network=SimpleNamespace(apply=lambda p, x: jnp.ones((len(x), 1))))
         rollout = make_rollout(learner, env, 10, epsilon=0)
-        starts = jnp.array([[.525, .125], [.525, .325]])
-        goals = jnp.array([[.9, .125], [.9, .325]])
+        starts = jnp.array([[.425, .225], [.425, .35]])
+        goals = jnp.array([[.9, .225], [.9, .35]])
         hit, collisions, doors, path = rollout(learner.state['params'], starts, goals, jax.random.split(jax.random.PRNGKey(0), 2))
         self.assertLessEqual(int(hit[0]), 10)
         self.assertEqual(int(doors[0, 0]), 1)

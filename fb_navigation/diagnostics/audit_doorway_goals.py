@@ -1,11 +1,12 @@
 """Geometry, native transition and free-space connectivity audit of saved goals."""
+import argparse
 import json
 from pathlib import Path
 import jax
 import jax.numpy as jnp
 import numpy as np
 from fb_navigation.environments.adjustable_four_rooms import AdjustableFourRooms
-from fb_navigation.environments.continuous_four_rooms_jax import Point,_move
+from fb_navigation.environments.continuous_four_rooms_jax import Point,WallBlock,_move
 from fb_navigation.diagnostics.control_bfs_bottlenecks import build_graph,bfs_distances
 
 ROOT=Path('experiments/fourrooms_doorways')
@@ -88,30 +89,53 @@ def reference_reachability(env,nodes,graph,states,goals,budgets):
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output',type=Path,default=ROOT/'analyses/goal_validity')
+    args=parser.parse_args()
+    analyses=ROOT/'analyses'
     config=json.loads((RUN/'config.json').read_text());meta=json.loads((RUN/'metadata.json').read_text())
     env=AdjustableFourRooms(**config['environment'])
     actual=np.array([[w.xmin,w.ymin,w.xmax,w.ymax] for w in env.wall_blocks])
+    walls_match=np.array_equal(actual,meta['wall_blocks'])
+    if not walls_match:
+        env._wall_blocks=[WallBlock(*wall) for wall in meta['wall_blocks']]
     nodes,graph=build_graph(env,20)
-    result=dict(walls_match_saved_metadata=bool(np.array_equal(actual,np.array(meta['wall_blocks']))),
-        free_graph_nodes=len(nodes),connected_component_sizes=component_sizes(graph),native_graph=native_graph_check(env,nodes,graph),sets={},traces={})
+    result=dict(walls_match_saved_metadata=bool(walls_match),
+        free_graph_nodes=len(nodes),connected_component_sizes=component_sizes(graph),
+        native_graph=native_graph_check(env,nodes,graph),sets={},traces={},missing_optional_inputs=[])
     pairs=dict(np.load(RUN/'evaluation_pairs.npz'))
-    fixed=dict(np.load(ROOT/'analyses/advantage_stability/fixed_probes.npz'))
-    stage=json.loads((ROOT/'analyses/stage_analysis/probes.json').read_text())
-    sets=dict(original_600=(pairs['starts'],pairs['goals'],np.full(600,30)),
-        fixed_doorway_160=(fixed['states'],fixed['goals'],np.full(len(fixed['states']),30)),
-        matched_stage_759=(np.array([r['state'] for r in stage]),np.array([r['goal'] for r in stage]),np.array([r['remaining_budget'] for r in stage])))
+    sets=dict(original_600=(pairs['starts'],pairs['goals'],np.full(len(pairs['starts']),30)))
+    fixed_path=analyses/'advantage_stability/fixed_probes.npz'
+    if fixed_path.is_file():
+        with np.load(fixed_path) as fixed:
+            sets['fixed_doorway_160']=(fixed['states'],fixed['goals'],np.full(len(fixed['states']),30))
+    else:
+        result['missing_optional_inputs'].append(fixed_path.as_posix())
+    stage_path=analyses/'stage_analysis/probes.json'
+    stage=[]
+    if stage_path.is_file():
+        stage=json.loads(stage_path.read_text())
+        if stage:
+            sets['matched_stage_759']=(np.array([r['state'] for r in stage]),np.array([r['goal'] for r in stage]),np.array([r['remaining_budget'] for r in stage]))
+    else:
+        result['missing_optional_inputs'].append(stage_path.as_posix())
     lengths_by_set={}
     for label,(states,goals,budgets) in sets.items():
         reach,lengths=reference_reachability(env,nodes,graph,states,goals,budgets)
         result['sets'][label]=dict(states=point_status(states,env),goals=point_status(goals,env),reachability=reach)
         lengths_by_set[label]=lengths
     for epoch in [400,800]:
-        trace=dict(np.load(ROOT/f'decline_analysis/trace_{epoch}.npz'))
-        positions=trace['position'][trace['active']]
-        result['traces'][epoch]=point_status(positions,env)
-    stage_lengths=lengths_by_set['matched_stage_759'];result['stage_budget_counts']={}
+        trace_path=analyses/f'decline_analysis/trace_{epoch}.npz'
+        if trace_path.is_file():
+            with np.load(trace_path) as trace:
+                positions=trace['position'][trace['active']]
+            result['traces'][epoch]=point_status(positions,env)
+        else:
+            result['missing_optional_inputs'].append(trace_path.as_posix())
+    result['stage_budget_counts']={}
     for label in sorted(set(r['stage'] for r in stage)):
         mask=np.array([r['stage']==label for r in stage]);budget=sets['matched_stage_759'][2]
+        stage_lengths=lengths_by_set['matched_stage_759']
         result['stage_budget_counts'][label]=dict(probes=int(mask.sum()),reference_over_remaining=int((stage_lengths[mask]>budget[mask]).sum()),
             reference_over_fresh30=int((stage_lengths[mask]>30).sum()))
     original_lengths=lengths_by_set['original_600'];result['original_by_category']={}
@@ -122,8 +146,9 @@ def main():
         'Off-grid stage states attach by a collision-free geometric segment to one of their eight nearest free nodes; step counts are approximate there.',
         'Goal-square overlap with a wall is valid: only a reachable point within the square is required. Center validity is checked separately.',
         'Finite-horizon success is not guaranteed under Gaussian noise even when a collision-free route exists.']
-    path=ROOT/'analyses/goal_validity/goal_validity_audit.json';path.write_text(json.dumps(result,indent=2))
-    np.savez_compressed(ROOT/'analyses/goal_validity/goal_validity_reference_lengths.npz',**lengths_by_set)
+    args.output.mkdir(parents=True,exist_ok=True)
+    (args.output/'goal_validity_audit.json').write_text(json.dumps(result,indent=2))
+    np.savez_compressed(args.output/'goal_validity_reference_lengths.npz',**lengths_by_set)
     print(json.dumps(result,indent=2))
 
 

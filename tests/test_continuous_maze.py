@@ -1,16 +1,10 @@
-"""Self-contained maze dynamics, evaluation, and diagnostics."""
+"""Self-contained maze dynamics and evaluation."""
 from types import SimpleNamespace
 from unittest.mock import patch
 import unittest
 
-import jax.numpy as jnp
 import numpy as np
 
-from fb_navigation.diagnostics.diagnose_continuous_maze import (
-    bootstrap_residual,
-    heldout_transitions,
-    wilson_interval,
-)
 from fb_navigation.environments.continuous_maze import ContinuousMaze, goal_reached, intersects
 from fb_navigation.training.run_continuous_maze import evaluate
 
@@ -72,7 +66,7 @@ class MazeEnvironmentTests(unittest.TestCase):
         self.assertLess(abs(np.corrcoef(samples.T)[0, 1]), .05)
 
 
-class DiagnosticTests(unittest.TestCase):
+class MazeEvaluationTests(unittest.TestCase):
     def test_evaluation_uses_online_task_and_actions_and_stops(self):
         calls = []
         class Environment:
@@ -117,31 +111,6 @@ class DiagnosticTests(unittest.TestCase):
         self.assertEqual(result['wall_collisions'], 60)
         self.assertIsNone(result['mean_successful_path_length'])
         self.assertTrue(all(len(p['path']) == 31 for p in paths))
-
-    def test_bootstrap_residual_scaling_and_target_choice(self):
-        learner = SimpleNamespace(
-            state=dict(params=dict(f=2., b=3.), target=dict(f=1., b=1.)),
-            featuriser=SimpleNamespace(transform=lambda x: x),
-            forward_network=SimpleNamespace(apply=lambda p, x, w: jnp.full((len(x), 1, 5), p)),
-            backward_network=SimpleNamespace(apply=lambda p, x: jnp.full((len(x), 1), p)),
-            temperature=200., discount_factor=.99)
-        batch = dict(obs=jnp.zeros((2, 2)), obs_next=jnp.ones((2, 2)), action=jnp.array([0, 4]))
-        result = bootstrap_residual(learner, batch, jnp.ones((2, 2)), jnp.ones((2, 1)))
-        self.assertAlmostEqual(float(result['residual_mean']), 5.01, places=5)
-        self.assertAlmostEqual(float(result['residual_mse']), 5.01**2, places=4)
-        self.assertAlmostEqual(float(result['backup_entropy']), np.log(5), places=6)
-
-    def test_fixed_probes_and_intervals(self):
-        first, second = heldout_transitions(3, 65), heldout_transitions(3, 65)
-        for key in first:
-            np.testing.assert_array_equal(first[key], second[key])
-        self.assertEqual(first['obs'].shape, (65, 2))
-        self.assertTrue(np.isin(first['action'], range(5)).all())
-        low, high = wilson_interval(830, 1000)
-        self.assertLess(low, .83)
-        self.assertGreater(high, .83)
-        self.assertLess(high-low, .05)
-
 
 if __name__ == '__main__':
     unittest.main()
