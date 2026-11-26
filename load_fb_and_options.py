@@ -1,5 +1,5 @@
 # example for Sam of how to load and use the FB learner
-# python load_fb_and_options.py --FB_path experiments/fourrooms_doorways/runs/cauchy_standard_fb_seed0 --output_dir results/fb_options_demo --start 0.36 0.227 --goal 0.64 0.227 --goal 0.18 0.73
+# python load_fb_and_options.py --FB_path experiments/fourrooms_doorways/runs/symmetric_width1_cauchy_continuing_orthonormal_embed150_seed0_retry1 --output_dir results/fb_options_demo --start 0.36 0.227 --goal 0.64 0.227 --goal 0.18 0.73
 import argparse
 from pathlib import Path
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     forward_params = learner.state["params"]["f"]
     key = jax.device_put(jax.random.PRNGKey(args.seed), learner.device)
     obs = start
-    gamma = 0.99  # SAC discount per primitive step
+    gamma = 0.99
     discounted_return = 0.0
     reason = "option step limit"
     for step in range(args.step_limit):
@@ -101,8 +101,6 @@ if __name__ == "__main__":
             reason = "option goal reached"
             break
 
-    # Include task_goal in SAC's observation when it varies between episodes.
-    # Bootstrap with gamma ** duration if the task continues.
     duration = step + 1
     np.savez(output_dir / "option_transition.npz", start_obs=start, task_goal=env.goal,
              option_id=option_id,
