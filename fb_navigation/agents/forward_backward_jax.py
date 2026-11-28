@@ -230,11 +230,11 @@ class ContinuousForwardNet:
         return jnp.swapaxes(_mlp(params[1:], hidden), -1, -2)
 
 
-def _cauchy_ball(key, n, embed_dim, eps=1e-10):
+def _cauchy_ball(key, n, embed_dim, eps=1e-10, scale=0.5):
     gaussian_key, cauchy_key = jax.random.split(key)
     gaussian = jax.random.normal(gaussian_key, (n, embed_dim))
     gaussian /= jnp.linalg.norm(gaussian, axis=-1, keepdims=True) + eps
-    return jnp.sqrt(float(embed_dim)) * gaussian * (0.5 * jax.random.cauchy(cauchy_key, (n, 1)))
+    return jnp.sqrt(float(embed_dim)) * gaussian * (scale * jax.random.cauchy(cauchy_key, (n, 1)))
 
 
 def _clip(grads, max_norm):
@@ -243,15 +243,15 @@ def _clip(grads, max_norm):
     return jax.tree_util.tree_map(lambda g: g * scale, grads)
 
 
-def _adam(params, grads, optim, learning_rate):
+def _adam(params, grads, optim, learning_rate, beta1=0.9, beta2=0.999, eps=1e-8):
     count, m, v = optim
     count += 1
-    m = jax.tree_util.tree_map(lambda m, g: 0.9*m + 0.1*g, m, grads)
-    v = jax.tree_util.tree_map(lambda v, g: 0.999*v + 0.001*g**2, v, grads)
+    m = jax.tree_util.tree_map(lambda m, g: beta1*m + (1-beta1)*g, m, grads)
+    v = jax.tree_util.tree_map(lambda v, g: beta2*v + (1-beta2)*g**2, v, grads)
     # Epsilon is outside sqrt, matching torch.optim.Adam (not AdamW).
     params = jax.tree_util.tree_map(
-        lambda p, m, v: p - learning_rate * (m / (1 - 0.9**count))
-        / (jnp.sqrt(v / (1 - 0.999**count)) + 1e-8), params, m, v)
+        lambda p, m, v: p - learning_rate * (m / (1 - beta1**count))
+        / (jnp.sqrt(v / (1 - beta2**count)) + eps), params, m, v)
     return params, (count, m, v)
 
 
@@ -263,7 +263,8 @@ class FBLearner:
                  featuriser=None, max_grad_norm=None, zero_z_p=0.0, seed=0,
                  z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1,
                  b_regularization="orthonormal", goal_norm="l2",
-                 action_space="discrete", action_limit=0.05, continuous_action_samples=32):
+                 action_space="discrete", action_limit=0.05, continuous_action_samples=32,
+                 *, adam_beta1=0.9, adam_beta2=0.999, adam_eps=1e-8, cauchy_scale=0.5):
         if action_space not in ("discrete", "continuous"):
             raise ValueError("action_space must be 'discrete' or 'continuous'")
         self.continuous = action_space == "continuous"
@@ -297,6 +298,8 @@ class FBLearner:
         self.temperature, self.polyak_coef = temperature, polyak_coef
         self.max_grad_norm, self.zero_z_p = max_grad_norm, zero_z_p
         self.learning_rate = learning_rate
+        self.adam_beta1, self.adam_beta2, self.adam_eps = adam_beta1, adam_beta2, adam_eps
+        self.cauchy_scale = cauchy_scale
         self.config = dict(obs_dim=obs_dim, n_actions=n_actions, embed_dim=embed_dim,
                            learning_rate=learning_rate, discount_factor=discount_factor,
                            reg_coef=reg_coef, temperature=temperature, polyak_coef=polyak_coef,
@@ -304,7 +307,9 @@ class FBLearner:
                            buffer_size=buffer_size, max_grad_norm=max_grad_norm,
                            zero_z_p=zero_z_p, seed=seed, z_sampling=z_sampling,
                            goal_terminated=self.goal_terminated, goal_threshold=self.goal_threshold,
-                           b_regularization=b_regularization, goal_norm=goal_norm)
+                           b_regularization=b_regularization, goal_norm=goal_norm,
+                           adam_beta1=adam_beta1, adam_beta2=adam_beta2, adam_eps=adam_eps,
+                           cauchy_scale=cauchy_scale)
         if self.continuous:
             self.config.update(action_space=action_space, action_limit=action_limit,
                                continuous_action_samples=continuous_action_samples)
@@ -339,7 +344,9 @@ class FBLearner:
             lambda t, p: (1-self.polyak_coef)*p + self.polyak_coef*t, target, params))
         self._embed_b = jax.jit(lambda p, x: self.backward_network.apply(p, self.featuriser.transform(x)))
         self._embed_f = jax.jit(lambda p, x, w, *a: self.forward_network.apply(p, self.featuriser.transform(x), w, *a))
-        self._draw_w = jax.jit(partial(_cauchy_ball, embed_dim=embed_dim), static_argnames=("n",))
+        self._draw_w = jax.jit(
+            partial(_cauchy_ball, embed_dim=embed_dim, scale=cauchy_scale), static_argnames=("n",),
+        )
         self._act = jax.jit(lambda p, x, w, mask: jnp.argmax(mask_action_scores(jnp.einsum(
             "sda,sd->sa", self.forward_network.apply(p, self.featuriser.transform(x), w), w), mask), axis=1))
         self._export = jax.jit(self._export_impl)
@@ -379,7 +386,7 @@ class FBLearner:
         return actions[indices]
 
     def continuous_policy_embedding(self, params, policy_params, features, tasks, key,
-                                    *, temperature=None):
+                                    *, temperature=None, proposal_sets=4):
         """Estimate the policy-averaged embedding over independent proposal sets."""
         def average(proposal_key):
             actions = self.action_candidates(proposal_key)
@@ -393,7 +400,7 @@ class FBLearner:
             weights = jax.nn.softmax(scores / temperature, axis=-1)
             return jnp.einsum("bda,ba->bd", f, weights)
 
-        return jax.lax.map(average, jax.random.split(key, 4)).mean(axis=0)
+        return jax.lax.map(average, jax.random.split(key, proposal_sets)).mean(axis=0)
 
     def _mask_goal_bootstrap(self, z_next, next_obs, goal_obs, zero):
         """Mask entire rows on next-state entry; zero tasks remain continuing.
@@ -471,7 +478,7 @@ class FBLearner:
                 raise ValueError("Replay task sampling requires independent goal observations")
             return jax.lax.stop_gradient(self.backward_network.apply(
                 params["b"], self.featuriser.transform(goal_obs)))
-        return _cauchy_ball(key, self.batch_size, self.embed_dim)
+        return _cauchy_ball(key, self.batch_size, self.embed_dim, scale=self.cauchy_scale)
 
     def _train_impl(self, state, transitions, other, goal_obs=None):
         action_key = None
@@ -486,7 +493,10 @@ class FBLearner:
             state["params"], state["target"], transitions, other, w, zero, goal_obs, action_key=action_key)
         if self.max_grad_norm is not None:
             grads = {name: _clip(value, self.max_grad_norm) for name, value in grads.items()}
-        params, optim = _adam(state["params"], grads, state["optim"], self.learning_rate)
+        params, optim = _adam(
+            state["params"], grads, state["optim"], self.learning_rate,
+            self.adam_beta1, self.adam_beta2, self.adam_eps,
+        )
         return dict(params=params, target=state["target"], optim=optim, key=key), loss
 
     def update_network(self, return_device_loss=False):

@@ -95,7 +95,8 @@ def sample_pairs(env, count, seed, sampling, mesh_size):
     return mesh_states[indices[0]], mesh_states[indices[1]]
 
 
-def compute_density_terms(learner, states, b_states, u, v, z, policy, temperature, batch_size, seed=0):
+def compute_density_terms(learner, states, b_states, u, v, z, policy, temperature, batch_size, seed=0,
+                          *, proposal_sets=4):
     """Return all six density terms for the same policy pi_{z_i}.
 
     u, v: (G, 2); z: (G, D); states: (S, 2); b_states: (S, D)
@@ -114,7 +115,7 @@ def compute_density_terms(learner, states, b_states, u, v, z, policy, temperatur
             features = learner.featuriser.transform(obs)
             return learner.continuous_policy_embedding(
                 params, policy_params, features, tasks, proposal_key,
-                temperature=temperature if policy == "softmax" else None)
+                temperature=temperature if policy == "softmax" else None, proposal_sets=proposal_sets)
         f = learner.embed_F(obs, tasks)  # (N, D, A)
         q = jnp.einsum("nda,nd->na", f, tasks)  # (N, A)
         if policy == "greedy":
