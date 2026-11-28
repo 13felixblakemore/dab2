@@ -26,7 +26,7 @@
   "target_update_interval": 20,
   "polyak_coef": 0.95,
 
-  "discount": 0.999,
+  "discount": 0.99,
   "temperature": 1.0,
   "b_regularization": "orthonormal",
   "reg_coef": 1.0,
