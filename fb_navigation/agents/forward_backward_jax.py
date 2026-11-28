@@ -102,7 +102,7 @@ def _sample(storage, key, size, batch_size):
 
 
 class ReplayBuffer:
-    def __init__(self, size, obs_dim, n_actions, device="cuda", seed=0, *, continuous=False):
+    def __init__(self, size, obs_dim, n_actions, device="cuda", seed=0, *, continuous=False, action_dim=2):
         self.max_size, self.device = size, _device(device)
         self.ptr = self.size = 0
         self._host = self.device.platform == "cpu"
@@ -111,7 +111,7 @@ class ReplayBuffer:
         shapes = {"obs": (size, obs_dim), "action": (size,),
                   "obs_next": (size, obs_dim), "next_actions": (size, n_actions)}
         if continuous:
-            shapes["action"] = (size, 2)
+            shapes["action"] = (size, action_dim)
             del shapes["next_actions"]
         self.storage = {}
         for name, shape in shapes.items():
@@ -208,10 +208,11 @@ class ForwardNet:
 
 
 class ContinuousForwardNet:
-    def __init__(self, obs_dim, embed_dim, hidden_dim, num_layers, action_limit, key):
+    def __init__(self, obs_dim, embed_dim, hidden_dim, num_layers, action_limit, key, action_dim=2):
         self.embed_dim = embed_dim
         self.action_limit = action_limit
-        self.params = _init_mlp(key, [obs_dim + embed_dim + 2]
+        self.action_dim = action_dim
+        self.params = _init_mlp(key, [obs_dim + embed_dim + action_dim]
                                 + [hidden_dim] * (num_layers + 1) + [embed_dim])
 
     def apply(self, params, obs, w, action):
@@ -222,9 +223,9 @@ class ContinuousForwardNet:
         # Compute the state/task part of the first layer once per observation.
         w = w / jnp.sqrt(1 + jnp.sum(w**2, axis=-1, keepdims=True) / self.embed_dim)
         first = params[0]
-        state_task = jnp.matmul(jnp.concatenate((obs, w), axis=-1), first["weight"][:-2],
+        state_task = jnp.matmul(jnp.concatenate((obs, w), axis=-1), first["weight"][:-self.action_dim],
                                 precision=jax.lax.Precision.HIGHEST)
-        movement = jnp.matmul(actions / self.action_limit, first["weight"][-2:],
+        movement = jnp.matmul(actions / self.action_limit, first["weight"][-self.action_dim:],
                               precision=jax.lax.Precision.HIGHEST)
         hidden = jax.nn.relu(state_task[:, None, :] + movement[None, :, :] + first["bias"])
         return jnp.swapaxes(_mlp(params[1:], hidden), -1, -2)
@@ -264,14 +265,21 @@ class FBLearner:
                  z_sampling="cauchy", goal_terminated=False, goal_threshold=0.1,
                  b_regularization="orthonormal", goal_norm="l2",
                  action_space="discrete", action_limit=0.05, continuous_action_samples=32,
-                 *, adam_beta1=0.9, adam_beta2=0.999, adam_eps=1e-8, cauchy_scale=0.5):
+                 *, adam_beta1=0.9, adam_beta2=0.999, adam_eps=1e-8, cauchy_scale=0.5,
+                 action_dim=2, continuous_action_box=False):
         if action_space not in ("discrete", "continuous"):
             raise ValueError("action_space must be 'discrete' or 'continuous'")
         self.continuous = action_space == "continuous"
+        self.action_dim = action_dim
+        self.continuous_action_box = continuous_action_box
         self.action_limit = action_limit
         self.continuous_action_samples = continuous_action_samples
         self.environment_config = None
         if self.continuous:
+            if type(action_dim) is not int or action_dim < 1:
+                raise ValueError("action_dim must be a positive integer")
+            if action_dim != 2 and not self.continuous_action_box:
+                raise ValueError("Continuous displacement actions require action_dim=2")
             if not np.isfinite(action_limit) or action_limit <= 0:
                 raise ValueError("action_limit must be finite and positive")
             if type(continuous_action_samples) is not int or continuous_action_samples < 2:
@@ -313,6 +321,10 @@ class FBLearner:
         if self.continuous:
             self.config.update(action_space=action_space, action_limit=action_limit,
                                continuous_action_samples=continuous_action_samples)
+            if action_dim != 2:
+                self.config["action_dim"] = action_dim
+            if continuous_action_box:
+                self.config["continuous_action_box"] = True
         self._python_rng = random.Random(seed)
         if isinstance(featuriser, RadialBasisFunction2D):
             featuriser = RadialBasisFunction2D(featuriser.x_bounds, featuriser.y_bounds,
@@ -323,9 +335,9 @@ class FBLearner:
             key, fkey, bkey = jax.random.split(jax.random.PRNGKey(seed), 3)
             if self.continuous:
                 self.forward_network = ContinuousForwardNet(
-                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey)
+                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey, action_dim)
                 self.forward_target_network = ContinuousForwardNet(
-                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey)
+                    self.feature_size, embed_dim, hidden_dim, num_layers, action_limit, fkey, action_dim)
             else:
                 self.forward_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
                 self.forward_target_network = ForwardNet(self.feature_size, n_actions, embed_dim, hidden_dim, num_layers, fkey)
@@ -335,7 +347,8 @@ class FBLearner:
             zeros = jax.tree_util.tree_map(jnp.zeros_like, params)
             self.state = dict(params=params, target=params,
                               optim=(jnp.asarray(0, jnp.int32), zeros, zeros), key=key)
-        self.buffer = ReplayBuffer(buffer_size, obs_dim, n_actions, buffer_device, seed, continuous=self.continuous)
+        self.buffer = ReplayBuffer(buffer_size, obs_dim, n_actions, buffer_device, seed,
+                                   continuous=self.continuous, action_dim=action_dim)
         # All changing parameters, optimizer state, RNG, and replay are explicit
         # JIT arguments, so compiled functions never capture stale model weights.
         self._train = jax.jit(self._train_impl)
@@ -361,15 +374,24 @@ class FBLearner:
         # As in the original, terminal is deliberately unused.
         if self.continuous:
             action = np.asarray(action, dtype=np.float32)
-            if (action.shape != (2,) or not np.isfinite(action).all()
-                    or np.linalg.norm(action) > self.action_limit * (1 + 1e-6)):
-                raise ValueError("Expected a finite (dx, dy) within action_limit")
+            if action.shape != (self.action_dim,) or not np.isfinite(action).all():
+                raise ValueError(f"Expected a finite action with shape ({self.action_dim},)")
+            magnitude = np.abs(action).max() if self.continuous_action_box else np.linalg.norm(action)
+            if magnitude > self.action_limit * (1 + 1e-6):
+                raise ValueError("Action exceeds action_limit")
             self.buffer.add(obs, action, next_obs)
         else:
             self.buffer.add(obs, action, next_obs, [a in next_actions for a in range(self.n_actions)])
 
+    def _sample_continuous_actions(self, key, shape=()):
+        if self.continuous_action_box:
+            return jax.random.uniform(
+                key, (*shape, self.action_dim), minval=-self.action_limit, maxval=self.action_limit,
+            )
+        return sample_displacements(key, self.action_limit, shape)
+
     def action_candidates(self, key):
-        return sample_displacements(key, self.action_limit, (self.continuous_action_samples,))
+        return self._sample_continuous_actions(key, (self.continuous_action_samples,))
 
     def forward_candidates(self, params, features, tasks, actions):
         """Return (batch, embedding, candidates) for shared displacement proposals."""
@@ -636,7 +658,7 @@ class FBLearner:
                 raise ValueError("Continuous actions do not use discrete action masks")
             if self._python_rng.random() < epsilon:
                 key = jax.random.PRNGKey(self._python_rng.getrandbits(32))
-                return sample_displacements(key, self.action_limit)
+                return self._sample_continuous_actions(key)
             return self.act(obs, g, target_network=target_network)[0]
         if available_actions is not None:
             ids = np.asarray(available_actions)

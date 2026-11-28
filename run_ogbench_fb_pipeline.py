@@ -1,7 +1,8 @@
-"""Train continuous-action FB on offline OGBench PointMaze and find DAB peaks.
+"""Train continuous-action FB on offline OGBench PointMaze or AntMaze and find DAB peaks.
 
 Install ogbench alongside the project requirements. Run from the project root:
     python run_ogbench_fb_pipeline.py "@experiments/ogbench/medium_navigate.json"
+    python run_ogbench_fb_pipeline.py --dataset antmaze-medium-navigate-v0 --output-dir results/dab/antmaze_medium
 """
 
 import argparse
@@ -29,10 +30,16 @@ from dab_first_hitting import compute_density_terms, evaluate_first_hitting, nan
 from fb_navigation.agents.forward_backward_jax import FBLearner, RadialBasisFunction2D
 
 
-DATASETS = tuple(
+POINTMAZE_DATASETS = tuple(
     f"pointmaze-{maze}-{data}-v0"
     for maze, data in product(("medium", "large", "giant"), ("navigate", "stitch"))
 )
+ANTMAZE_DATASETS = tuple(
+    f"antmaze-{maze}-{data}-v0"
+    for maze, data in product(("medium", "large", "giant", "teleport"), ("navigate", "stitch", "explore"))
+    if (maze, data) != ("giant", "explore")
+)
+DATASETS = POINTMAZE_DATASETS + ANTMAZE_DATASETS
 
 
 class ConfigArgumentParser(argparse.ArgumentParser):
@@ -73,13 +80,12 @@ def buffer_capacity(value):
     return capacity
 
 
-class PointMazeFB(FBLearner):
-    def action_candidates(self, key):
-        """OGBench bounds the two control components independently."""
-        return jax.random.uniform(
-            key, (self.continuous_action_samples, 2),
-            minval=-self.action_limit, maxval=self.action_limit,
-        )
+class OGBenchMazeFB(FBLearner):
+    def __init__(self, *args, continuous_action_box=True, **kwargs):
+        super().__init__(*args, continuous_action_box=continuous_action_box, **kwargs)
+
+
+PointMazeFB = OGBenchMazeFB
 
 
 def arguments(argv=None):
@@ -91,9 +97,9 @@ def arguments(argv=None):
     parser.add_argument("--output-dir", required=True, type=Path, help="New or empty directory")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--device", default="cpu", help="JAX device, e.g. cpu or gpu:0")
-    source = parser.add_mutually_exclusive_group()
-    source.add_argument("--dataset-path", type=Path, help="Local OGBench training .npz")
-    source.add_argument("--checkpoint", type=Path,
+    parser.add_argument("--dataset-path", type=Path,
+                        help="Local OGBench training .npz, also used for AntMaze checkpoint analysis")
+    parser.add_argument("--checkpoint", type=Path,
                         help="Analyze a trusted FB checkpoint produced by this script")
     parser.add_argument("--dataset-dir", type=Path, default=Path("~/.ogbench/data"),
                         help="Cache directory for OGBench downloads")
@@ -135,7 +141,9 @@ def arguments(argv=None):
     parser.add_argument("--grid-size", type=int, default=50,
                         help="DAB grid cells along the longest maze axis")
     parser.add_argument("--pairs", type=int, default=1000,
-                        help="Uniform free-grid start/goal pairs")
+                        help="Start/goal pairs sampled from free grid cells or AntMaze replay")
+    parser.add_argument("--ant-states-per-cell", type=int, default=2,
+                        help="Maximum replay states scored per AntMaze map cell")
     parser.add_argument("--dab-batch-size", type=int, default=8)
     parser.add_argument("--dab-proposal-sets", type=int, default=4,
                         help="Independent action proposal sets to average for DAB")
@@ -150,8 +158,12 @@ def arguments(argv=None):
     add_peak_threshold_arguments(parser)
     args = parser.parse_args(expand_json_configs(parser, sys.argv[1:] if argv is None else argv))
     args.dataset_dir = args.dataset_dir.expanduser()
+    if args.dataset in ANTMAZE_DATASETS and args.rbf_grid:
+        parser.error("AntMaze uses full-state observations and requires --rbf-grid=0")
+    if args.dataset in POINTMAZE_DATASETS and args.checkpoint and args.dataset_path:
+        parser.error("--dataset-path and --checkpoint are mutually exclusive for PointMaze")
     if min(args.updates, args.target_update_interval, args.batch_size, args.embed_dim, args.hidden_dim,
-           args.pairs, args.dab_batch_size, args.dab_proposal_sets, args.k) < 1:
+           args.pairs, args.ant_states_per_cell, args.dab_batch_size, args.dab_proposal_sets, args.k) < 1:
         parser.error("Update, batch, network dimension, pair, proposal set, and neighborhood counts must be positive")
     if args.num_layers < 0 or args.continuous_action_samples < 2:
         parser.error("Layer count must be nonnegative and action candidates must number at least 2")
@@ -173,7 +185,7 @@ def arguments(argv=None):
     return args
 
 
-def maze_geometry(env, grid_size):
+def maze_geometry(env, grid_size, *, pointmaze=True):
     """Get a free-space grid in native OGBench units and the FB input transform."""
     layout = env.maze_map
     cell_size = env.ij_to_xy((0, 1))[0] - env.ij_to_xy((0, 0))[0]
@@ -187,8 +199,9 @@ def maze_geometry(env, grid_size):
     x, y = np.meshgrid((x_edges[1:] + x_edges[:-1]) / 2, (y_edges[1:] + y_edges[:-1]) / 2)
     xy = np.stack((x, y), axis=-1)
 
-    # Exclude centers whose point body would overlap a wall, including corners.
-    radius = env.model.geom("pointbody").size[0]
+    # AntMaze candidates come from full replay states with real poses. Its
+    # projection grid only excludes wall interiors, without a fixed body radius.
+    radius = env.model.geom("pointbody").size[0] if pointmaze else 0.0
     free = np.ones(x.shape, dtype=bool)
     for row, col in np.argwhere(layout == 1):
         wall = env.model.geom(f"block_{row}_{col}")
@@ -211,25 +224,49 @@ def cached_dataset_path(dataset, directory, base_url):
     return path
 
 
-def train(args, dataset, action_limit, origin, scale, bounds, metadata):
+def validate_dataset(dataset, obs_dim, action_dim, action_limit):
     obs, next_obs, actions = (dataset[key] for key in ("observations", "next_observations", "actions"))
-    if obs.ndim != 2 or obs.shape[1] != 2 or next_obs.shape != obs.shape or actions.shape != obs.shape:
-        raise ValueError("Expected aligned PointMaze (x, y) states and two-component actions")
+    if obs.ndim != 2 or obs.shape[1] != obs_dim or next_obs.shape != obs.shape:
+        raise ValueError(f"Expected aligned observations with {obs_dim} components")
+    if actions.shape != (len(obs), action_dim):
+        raise ValueError(f"Expected aligned actions with {action_dim} components")
     if not len(obs) or not all(np.isfinite(array).all() for array in (obs, next_obs, actions)):
         raise ValueError("Expected a nonempty dataset of finite transitions")
     if np.any(np.abs(actions) > action_limit + 1e-6):
-        raise ValueError("Dataset actions exceed the PointMaze action bounds")
+        raise ValueError("Dataset actions exceed the maze action bounds")
+
+
+def normalize_ant_observations(observations, metadata):
+    normalized = observations.astype(np.float32, copy=True)
+    normalized[:, :2] -= np.asarray(metadata["observation_origin"], dtype=np.float32)
+    normalized[:, :2] /= metadata["observation_scale"]
+    normalized[:, 2:] -= np.asarray(metadata["proprioception_mean"], dtype=np.float32)
+    normalized[:, 2:] /= np.asarray(metadata["proprioception_scale"], dtype=np.float32)
+    return normalized
+
+
+def train(args, dataset, action_limit, origin, scale, bounds, metadata):
+    obs, next_obs, actions = (dataset[key] for key in ("observations", "next_observations", "actions"))
+    antmaze = args.dataset in ANTMAZE_DATASETS
+    capacity = len(obs) if args.buffer_size == "dataset" else args.buffer_size
+    if antmaze:
+        proprioception = obs[-capacity:, 2:]
+        metadata = dict(
+            metadata, proprioception_mean=proprioception.mean(axis=0, dtype=np.float64).tolist(),
+            proprioception_scale=np.maximum(proprioception.std(axis=0, dtype=np.float64), 1e-3).tolist(),
+        )
 
     featuriser = None
     if args.rbf_grid:
         x_bounds, y_bounds = ((np.asarray(bounds) - origin) / scale).T.tolist()
         sigma = args.rbf_sigma_scale * max(np.ptp(x_bounds), np.ptp(y_bounds)) / (args.rbf_grid - 1)
         featuriser = RadialBasisFunction2D(x_bounds, y_bounds, args.rbf_grid, sigma, device=args.device)
-    learner = PointMazeFB(
-        obs_dim=2, n_actions=None, embed_dim=args.embed_dim, action_space="continuous",
+    learner = OGBenchMazeFB(
+        obs_dim=obs.shape[1], n_actions=None, embed_dim=args.embed_dim, action_space="continuous",
+        action_dim=actions.shape[1],
         action_limit=action_limit, continuous_action_samples=args.continuous_action_samples,
         device=args.device, buffer_device=args.buffer_device,
-        buffer_size=len(obs) if args.buffer_size == "dataset" else args.buffer_size,
+        buffer_size=capacity,
         seed=args.seed, batch_size=args.batch_size, hidden_dim=args.hidden_dim, num_layers=args.num_layers,
         learning_rate=args.learning_rate, adam_beta1=args.adam_beta1, adam_beta2=args.adam_beta2,
         adam_eps=args.adam_eps, max_grad_norm=args.max_grad_norm, polyak_coef=args.polyak_coef,
@@ -241,9 +278,10 @@ def train(args, dataset, action_limit, origin, scale, bounds, metadata):
     # OGBench's loader discards the dummy transition at each episode boundary.
     # Use a continuing FB target so every density term follows the same policy.
     learner.buffer.add_batch({
-        "obs": (obs - origin) / scale,
-        "obs_next": (next_obs - origin) / scale,
-        "action": actions,
+        "obs": normalize_ant_observations(obs[-capacity:], metadata) if antmaze else (obs - origin) / scale,
+        "obs_next": (normalize_ant_observations(next_obs[-capacity:], metadata)
+                     if antmaze else (next_obs - origin) / scale),
+        "action": actions[-capacity:] if antmaze else actions,
     })
     print(f"Training FB on {learner.buffer.size:,} {args.dataset} transitions", flush=True)
     losses = np.empty(args.updates, dtype=np.float32)
@@ -283,9 +321,13 @@ def plot_bottlenecks(path, dataset, k, min_coverage, x, y, free, dab, coverage, 
     fig.colorbar(score, ax=score_ax, label="Mean clipped first-hit estimate", shrink=0.83)
     fig.colorbar(stable, ax=coverage_ax, label="Fraction of pairs", shrink=0.83,
                  format=PercentFormatter(xmax=1))
+    masked_label = (
+        f"Unsampled floor or coverage below {min_coverage:.0%}" if dataset in ANTMAZE_DATASETS
+        else f"Floor with no DAB shown (coverage < {min_coverage:.0%})"
+    )
     score_ax.legend(handles=[
         Patch(color=wall_color, label="Wall or clearance"),
-        Patch(color=masked_color, label=f"Floor with no DAB shown (coverage < {min_coverage:.0%})"),
+        Patch(color=masked_color, label=masked_label),
     ], loc="upper center", bbox_to_anchor=(0.5, -0.14), ncols=1, frameon=False)
 
     for rank, (row, col) in enumerate(peaks, start=1):
@@ -300,16 +342,72 @@ def plot_bottlenecks(path, dataset, k, min_coverage, x, y, free, dab, coverage, 
     plt.close(fig)
 
 
-def analyze(args, learner, x, y, free, origin, scale):
-    xy = np.column_stack((x[free], y[free]))
-    if len(xy) < 2:
-        raise ValueError("Fewer than two free grid points. Increase --grid-size.")
-    states = jax.device_put(((xy - origin) / scale).astype(np.float32), learner.device)
-    rng = np.random.default_rng(args.seed)
-    starts = rng.integers(len(xy), size=args.pairs)
-    goals = rng.integers(len(xy) - 1, size=args.pairs)
+def sample_pairs(rng, size, pairs):
+    starts = rng.integers(size, size=pairs)
+    goals = rng.integers(size - 1, size=pairs)
     goals += goals >= starts
-    u, v = states[starts], states[goals]
+    return starts, goals
+
+
+def sample_ant_states(observations, x, y, free, rng, per_cell, pairs):
+    # Keep only replay positions that fall inside a free projection cell.
+    dx, dy = x[0, 1] - x[0, 0], y[1, 0] - y[0, 0]
+    col = np.floor((observations[:, 0] - (x[0, 0] - dx / 2)) / dx).astype(np.intp)
+    row = np.floor((observations[:, 1] - (y[0, 0] - dy / 2)) / dy).astype(np.intp)
+    indices = np.flatnonzero((0 <= row) & (row < x.shape[0]) & (0 <= col) & (col < x.shape[1]))
+    indices = indices[free[row[indices], col[indices]]]
+    if len(indices) < 2:
+        raise ValueError("AntMaze DAB requires at least two replay states in free grid cells")
+    starts, goals = sample_pairs(rng, len(indices), pairs)
+
+    # Shuffle before grouping so the first few rows of each cell form a
+    # seeded sample without replacement even in a large replay dataset.
+    shuffled = rng.permutation(indices)
+    cells = row[shuffled] * x.shape[1] + col[shuffled]
+    order = np.argsort(cells, kind="stable")
+    cells = cells[order]
+    offsets = np.arange(len(cells))
+    first_in_cell = np.r_[True, cells[1:] != cells[:-1]]
+    keep = offsets - np.maximum.accumulate(np.where(first_in_cell, offsets, 0)) < per_cell
+    return shuffled[order[keep]], cells[keep], indices[starts], indices[goals]
+
+
+def project_ant_hits(hits, cells, shape):
+    size = np.prod(shape)
+    counts = np.bincount(cells, minlength=size)
+    stable_counts = np.bincount(cells, weights=hits["stable_mask"].sum(axis=0), minlength=size)
+    plausible_counts = np.bincount(cells, weights=hits["plausible_mask"].sum(axis=0), minlength=size)
+    score_sums = np.bincount(cells, weights=np.nansum(np.clip(hits["stable"], 0, 1), axis=0), minlength=size)
+    trials = counts * hits["stable_mask"].shape[0]
+
+    def divide(numerator, denominator):
+        return np.divide(numerator, denominator, out=np.full(size, np.nan), where=denominator > 0).reshape(shape)
+
+    return divide(score_sums, stable_counts), divide(stable_counts, trials), divide(plausible_counts, trials), counts
+
+
+def analyze(args, learner, x, y, free, origin, scale, observations=None):
+    rng = np.random.default_rng(args.seed)
+    sampling = {}
+    if observations is None:
+        xy = np.column_stack((x[free], y[free]))
+        if len(xy) < 2:
+            raise ValueError("Fewer than two free grid points. Increase --grid-size.")
+        states = jax.device_put(((xy - origin) / scale).astype(np.float32), learner.device)
+        starts, goals = sample_pairs(rng, len(xy), args.pairs)
+        u, v = states[starts], states[goals]
+    else:
+        xy = observations[:, :2]
+        candidates, cells, starts, goals = sample_ant_states(
+            observations, x, y, free, rng, args.ant_states_per_cell, args.pairs,
+        )
+        metadata = learner.environment_config
+        states, u, v = (
+            jax.device_put(normalize_ant_observations(observations[indices], metadata), learner.device)
+            for indices in (candidates, starts, goals)
+        )
+        sampling.update(candidate_indices=candidates, candidate_cells=cells,
+                        start_indices=starts, goal_indices=goals)
     densities = compute_density_terms(
         learner, states, learner.embed_B(states), u, v, learner.embed_B(v),
         "softmax", learner.temperature, args.dab_batch_size, seed=args.seed,
@@ -319,12 +417,16 @@ def analyze(args, learner, x, y, free, origin, scale):
         densities, min_self_density=args.min_self_density, min_gap=args.min_gap,
         tolerance=args.probability_tolerance,
     )
-    dab = np.full(x.shape, np.nan)
-    dab[free] = nanmean_no_warning(np.clip(hits["stable"], 0, 1))
-    coverage = np.full(x.shape, np.nan)
-    coverage[free] = hits["stable_mask"].mean(axis=0)
-    plausible_coverage = np.full(x.shape, np.nan)
-    plausible_coverage[free] = hits["plausible_mask"].mean(axis=0)
+    if observations is None:
+        dab = np.full(x.shape, np.nan)
+        dab[free] = nanmean_no_warning(np.clip(hits["stable"], 0, 1))
+        coverage = np.full(x.shape, np.nan)
+        coverage[free] = hits["stable_mask"].mean(axis=0)
+        plausible_coverage = np.full(x.shape, np.nan)
+        plausible_coverage[free] = hits["plausible_mask"].mean(axis=0)
+    else:
+        dab, coverage, plausible_coverage, counts = project_ant_hits(hits, cells, x.shape)
+        sampling["candidate_counts"] = counts.reshape(x.shape)
     eligible = free & (coverage >= args.min_coverage)
     peaks = find_local_maxima(
         dab, eligible, k=args.k, peak_tolerance=args.peak_tolerance, peak_margin=args.peak_margin,
@@ -337,6 +439,7 @@ def analyze(args, learner, x, y, free, origin, scale):
         X=x, Y=y, valid_mask=free.ravel(), mean_clipped=dab[free],
         coverage=coverage, plausible_coverage=plausible_coverage,
         starts=xy[starts], goals=xy[goals], maxima=np.asarray(peaks, dtype=int).reshape(-1, 2),
+        **sampling,
     )
     with (output / f"bottlenecks_k{args.k}.csv").open("w", newline="") as stream:
         writer = csv.writer(stream)
@@ -347,7 +450,7 @@ def analyze(args, learner, x, y, free, origin, scale):
                              coverage[index], plausible_coverage[index]))
     plot_bottlenecks(output / f"bottlenecks_k{args.k}.png", args.dataset, args.k, args.min_coverage,
                      x, y, free, dab, coverage, peaks)
-    print(f"Found {len(peaks)} peaks at k={args.k}. Mean stable pair coverage: {coverage[free].mean():.1%}",
+    print(f"Found {len(peaks)} peaks at k={args.k}. Mean stable pair coverage: {np.nanmean(coverage[free]):.1%}",
           flush=True)
 
 
@@ -361,12 +464,15 @@ def main():
             raise
         raise SystemExit("Install OGBench in the project environment with: python -m pip install ogbench") from error
 
+    antmaze = args.dataset in ANTMAZE_DATASETS
     env = ogbench.make_env_and_datasets(args.dataset, env_only=True, render_mode=None)
     try:
-        x, y, free, origin, scale, bounds = maze_geometry(env.unwrapped, args.grid_size)
+        x, y, free, origin, scale, bounds = maze_geometry(env.unwrapped, args.grid_size, pointmaze=not antmaze)
         low, high = env.action_space.low, env.action_space.high
-        if high.shape != (2,) or not np.all(high == high[0]) or not np.all(low == -high):
-            raise ValueError("Expected a symmetric two-dimensional PointMaze action Box")
+        if high.ndim != 1 or not high.size or not np.all(high == high[0]) or not np.all(low == -high):
+            raise ValueError("Expected a symmetric action Box with the same bounds on every axis")
+        (obs_dim,) = env.observation_space.shape
+        action_dim = high.size
         action_limit = float(high[0])
     finally:
         env.close()
@@ -378,22 +484,37 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     if any(args.output_dir.iterdir()):
         raise SystemExit(f"Output directory must be empty: {args.output_dir}")
-    if args.checkpoint:
-        learner = PointMazeFB.from_checkpoint(args.checkpoint, device=args.device)
-        if learner.environment_config != metadata or not learner.continuous or learner.action_limit != action_limit:
-            raise ValueError("Checkpoint must come from this PointMaze pipeline and match --dataset")
-    else:
+    dataset = None
+    if antmaze or not args.checkpoint:
         path = args.dataset_path or cached_dataset_path(args.dataset, args.dataset_dir, DATASET_URL)
         dataset = load_dataset(str(path))
+        validate_dataset(dataset, obs_dim, action_dim, action_limit)
+    if args.checkpoint:
+        learner = OGBenchMazeFB.from_checkpoint(args.checkpoint, device=args.device)
+        saved = learner.environment_config or {}
+        if (any(saved.get(key) != value for key, value in metadata.items()) or not learner.continuous
+                or not learner.continuous_action_box
+                or learner.action_limit != action_limit or learner.action_dim != action_dim
+                or learner.config["obs_dim"] != obs_dim):
+            raise ValueError("Checkpoint must come from this OGBench maze pipeline and match --dataset")
+        if antmaze:
+            mean = np.asarray(saved.get("proprioception_mean"), dtype=float)
+            std = np.asarray(saved.get("proprioception_scale"), dtype=float)
+            if (mean.shape != (obs_dim - 2,) or std.shape != mean.shape or not np.isfinite(mean).all()
+                    or not np.isfinite(std).all() or np.any(std <= 0)):
+                raise ValueError("AntMaze checkpoint is missing valid observation normalization")
+    else:
         learner = train(args, dataset, action_limit, origin, scale, bounds, metadata)
+    features = "normalized_full_state" if antmaze else (
+        "rbf" if isinstance(learner.featuriser, RadialBasisFunction2D) else "scaled_xy"
+    )
     settings = {
         "arguments": {name: str(value) if isinstance(value, Path) else value for name, value in vars(args).items()},
-        "environment": metadata, "learner": learner.config,
-        "features": "rbf" if isinstance(learner.featuriser, RadialBasisFunction2D) else "scaled_xy",
+        "environment": learner.environment_config, "learner": learner.config, "features": features,
     }
     (args.output_dir / "config.json").write_text(json.dumps(settings, indent=2), encoding="utf-8")
     with jax.default_device(learner.device):
-        analyze(args, learner, x, y, free, origin, scale)
+        analyze(args, learner, x, y, free, origin, scale, dataset["observations"] if antmaze else None)
     print(f"Saved results in {args.output_dir.resolve()}", flush=True)
 
 
