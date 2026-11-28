@@ -3,7 +3,7 @@
   "dataset_dir": "~/.ogbench/data",
   "dataset_path": null,
   "checkpoint": null,
-  "output_dir": "results/dab/ogbench_medium_cauchy_seed0_250k",
+  "output_dir": "results/dab/ogbench_medium_cauchy_seed0_250k_gamma0.99",
   "device": "cuda",
   "buffer_device": "cuda",
   "seed": 0,
